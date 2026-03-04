@@ -45,6 +45,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import { useDepartments } from "@/hooks/use-departments";
 import {
 	useDeactivateUser,
 	useForcePasswordChange,
@@ -70,6 +71,9 @@ function StaffDetailPage() {
 
 	const [deactivateDialogOpen, setDeactivateDialogOpen] = useState(false);
 	const [forcePasswordDialogOpen, setForcePasswordDialogOpen] = useState(false);
+
+	const { data: departmentsData, isLoading: departmentsLoading } =
+		useDepartments({ status: "ACTIVE" });
 
 	const updateUserMutation = useUpdateUser();
 	const deactivateMutation = useDeactivateUser();
@@ -321,28 +325,30 @@ function StaffDetailPage() {
 												<Select
 													value={field.state.value}
 													onValueChange={field.handleChange}
+													disabled={departmentsLoading}
 												>
 													<SelectTrigger id={field.name}>
-														<SelectValue placeholder="Select department" />
+														<SelectValue
+															placeholder={
+																departmentsLoading
+																	? "Loading..."
+																	: "Select department"
+															}
+														/>
 													</SelectTrigger>
 													<SelectContent>
-														<SelectItem value="emergency">Emergency</SelectItem>
-														<SelectItem value="cardiology">
-															Cardiology
-														</SelectItem>
-														<SelectItem value="neurology">Neurology</SelectItem>
-														<SelectItem value="orthopedics">
-															Orthopedics
-														</SelectItem>
-														<SelectItem value="pediatrics">
-															Pediatrics
-														</SelectItem>
-														<SelectItem value="oncology">Oncology</SelectItem>
-														<SelectItem value="radiology">Radiology</SelectItem>
-														<SelectItem value="pharmacy">Pharmacy</SelectItem>
-														<SelectItem value="administration">
-															Administration
-														</SelectItem>
+														{departmentsData?.data.map((dept) => (
+															<SelectItem key={dept.id} value={dept.id}>
+																{dept.name}
+															</SelectItem>
+														))}
+														{!departmentsLoading &&
+															(!departmentsData?.data ||
+																departmentsData.data.length === 0) && (
+																<div className="px-2 py-1.5 text-muted-foreground text-sm">
+																	No departments available
+																</div>
+															)}
 													</SelectContent>
 												</Select>
 												{field.state.meta.errors.map((error) => (

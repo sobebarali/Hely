@@ -154,6 +154,9 @@ export async function seedDispensing({
 		) {
 			dispensingData.completedAt = new Date();
 		}
+		if (status === DispensingStatus.DISPENSED) {
+			dispensingData.notes = "Medications verified and dispensed";
+		}
 		if (status === DispensingStatus.COLLECTED) {
 			dispensingData.collectedAt = new Date();
 			dispensingData.notes = "Patient counseled on medication usage";

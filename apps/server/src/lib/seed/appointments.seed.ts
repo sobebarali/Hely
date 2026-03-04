@@ -46,6 +46,19 @@ const REASONS = [
 	"Stomach pain",
 ];
 
+const NOTES = [
+	"Patient presenting with mild symptoms, no immediate concerns",
+	"Vitals within normal range, routine follow-up recommended",
+	"Referred to specialist for further evaluation",
+	"Prescribed medication, monitor for side effects",
+	"Lab results reviewed, all within normal limits",
+	"Patient reports improvement since last visit",
+	"Symptoms persisting, adjusted treatment plan",
+	"Discussed lifestyle modifications with patient",
+	"Post-procedure check, healing as expected",
+	"Patient educated on preventive care measures",
+];
+
 /**
  * Seed appointments for a tenant
  */
@@ -163,6 +176,15 @@ export async function seedAppointments({
 			priority:
 				i % 5 === 0 ? AppointmentPriority.URGENT : AppointmentPriority.NORMAL,
 			reason: REASONS[i % REASONS.length],
+			notes:
+				status === AppointmentStatus.COMPLETED
+					? NOTES[i % NOTES.length]
+					: undefined,
+			followUpRequired: status === AppointmentStatus.COMPLETED && i % 3 === 0,
+			followUpDate:
+				status === AppointmentStatus.COMPLETED && i % 3 === 0
+					? new Date(appointmentDate.getTime() + 14 * 24 * 60 * 60 * 1000)
+					: undefined,
 			status,
 			queueNumber: i + 1,
 			createdBy: receptionist ? String(receptionist._id) : String(doctor._id),

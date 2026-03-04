@@ -48,67 +48,213 @@ const ORGANIZATIONS_CONFIG = [
 	},
 ] as const;
 
+// Seed config interfaces
+interface DepartmentSeedConfig {
+	name: string;
+	code: string;
+	type: (typeof DepartmentType)[keyof typeof DepartmentType];
+	description: string;
+	location: string;
+	contact: { phone: string; email: string };
+	operatingHours: Record<string, { start: string; end: string } | null>;
+	headRole?: string;
+}
+
+interface UserSeedConfig {
+	role: string;
+	firstName: string;
+	lastName: string;
+	departmentCode: string;
+	specialization?: string;
+	shift: "MORNING" | "EVENING" | "NIGHT";
+}
+
+// Operating hours helpers
+const WEEKDAY_HOURS = { start: "08:00", end: "17:00" };
+const FULL_DAY = { start: "00:00", end: "23:59" };
+
+function weekdaySchedule(
+	weekday: { start: string; end: string },
+	saturday: { start: string; end: string } | null,
+) {
+	return {
+		monday: weekday,
+		tuesday: weekday,
+		wednesday: weekday,
+		thursday: weekday,
+		friday: weekday,
+		saturday,
+		sunday: null,
+	};
+}
+
 // Department configurations
-const DEPARTMENTS_CONFIG = [
+const DEPARTMENTS_CONFIG: DepartmentSeedConfig[] = [
 	{
 		name: "General Medicine",
 		code: "GEN",
 		type: DepartmentType.CLINICAL,
 		description: "General medicine and primary care",
+		location: "Building A, Floor 1",
+		contact: { phone: "+1-555-0101", email: "gen.medicine@usehely.com" },
+		operatingHours: weekdaySchedule(WEEKDAY_HOURS, {
+			start: "09:00",
+			end: "13:00",
+		}),
+		headRole: "DOCTOR",
 	},
 	{
 		name: "Emergency",
 		code: "ER",
 		type: DepartmentType.EMERGENCY,
 		description: "Emergency and urgent care services",
+		location: "Building A, Ground Floor",
+		contact: { phone: "+1-555-0911", email: "emergency@usehely.com" },
+		operatingHours: {
+			monday: FULL_DAY,
+			tuesday: FULL_DAY,
+			wednesday: FULL_DAY,
+			thursday: FULL_DAY,
+			friday: FULL_DAY,
+			saturday: FULL_DAY,
+			sunday: FULL_DAY,
+		},
 	},
 	{
 		name: "Pharmacy",
 		code: "PHARM",
 		type: DepartmentType.PHARMACY,
 		description: "Pharmacy and dispensing services",
+		location: "Building B, Floor 1",
+		contact: { phone: "+1-555-0102", email: "pharmacy@usehely.com" },
+		operatingHours: weekdaySchedule(
+			{ start: "08:00", end: "18:00" },
+			{ start: "09:00", end: "14:00" },
+		),
+		headRole: "PHARMACIST",
 	},
 	{
 		name: "Administration",
 		code: "ADMIN",
 		type: DepartmentType.ADMINISTRATIVE,
 		description: "Administrative and front desk services",
+		location: "Building A, Floor 3",
+		contact: { phone: "+1-555-0100", email: "admin@usehely.com" },
+		operatingHours: weekdaySchedule(WEEKDAY_HOURS, null),
+		headRole: "HOSPITAL_ADMIN",
 	},
-] as const;
+	{
+		name: "Cardiology",
+		code: "CARDIO",
+		type: DepartmentType.CLINICAL,
+		description: "Heart and cardiovascular care",
+		location: "Building C, Floor 2",
+		contact: { phone: "+1-555-0103", email: "cardiology@usehely.com" },
+		operatingHours: weekdaySchedule(WEEKDAY_HOURS, {
+			start: "09:00",
+			end: "13:00",
+		}),
+	},
+	{
+		name: "Neurology",
+		code: "NEURO",
+		type: DepartmentType.CLINICAL,
+		description: "Brain and nervous system care",
+		location: "Building C, Floor 3",
+		contact: { phone: "+1-555-0104", email: "neurology@usehely.com" },
+		operatingHours: weekdaySchedule(WEEKDAY_HOURS, {
+			start: "09:00",
+			end: "13:00",
+		}),
+	},
+	{
+		name: "Orthopedics",
+		code: "ORTHO",
+		type: DepartmentType.CLINICAL,
+		description: "Musculoskeletal and bone care",
+		location: "Building D, Floor 1",
+		contact: { phone: "+1-555-0105", email: "orthopedics@usehely.com" },
+		operatingHours: weekdaySchedule(WEEKDAY_HOURS, {
+			start: "09:00",
+			end: "14:00",
+		}),
+	},
+	{
+		name: "Pediatrics",
+		code: "PEDIA",
+		type: DepartmentType.CLINICAL,
+		description: "Child and adolescent healthcare",
+		location: "Building B, Floor 2",
+		contact: { phone: "+1-555-0106", email: "pediatrics@usehely.com" },
+		operatingHours: weekdaySchedule(WEEKDAY_HOURS, {
+			start: "09:00",
+			end: "13:00",
+		}),
+	},
+	{
+		name: "Oncology",
+		code: "ONCO",
+		type: DepartmentType.CLINICAL,
+		description: "Cancer diagnosis and treatment",
+		location: "Building D, Floor 2",
+		contact: { phone: "+1-555-0107", email: "oncology@usehely.com" },
+		operatingHours: weekdaySchedule(WEEKDAY_HOURS, null),
+	},
+	{
+		name: "Radiology",
+		code: "RAD",
+		type: DepartmentType.DIAGNOSTIC,
+		description: "Medical imaging and diagnostics",
+		location: "Building B, Basement",
+		contact: { phone: "+1-555-0108", email: "radiology@usehely.com" },
+		operatingHours: weekdaySchedule(
+			{ start: "07:00", end: "19:00" },
+			{ start: "08:00", end: "14:00" },
+		),
+	},
+];
 
 // User configurations
-const USERS_CONFIG = [
+const USERS_CONFIG: UserSeedConfig[] = [
 	{
 		role: "HOSPITAL_ADMIN",
 		firstName: "Admin",
 		lastName: "User",
 		departmentCode: "ADMIN",
+		shift: "MORNING",
 	},
 	{
 		role: "DOCTOR",
 		firstName: "John",
 		lastName: "Doctor",
 		departmentCode: "GEN",
+		specialization: "Internal Medicine",
+		shift: "MORNING",
 	},
 	{
 		role: "NURSE",
 		firstName: "Jane",
 		lastName: "Nurse",
 		departmentCode: "GEN",
+		specialization: "Critical Care Nursing",
+		shift: "MORNING",
 	},
 	{
 		role: "PHARMACIST",
 		firstName: "Paul",
 		lastName: "Pharmacist",
 		departmentCode: "PHARM",
+		specialization: "Clinical Pharmacy",
+		shift: "MORNING",
 	},
 	{
 		role: "RECEPTIONIST",
 		firstName: "Rachel",
 		lastName: "Receptionist",
 		departmentCode: "ADMIN",
+		shift: "MORNING",
 	},
-] as const;
+];
 
 interface CounterModel {
 	getNextSequence(tenantId: string, type: string): Promise<number>;
@@ -155,6 +301,9 @@ async function seedDepartments({
 					code: deptConfig.code,
 					description: deptConfig.description,
 					type: deptConfig.type,
+					location: deptConfig.location,
+					contact: deptConfig.contact,
+					operatingHours: deptConfig.operatingHours,
 					status: DepartmentStatus.ACTIVE,
 					createdAt: new Date(),
 					updatedAt: new Date(),
@@ -189,11 +338,13 @@ async function seedUsers({
 	departmentMap: Map<string, string>;
 	roleMap: Map<string, string>;
 	session?: mongoose.ClientSession;
-}): Promise<void> {
+}): Promise<Map<string, string>> {
 	logger.info({ tenantId }, "Seeding users");
 
+	const staffByRole = new Map<string, string>();
 	const hashedPassword = await hashPassword(SEED_PASSWORD);
 
+	let staffIdx = 0;
 	for (const userConfig of USERS_CONFIG) {
 		const email = `${emailPrefix}-${userConfig.role.toLowerCase().replace("hospital_", "")}@usehely.com`;
 
@@ -202,6 +353,14 @@ async function seedUsers({
 
 		if (existingUser) {
 			logger.debug({ email }, "User already exists, skipping");
+			// Look up existing staff record to populate the map
+			const existingStaff = await Staff.findOne({
+				tenantId,
+				userId: String(existingUser._id),
+			}).session(session ?? null);
+			if (existingStaff) {
+				staffByRole.set(userConfig.role, String(existingStaff._id));
+			}
 			continue;
 		}
 
@@ -275,9 +434,11 @@ async function seedUsers({
 					employeeId,
 					firstName: userConfig.firstName,
 					lastName: userConfig.lastName,
-					phone: "+1234567890",
+					phone: `+1-555-${String(200 + staffIdx).padStart(4, "0")}`,
 					departmentId,
 					roles: [roleId],
+					specialization: userConfig.specialization,
+					shift: userConfig.shift,
 					status: "ACTIVE",
 					forcePasswordChange: false, // Seed users don't need to change password
 					passwordHistory: [hashedPassword],
@@ -288,9 +449,48 @@ async function seedUsers({
 			{ session },
 		);
 
+		staffByRole.set(userConfig.role, staffId);
+		staffIdx++;
+
 		logger.info(
 			{ userId, email, employeeId, role: userConfig.role },
 			"User created",
+		);
+	}
+
+	return staffByRole;
+}
+
+/**
+ * Update department heads after staff records exist
+ */
+async function updateDepartmentHeads({
+	tenantId,
+	departmentMap,
+	staffByRole,
+	session,
+}: {
+	tenantId: string;
+	departmentMap: Map<string, string>;
+	staffByRole: Map<string, string>;
+	session?: mongoose.ClientSession;
+}): Promise<void> {
+	for (const deptConfig of DEPARTMENTS_CONFIG) {
+		if (!deptConfig.headRole) continue;
+
+		const staffId = staffByRole.get(deptConfig.headRole);
+		const departmentId = departmentMap.get(deptConfig.code);
+
+		if (!staffId || !departmentId) continue;
+
+		await Department.updateOne(
+			{ _id: departmentId, tenantId },
+			{ $set: { headId: staffId } },
+		).session(session ?? null);
+
+		logger.info(
+			{ deptCode: deptConfig.code, headRole: deptConfig.headRole },
+			"Department head set",
 		);
 	}
 }
@@ -369,11 +569,19 @@ async function seedOrganization(
 		const departmentMap = await seedDepartments({ tenantId, session });
 
 		// Seed users
-		await seedUsers({
+		const staffByRole = await seedUsers({
 			tenantId,
 			emailPrefix: config.emailPrefix,
 			departmentMap,
 			roleMap,
+			session,
+		});
+
+		// Set department heads
+		await updateDepartmentHeads({
+			tenantId,
+			departmentMap,
+			staffByRole,
 			session,
 		});
 

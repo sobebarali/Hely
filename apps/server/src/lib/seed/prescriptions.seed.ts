@@ -170,6 +170,10 @@ export async function seedPrescriptions({
 			appointmentId: appointment ? String(appointment._id) : undefined,
 			diagnosis: DIAGNOSES[i % DIAGNOSES.length],
 			notes: "Patient advised to follow up if symptoms persist",
+			followUpDate:
+				status === PrescriptionStatus.COMPLETED
+					? new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
+					: undefined,
 			medicines: selectedMedicines,
 			status,
 			createdAt: new Date(),
