@@ -4,7 +4,7 @@
  * Business logic for listing user consent records
  */
 
-import { createServiceLogger, logSuccess } from "@/lib/logger";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
 import { CONSENT_PURPOSES } from "../compliance.constants";
 import { findUserConsents } from "../repositories/list-consent.compliance.repository";
 import type { ListConsentOutput } from "../validations/list-consent.compliance.validation";

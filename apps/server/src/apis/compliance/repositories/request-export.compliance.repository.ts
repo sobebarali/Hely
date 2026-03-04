@@ -11,7 +11,10 @@ import {
 	DataSubjectRequestType,
 } from "@hms/db";
 import { v4 as uuidv4 } from "uuid";
-import { createRepositoryLogger, logDatabaseOperation } from "@/lib/logger";
+import {
+	createRepositoryLogger,
+	logDatabaseOperation,
+} from "../../../lib/logger";
 import type { RequestExportInput } from "../validations/request-export.compliance.validation";
 import type { DataSubjectRequestDocument } from "./shared.compliance.repository";
 

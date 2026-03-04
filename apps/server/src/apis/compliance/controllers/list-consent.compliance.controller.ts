@@ -7,11 +7,11 @@
  */
 
 import type { Response } from "express";
-import { createControllerLogger, logSuccess } from "@/lib/logger";
+import { createControllerLogger, logSuccess } from "../../../lib/logger";
 import {
 	type AuthenticatedRequest,
 	authenticatedHandler,
-} from "@/utils/async-handler";
+} from "../../../utils/async-handler";
 import { listConsentService } from "../services/list-consent.compliance.service";
 
 const logger = createControllerLogger("listConsent");

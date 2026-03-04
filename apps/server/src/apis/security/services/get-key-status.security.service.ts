@@ -4,8 +4,8 @@
  * Business logic for retrieving encryption key status and rotation history
  */
 
-import { InternalError } from "@/errors";
-import { logger } from "@/lib/logger";
+import { InternalError } from "../../../errors";
+import { logger } from "../../../lib/logger";
 import {
 	countKeyRotations,
 	findLatestKeyRotation,

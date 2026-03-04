@@ -7,7 +7,11 @@
  */
 
 import type { Request, Response } from "express";
-import { createControllerLogger, logError, logSuccess } from "@/lib/logger";
+import {
+	createControllerLogger,
+	logError,
+	logSuccess,
+} from "../../../lib/logger";
 import { getResourceAuditTrail } from "../services/resource-trail.audit.service";
 import type { ResourceTrailQuery } from "../validations/resource-trail.audit.validation";
 

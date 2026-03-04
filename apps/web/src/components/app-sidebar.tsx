@@ -5,6 +5,7 @@ import {
 	Calendar,
 	FileBarChart,
 	FileText,
+	FlaskConical,
 	LayoutDashboard,
 	type LucideIcon,
 	Package,
@@ -46,6 +47,7 @@ const iconMap: Record<string, LucideIcon> = {
 	reports: FileBarChart,
 	shield_check: ShieldCheck,
 	security: Shield,
+	biotech: FlaskConical,
 };
 
 // Convert server menu items to NavMain format

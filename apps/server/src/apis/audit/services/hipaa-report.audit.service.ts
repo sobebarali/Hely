@@ -5,7 +5,7 @@
  */
 
 import { v4 as uuidv4 } from "uuid";
-import { createServiceLogger, logSuccess } from "@/lib/logger";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
 import {
 	getAuditStats,
 	getPhiAccessByRole,

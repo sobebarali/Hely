@@ -7,7 +7,11 @@
  */
 
 import type { Request, Response } from "express";
-import { createControllerLogger, logError, logSuccess } from "@/lib/logger";
+import {
+	createControllerLogger,
+	logError,
+	logSuccess,
+} from "../../../lib/logger";
 import { generateHipaaReport } from "../services/hipaa-report.audit.service";
 import type { HipaaReportInput } from "../validations/hipaa-report.audit.validation";
 

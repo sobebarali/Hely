@@ -10,9 +10,12 @@ import {
 	ForbiddenError,
 	GoneError,
 	NotFoundError,
-} from "@/errors";
-import { createServiceLogger, logSuccess } from "@/lib/logger";
-import { getComplianceExportKey, getExportDownloadUrl } from "@/lib/storage";
+} from "../../../errors";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
+import {
+	getComplianceExportKey,
+	getExportDownloadUrl,
+} from "../../../lib/storage";
 import { ComplianceErrorCodes } from "../compliance.constants";
 import { findDataSubjectRequestById } from "../repositories/shared.compliance.repository";
 

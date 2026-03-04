@@ -5,7 +5,10 @@
  */
 
 import { Consent } from "@hms/db";
-import { createRepositoryLogger, logDatabaseOperation } from "@/lib/logger";
+import {
+	createRepositoryLogger,
+	logDatabaseOperation,
+} from "../../../lib/logger";
 import type { ConsentDocument } from "./shared.compliance.repository";
 
 const logger = createRepositoryLogger("listConsent");

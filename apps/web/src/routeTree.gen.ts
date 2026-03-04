@@ -26,6 +26,7 @@ import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/s
 import { Route as DashboardReportsIndexRouteImport } from './routes/dashboard/reports/index'
 import { Route as DashboardPrescriptionsIndexRouteImport } from './routes/dashboard/prescriptions/index'
 import { Route as DashboardPatientsIndexRouteImport } from './routes/dashboard/patients/index'
+import { Route as DashboardLabIndexRouteImport } from './routes/dashboard/lab/index'
 import { Route as DashboardInventoryIndexRouteImport } from './routes/dashboard/inventory/index'
 import { Route as DashboardDoctorsIndexRouteImport } from './routes/dashboard/doctors/index'
 import { Route as DashboardDispensingIndexRouteImport } from './routes/dashboard/dispensing/index'
@@ -55,6 +56,9 @@ import { Route as DashboardPrescriptionsIdRouteImport } from './routes/dashboard
 import { Route as DashboardPatientsRegisterRouteImport } from './routes/dashboard/patients/register'
 import { Route as DashboardPatientsOpdQueueRouteImport } from './routes/dashboard/patients/opd-queue'
 import { Route as DashboardPatientsIdRouteImport } from './routes/dashboard/patients/$id'
+import { Route as DashboardLabTestsRouteImport } from './routes/dashboard/lab/tests'
+import { Route as DashboardLabCreateRouteImport } from './routes/dashboard/lab/create'
+import { Route as DashboardLabIdRouteImport } from './routes/dashboard/lab/$id'
 import { Route as DashboardInventoryTransactionsRouteImport } from './routes/dashboard/inventory/transactions'
 import { Route as DashboardInventoryMedicinesRouteImport } from './routes/dashboard/inventory/medicines'
 import { Route as DashboardInventoryExpiringRouteImport } from './routes/dashboard/inventory/expiring'
@@ -160,6 +164,11 @@ const DashboardPrescriptionsIndexRoute =
 const DashboardPatientsIndexRoute = DashboardPatientsIndexRouteImport.update({
   id: '/patients/',
   path: '/patients/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardLabIndexRoute = DashboardLabIndexRouteImport.update({
+  id: '/lab/',
+  path: '/lab/',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardInventoryIndexRoute = DashboardInventoryIndexRouteImport.update({
@@ -324,6 +333,21 @@ const DashboardPatientsIdRoute = DashboardPatientsIdRouteImport.update({
   path: '/patients/$id',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardLabTestsRoute = DashboardLabTestsRouteImport.update({
+  id: '/lab/tests',
+  path: '/lab/tests',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardLabCreateRoute = DashboardLabCreateRouteImport.update({
+  id: '/lab/create',
+  path: '/lab/create',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardLabIdRoute = DashboardLabIdRouteImport.update({
+  id: '/lab/$id',
+  path: '/lab/$id',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardInventoryTransactionsRoute =
   DashboardInventoryTransactionsRouteImport.update({
     id: '/inventory/transactions',
@@ -465,6 +489,9 @@ export interface FileRoutesByFullPath {
   '/dashboard/inventory/expiring': typeof DashboardInventoryExpiringRoute
   '/dashboard/inventory/medicines': typeof DashboardInventoryMedicinesRoute
   '/dashboard/inventory/transactions': typeof DashboardInventoryTransactionsRoute
+  '/dashboard/lab/$id': typeof DashboardLabIdRoute
+  '/dashboard/lab/create': typeof DashboardLabCreateRoute
+  '/dashboard/lab/tests': typeof DashboardLabTestsRoute
   '/dashboard/patients/$id': typeof DashboardPatientsIdRoute
   '/dashboard/patients/opd-queue': typeof DashboardPatientsOpdQueueRoute
   '/dashboard/patients/register': typeof DashboardPatientsRegisterRoute
@@ -494,6 +521,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/dispensing': typeof DashboardDispensingIndexRoute
   '/dashboard/doctors': typeof DashboardDoctorsIndexRoute
   '/dashboard/inventory': typeof DashboardInventoryIndexRoute
+  '/dashboard/lab': typeof DashboardLabIndexRoute
   '/dashboard/patients': typeof DashboardPatientsIndexRoute
   '/dashboard/prescriptions': typeof DashboardPrescriptionsIndexRoute
   '/dashboard/reports': typeof DashboardReportsIndexRoute
@@ -529,6 +557,9 @@ export interface FileRoutesByTo {
   '/dashboard/inventory/expiring': typeof DashboardInventoryExpiringRoute
   '/dashboard/inventory/medicines': typeof DashboardInventoryMedicinesRoute
   '/dashboard/inventory/transactions': typeof DashboardInventoryTransactionsRoute
+  '/dashboard/lab/$id': typeof DashboardLabIdRoute
+  '/dashboard/lab/create': typeof DashboardLabCreateRoute
+  '/dashboard/lab/tests': typeof DashboardLabTestsRoute
   '/dashboard/patients/$id': typeof DashboardPatientsIdRoute
   '/dashboard/patients/opd-queue': typeof DashboardPatientsOpdQueueRoute
   '/dashboard/patients/register': typeof DashboardPatientsRegisterRoute
@@ -558,6 +589,7 @@ export interface FileRoutesByTo {
   '/dashboard/dispensing': typeof DashboardDispensingIndexRoute
   '/dashboard/doctors': typeof DashboardDoctorsIndexRoute
   '/dashboard/inventory': typeof DashboardInventoryIndexRoute
+  '/dashboard/lab': typeof DashboardLabIndexRoute
   '/dashboard/patients': typeof DashboardPatientsIndexRoute
   '/dashboard/prescriptions': typeof DashboardPrescriptionsIndexRoute
   '/dashboard/reports': typeof DashboardReportsIndexRoute
@@ -598,6 +630,9 @@ export interface FileRoutesById {
   '/dashboard/inventory/expiring': typeof DashboardInventoryExpiringRoute
   '/dashboard/inventory/medicines': typeof DashboardInventoryMedicinesRoute
   '/dashboard/inventory/transactions': typeof DashboardInventoryTransactionsRoute
+  '/dashboard/lab/$id': typeof DashboardLabIdRoute
+  '/dashboard/lab/create': typeof DashboardLabCreateRoute
+  '/dashboard/lab/tests': typeof DashboardLabTestsRoute
   '/dashboard/patients/$id': typeof DashboardPatientsIdRoute
   '/dashboard/patients/opd-queue': typeof DashboardPatientsOpdQueueRoute
   '/dashboard/patients/register': typeof DashboardPatientsRegisterRoute
@@ -627,6 +662,7 @@ export interface FileRoutesById {
   '/dashboard/dispensing/': typeof DashboardDispensingIndexRoute
   '/dashboard/doctors/': typeof DashboardDoctorsIndexRoute
   '/dashboard/inventory/': typeof DashboardInventoryIndexRoute
+  '/dashboard/lab/': typeof DashboardLabIndexRoute
   '/dashboard/patients/': typeof DashboardPatientsIndexRoute
   '/dashboard/prescriptions/': typeof DashboardPrescriptionsIndexRoute
   '/dashboard/reports/': typeof DashboardReportsIndexRoute
@@ -668,6 +704,9 @@ export interface FileRouteTypes {
     | '/dashboard/inventory/expiring'
     | '/dashboard/inventory/medicines'
     | '/dashboard/inventory/transactions'
+    | '/dashboard/lab/$id'
+    | '/dashboard/lab/create'
+    | '/dashboard/lab/tests'
     | '/dashboard/patients/$id'
     | '/dashboard/patients/opd-queue'
     | '/dashboard/patients/register'
@@ -697,6 +736,7 @@ export interface FileRouteTypes {
     | '/dashboard/dispensing'
     | '/dashboard/doctors'
     | '/dashboard/inventory'
+    | '/dashboard/lab'
     | '/dashboard/patients'
     | '/dashboard/prescriptions'
     | '/dashboard/reports'
@@ -732,6 +772,9 @@ export interface FileRouteTypes {
     | '/dashboard/inventory/expiring'
     | '/dashboard/inventory/medicines'
     | '/dashboard/inventory/transactions'
+    | '/dashboard/lab/$id'
+    | '/dashboard/lab/create'
+    | '/dashboard/lab/tests'
     | '/dashboard/patients/$id'
     | '/dashboard/patients/opd-queue'
     | '/dashboard/patients/register'
@@ -761,6 +804,7 @@ export interface FileRouteTypes {
     | '/dashboard/dispensing'
     | '/dashboard/doctors'
     | '/dashboard/inventory'
+    | '/dashboard/lab'
     | '/dashboard/patients'
     | '/dashboard/prescriptions'
     | '/dashboard/reports'
@@ -800,6 +844,9 @@ export interface FileRouteTypes {
     | '/dashboard/inventory/expiring'
     | '/dashboard/inventory/medicines'
     | '/dashboard/inventory/transactions'
+    | '/dashboard/lab/$id'
+    | '/dashboard/lab/create'
+    | '/dashboard/lab/tests'
     | '/dashboard/patients/$id'
     | '/dashboard/patients/opd-queue'
     | '/dashboard/patients/register'
@@ -829,6 +876,7 @@ export interface FileRouteTypes {
     | '/dashboard/dispensing/'
     | '/dashboard/doctors/'
     | '/dashboard/inventory/'
+    | '/dashboard/lab/'
     | '/dashboard/patients/'
     | '/dashboard/prescriptions/'
     | '/dashboard/reports/'
@@ -973,6 +1021,13 @@ declare module '@tanstack/react-router' {
       path: '/patients'
       fullPath: '/dashboard/patients'
       preLoaderRoute: typeof DashboardPatientsIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/lab/': {
+      id: '/dashboard/lab/'
+      path: '/lab'
+      fullPath: '/dashboard/lab'
+      preLoaderRoute: typeof DashboardLabIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/dashboard/inventory/': {
@@ -1176,6 +1231,27 @@ declare module '@tanstack/react-router' {
       path: '/patients/$id'
       fullPath: '/dashboard/patients/$id'
       preLoaderRoute: typeof DashboardPatientsIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/lab/tests': {
+      id: '/dashboard/lab/tests'
+      path: '/lab/tests'
+      fullPath: '/dashboard/lab/tests'
+      preLoaderRoute: typeof DashboardLabTestsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/lab/create': {
+      id: '/dashboard/lab/create'
+      path: '/lab/create'
+      fullPath: '/dashboard/lab/create'
+      preLoaderRoute: typeof DashboardLabCreateRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/lab/$id': {
+      id: '/dashboard/lab/$id'
+      path: '/lab/$id'
+      fullPath: '/dashboard/lab/$id'
+      preLoaderRoute: typeof DashboardLabIdRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/dashboard/inventory/transactions': {
@@ -1396,6 +1472,9 @@ interface DashboardRouteChildren {
   DashboardInventoryExpiringRoute: typeof DashboardInventoryExpiringRoute
   DashboardInventoryMedicinesRoute: typeof DashboardInventoryMedicinesRoute
   DashboardInventoryTransactionsRoute: typeof DashboardInventoryTransactionsRoute
+  DashboardLabIdRoute: typeof DashboardLabIdRoute
+  DashboardLabCreateRoute: typeof DashboardLabCreateRoute
+  DashboardLabTestsRoute: typeof DashboardLabTestsRoute
   DashboardPatientsIdRoute: typeof DashboardPatientsIdRoute
   DashboardPatientsOpdQueueRoute: typeof DashboardPatientsOpdQueueRoute
   DashboardPatientsRegisterRoute: typeof DashboardPatientsRegisterRoute
@@ -1417,6 +1496,7 @@ interface DashboardRouteChildren {
   DashboardDispensingIndexRoute: typeof DashboardDispensingIndexRoute
   DashboardDoctorsIndexRoute: typeof DashboardDoctorsIndexRoute
   DashboardInventoryIndexRoute: typeof DashboardInventoryIndexRoute
+  DashboardLabIndexRoute: typeof DashboardLabIndexRoute
   DashboardPatientsIndexRoute: typeof DashboardPatientsIndexRoute
   DashboardPrescriptionsIndexRoute: typeof DashboardPrescriptionsIndexRoute
   DashboardReportsIndexRoute: typeof DashboardReportsIndexRoute
@@ -1443,6 +1523,9 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardInventoryExpiringRoute: DashboardInventoryExpiringRoute,
   DashboardInventoryMedicinesRoute: DashboardInventoryMedicinesRoute,
   DashboardInventoryTransactionsRoute: DashboardInventoryTransactionsRoute,
+  DashboardLabIdRoute: DashboardLabIdRoute,
+  DashboardLabCreateRoute: DashboardLabCreateRoute,
+  DashboardLabTestsRoute: DashboardLabTestsRoute,
   DashboardPatientsIdRoute: DashboardPatientsIdRoute,
   DashboardPatientsOpdQueueRoute: DashboardPatientsOpdQueueRoute,
   DashboardPatientsRegisterRoute: DashboardPatientsRegisterRoute,
@@ -1464,6 +1547,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardDispensingIndexRoute: DashboardDispensingIndexRoute,
   DashboardDoctorsIndexRoute: DashboardDoctorsIndexRoute,
   DashboardInventoryIndexRoute: DashboardInventoryIndexRoute,
+  DashboardLabIndexRoute: DashboardLabIndexRoute,
   DashboardPatientsIndexRoute: DashboardPatientsIndexRoute,
   DashboardPrescriptionsIndexRoute: DashboardPrescriptionsIndexRoute,
   DashboardReportsIndexRoute: DashboardReportsIndexRoute,

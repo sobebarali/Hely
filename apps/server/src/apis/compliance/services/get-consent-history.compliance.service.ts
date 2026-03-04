@@ -4,7 +4,7 @@
  * Business logic for retrieving consent history
  */
 
-import { createServiceLogger, logSuccess } from "@/lib/logger";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
 import { findConsentHistory } from "../repositories/get-consent-history.compliance.repository";
 import type { GetConsentHistoryOutput } from "../validations/get-consent-history.compliance.validation";
 

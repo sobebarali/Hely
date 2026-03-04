@@ -5,7 +5,10 @@
  */
 
 import { AuditLog } from "@hms/db";
-import { createRepositoryLogger, logDatabaseOperation } from "@/lib/logger";
+import {
+	createRepositoryLogger,
+	logDatabaseOperation,
+} from "../../../lib/logger";
 import type { AuditLogDocument } from "./shared.audit.repository";
 
 const logger = createRepositoryLogger("getAuditLog");

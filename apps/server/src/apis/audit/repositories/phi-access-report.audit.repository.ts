@@ -5,7 +5,10 @@
  */
 
 import { AuditLog } from "@hms/db";
-import { createRepositoryLogger, logDatabaseOperation } from "@/lib/logger";
+import {
+	createRepositoryLogger,
+	logDatabaseOperation,
+} from "../../../lib/logger";
 
 const logger = createRepositoryLogger("phiAccessReport");
 

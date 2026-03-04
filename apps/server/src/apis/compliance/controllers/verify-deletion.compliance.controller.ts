@@ -7,11 +7,15 @@
  */
 
 import type { Response } from "express";
-import { createControllerLogger, logInput, logSuccess } from "@/lib/logger";
+import {
+	createControllerLogger,
+	logInput,
+	logSuccess,
+} from "../../../lib/logger";
 import {
 	type AuthenticatedRequest,
 	authenticatedHandler,
-} from "@/utils/async-handler";
+} from "../../../utils/async-handler";
 import { verifyDeletionService } from "../services/verify-deletion.compliance.service";
 import type { VerifyDeletionInput } from "../validations/verify-deletion.compliance.validation";
 

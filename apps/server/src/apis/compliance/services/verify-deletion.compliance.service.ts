@@ -5,9 +5,13 @@
  */
 
 import { DataSubjectRequestStatus } from "@hms/db";
-import { BadRequestError, ForbiddenError, NotFoundError } from "@/errors";
-import { createServiceLogger, logSuccess } from "@/lib/logger";
-import { compareToken } from "@/utils/crypto";
+import {
+	BadRequestError,
+	ForbiddenError,
+	NotFoundError,
+} from "../../../errors";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
+import { compareToken } from "../../../utils/crypto";
 import {
 	ComplianceErrorCodes,
 	ComplianceMessages,

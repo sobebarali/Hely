@@ -4,7 +4,7 @@
  * Business logic for recording/updating consent
  */
 
-import { createServiceLogger, logSuccess } from "@/lib/logger";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
 import { ComplianceMessages } from "../compliance.constants";
 import { upsertConsent } from "../repositories/record-consent.compliance.repository";
 import type {

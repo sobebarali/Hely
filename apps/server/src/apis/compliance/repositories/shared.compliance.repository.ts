@@ -10,7 +10,7 @@ import {
 	DataSubjectRequest,
 	type DataSubjectRequestTypeValue,
 } from "@hms/db";
-import { createRepositoryLogger } from "@/lib/logger";
+import { createRepositoryLogger } from "../../../lib/logger";
 
 const logger = createRepositoryLogger("sharedCompliance");
 

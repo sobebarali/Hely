@@ -7,7 +7,11 @@
  */
 
 import type { Request, Response } from "express";
-import { createControllerLogger, logError, logSuccess } from "@/lib/logger";
+import {
+	createControllerLogger,
+	logError,
+	logSuccess,
+} from "../../../lib/logger";
 import { generatePhiAccessReport } from "../services/phi-access-report.audit.service";
 import type { PhiAccessReportInput } from "../validations/phi-access-report.audit.validation";
 

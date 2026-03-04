@@ -4,8 +4,8 @@
  * Business logic for retrieving a specific audit log entry
  */
 
-import { NotFoundError } from "@/errors";
-import { createServiceLogger, logSuccess } from "@/lib/logger";
+import { NotFoundError } from "../../../errors";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
 import { findAuditLogById } from "../repositories/get-log.audit.repository";
 import type { GetLogOutput } from "../validations/get-log.audit.validation";
 

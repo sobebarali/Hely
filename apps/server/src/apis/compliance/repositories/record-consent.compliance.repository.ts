@@ -6,7 +6,10 @@
 
 import { Consent, ConsentHistory, ConsentHistoryAction } from "@hms/db";
 import { v4 as uuidv4 } from "uuid";
-import { createRepositoryLogger, logDatabaseOperation } from "@/lib/logger";
+import {
+	createRepositoryLogger,
+	logDatabaseOperation,
+} from "../../../lib/logger";
 import type { RecordConsentInput } from "../validations/record-consent.compliance.validation";
 import type { ConsentDocument } from "./shared.compliance.repository";
 

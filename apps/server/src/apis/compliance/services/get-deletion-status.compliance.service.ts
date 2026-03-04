@@ -5,8 +5,8 @@
  */
 
 import { DataSubjectRequestStatus } from "@hms/db";
-import { ForbiddenError, NotFoundError } from "@/errors";
-import { createServiceLogger } from "@/lib/logger";
+import { ForbiddenError, NotFoundError } from "../../../errors";
+import { createServiceLogger } from "../../../lib/logger";
 import { ComplianceErrorCodes } from "../compliance.constants";
 import { findDataSubjectRequestById } from "../repositories/shared.compliance.repository";
 import type { GetDeletionStatusOutput } from "../validations/get-deletion-status.compliance.validation";

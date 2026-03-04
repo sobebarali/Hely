@@ -5,8 +5,12 @@
  */
 
 import { DataSubjectRequestStatus } from "@hms/db";
-import { BadRequestError, ForbiddenError, NotFoundError } from "@/errors";
-import { createServiceLogger, logSuccess } from "@/lib/logger";
+import {
+	BadRequestError,
+	ForbiddenError,
+	NotFoundError,
+} from "../../../errors";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
 import {
 	ComplianceErrorCodes,
 	ComplianceMessages,

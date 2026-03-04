@@ -7,11 +7,15 @@
  */
 
 import type { Response } from "express";
-import { createControllerLogger, logInput, logSuccess } from "@/lib/logger";
+import {
+	createControllerLogger,
+	logInput,
+	logSuccess,
+} from "../../../lib/logger";
 import {
 	type AuthenticatedRequest,
 	authenticatedHandler,
-} from "@/utils/async-handler";
+} from "../../../utils/async-handler";
 import { recordConsentService } from "../services/record-consent.compliance.service";
 import type { RecordConsentInput } from "../validations/record-consent.compliance.validation";
 

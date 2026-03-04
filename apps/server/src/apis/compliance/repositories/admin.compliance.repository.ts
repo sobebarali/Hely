@@ -5,7 +5,10 @@
  */
 
 import { DataSubjectRequest, DataSubjectRequestType } from "@hms/db";
-import { createRepositoryLogger, logDatabaseOperation } from "@/lib/logger";
+import {
+	createRepositoryLogger,
+	logDatabaseOperation,
+} from "../../../lib/logger";
 import type { DataSubjectRequestDocument } from "./shared.compliance.repository";
 
 const logger = createRepositoryLogger("adminCompliance");

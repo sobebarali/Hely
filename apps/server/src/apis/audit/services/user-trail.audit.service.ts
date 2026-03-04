@@ -4,7 +4,7 @@
  * Business logic for retrieving a user's audit trail
  */
 
-import { createServiceLogger, logSuccess } from "@/lib/logger";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
 import { AUDIT_DEFAULT_LIMIT, AUDIT_DEFAULT_PAGE } from "../audit.constants";
 import { findAuditLogsByUser } from "../repositories/shared.audit.repository";
 import type {

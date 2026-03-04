@@ -10,8 +10,11 @@ import {
 	DataSubjectRequestType,
 } from "@hms/db";
 import { v4 as uuidv4 } from "uuid";
-import { createRepositoryLogger, logDatabaseOperation } from "@/lib/logger";
-import { generateSecureToken, hashToken } from "@/utils/crypto";
+import {
+	createRepositoryLogger,
+	logDatabaseOperation,
+} from "../../../lib/logger";
+import { generateSecureToken, hashToken } from "../../../utils/crypto";
 import {
 	DELETION_GRACE_PERIOD_DAYS,
 	VERIFICATION_TOKEN_EXPIRY_HOURS,

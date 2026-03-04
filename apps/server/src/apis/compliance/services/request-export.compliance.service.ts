@@ -6,10 +6,10 @@
  */
 
 import { DataExportFormat, DataSubjectRequestType } from "@hms/db";
-import { BadRequestError, ConflictError } from "@/errors";
-import { createServiceLogger, logSuccess } from "@/lib/logger";
-import { enqueueComplianceExport } from "@/lib/queue";
-import { isR2Configured } from "@/lib/storage";
+import { BadRequestError, ConflictError } from "../../../errors";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
+import { enqueueComplianceExport } from "../../../lib/queue";
+import { isR2Configured } from "../../../lib/storage";
 import {
 	ComplianceErrorCodes,
 	ComplianceMessages,

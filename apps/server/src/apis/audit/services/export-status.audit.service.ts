@@ -4,8 +4,8 @@
  * Business logic for checking export job status
  */
 
-import { NotFoundError } from "@/errors";
-import { createServiceLogger, logSuccess } from "@/lib/logger";
+import { NotFoundError } from "../../../errors";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
 import { findExportById } from "../repositories/export.audit.repository";
 import type { ExportStatusOutput } from "../validations/export-status.audit.validation";
 

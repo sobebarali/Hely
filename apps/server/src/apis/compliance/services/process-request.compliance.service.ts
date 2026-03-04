@@ -5,8 +5,8 @@
  */
 
 import { DataSubjectRequestStatus } from "@hms/db";
-import { BadRequestError, NotFoundError } from "@/errors";
-import { createServiceLogger, logSuccess } from "@/lib/logger";
+import { BadRequestError, NotFoundError } from "../../../errors";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
 import { ComplianceErrorCodes } from "../compliance.constants";
 import { updateRequestWithAdminAction } from "../repositories/admin.compliance.repository";
 import { findDataSubjectRequestById } from "../repositories/shared.compliance.repository";

@@ -4,8 +4,8 @@
  * Business logic for requesting data deletion
  */
 
-import { BadRequestError, ConflictError } from "@/errors";
-import { createServiceLogger, logSuccess } from "@/lib/logger";
+import { BadRequestError, ConflictError } from "../../../errors";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
 import {
 	ComplianceErrorCodes,
 	ComplianceMessages,

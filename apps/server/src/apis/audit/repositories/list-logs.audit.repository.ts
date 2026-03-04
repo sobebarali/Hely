@@ -5,7 +5,10 @@
  */
 
 import { AuditLog } from "@hms/db";
-import { createRepositoryLogger, logDatabaseOperation } from "@/lib/logger";
+import {
+	createRepositoryLogger,
+	logDatabaseOperation,
+} from "../../../lib/logger";
 import type { ListLogsInput } from "../validations/list-logs.audit.validation";
 import type { AuditLogDocument } from "./shared.audit.repository";
 

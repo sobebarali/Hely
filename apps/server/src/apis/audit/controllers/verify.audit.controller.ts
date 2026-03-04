@@ -7,7 +7,11 @@
  */
 
 import type { Request, Response } from "express";
-import { createControllerLogger, logError, logSuccess } from "@/lib/logger";
+import {
+	createControllerLogger,
+	logError,
+	logSuccess,
+} from "../../../lib/logger";
 import { verifyIntegrity } from "../services/verify.audit.service";
 import type { VerifyInput } from "../validations/verify.audit.validation";
 

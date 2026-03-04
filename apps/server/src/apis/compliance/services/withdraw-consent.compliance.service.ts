@@ -4,8 +4,8 @@
  * Business logic for withdrawing consent
  */
 
-import { BadRequestError, NotFoundError } from "@/errors";
-import { createServiceLogger, logSuccess } from "@/lib/logger";
+import { BadRequestError, NotFoundError } from "../../../errors";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
 import {
 	ComplianceErrorCodes,
 	ComplianceMessages,

@@ -4,8 +4,8 @@
  * Business logic for retrieving a single security event
  */
 
-import { NotFoundError } from "@/errors";
-import { logger } from "@/lib/logger";
+import { NotFoundError } from "../../../errors";
+import { logger } from "../../../lib/logger";
 import { findSecurityEventById } from "../repositories/get-event.security.repository";
 import type { GetEventOutput } from "../validations/get-event.security.validation";
 

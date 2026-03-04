@@ -13,8 +13,8 @@ import {
 	User,
 	Vitals,
 } from "@hms/db";
-import { NotFoundError } from "@/errors";
-import { createServiceLogger } from "@/lib/logger";
+import { NotFoundError } from "../../../errors";
+import { createServiceLogger } from "../../../lib/logger";
 
 const logger = createServiceLogger("dataCollector");
 

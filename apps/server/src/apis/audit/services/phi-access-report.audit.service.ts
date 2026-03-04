@@ -4,7 +4,7 @@
  * Business logic for generating PHI access reports
  */
 
-import { createServiceLogger, logSuccess } from "@/lib/logger";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
 import { AUDIT_DEFAULT_LIMIT, AUDIT_DEFAULT_PAGE } from "../audit.constants";
 import { findPhiAccessLogs } from "../repositories/phi-access-report.audit.repository";
 import type {

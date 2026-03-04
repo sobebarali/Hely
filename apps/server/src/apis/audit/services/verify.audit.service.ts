@@ -5,7 +5,7 @@
  */
 
 import crypto from "node:crypto";
-import { createServiceLogger, logSuccess } from "@/lib/logger";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
 import { HASH_CHAIN_GENESIS } from "../audit.constants";
 import { findAuditLogsForVerification } from "../repositories/shared.audit.repository";
 import type {

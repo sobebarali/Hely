@@ -4,10 +4,10 @@
  * Business logic for encryption key rotation and re-encryption of all encrypted data
  */
 
-import { InternalError } from "@/errors";
-import { logger } from "@/lib/logger";
-import { decrypt, encrypt, generateMasterKey } from "@/utils/encryption";
-import { emitSecurityEvent } from "@/utils/security-events";
+import { InternalError } from "../../../errors";
+import { logger } from "../../../lib/logger";
+import { decrypt, encrypt, generateMasterKey } from "../../../utils/encryption";
+import { emitSecurityEvent } from "../../../utils/security-events";
 import {
 	createKeyRotation,
 	reEncryptPatients,

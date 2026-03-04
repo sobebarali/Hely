@@ -5,7 +5,7 @@
  */
 
 import type { SecurityEventSeverity, SecurityEventType } from "@hms/db";
-import { logger } from "@/lib/logger";
+import { logger } from "../../../lib/logger";
 import { findSecurityEvents } from "../repositories/list-events.security.repository";
 import type { ListEventsOutput } from "../validations/list-events.security.validation";
 

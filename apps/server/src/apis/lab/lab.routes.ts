@@ -4,6 +4,7 @@ import { authorize } from "../../middlewares/authorize";
 import { validate } from "../../middlewares/validate";
 
 // Controllers
+import { addTestToCatalogController } from "./controllers/add-test.test-catalog.controller";
 import { collectLabOrderController } from "./controllers/collect.lab-orders.controller";
 import { createLabOrderController } from "./controllers/create.lab-orders.controller";
 import { enterLabResultsController } from "./controllers/enter-results.lab-orders.controller";
@@ -13,6 +14,7 @@ import { reportLabOrderController } from "./controllers/report.lab-orders.contro
 import { verifyLabOrderController } from "./controllers/verify.lab-orders.controller";
 
 // Validations
+import { addTestToCatalogSchema } from "./validations/add-test.test-catalog.validation";
 import { collectLabOrderSchema } from "./validations/collect.lab-orders.validation";
 import { createLabOrderSchema } from "./validations/create.lab-orders.validation";
 import { enterLabResultSchema } from "./validations/enter-results.lab-orders.validation";
@@ -32,6 +34,14 @@ router.get(
 	authorize("LAB:READ"),
 	validate(listTestCatalogSchema),
 	listTestCatalogController,
+);
+
+// POST /api/lab/tests - Add test to catalog
+router.post(
+	"/tests",
+	authorize("LAB:MANAGE"),
+	validate(addTestToCatalogSchema),
+	addTestToCatalogController,
 );
 
 // GET /api/lab/orders - List lab orders

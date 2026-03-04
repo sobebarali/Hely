@@ -230,6 +230,39 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		],
 	},
 
+	// Lab & Diagnostics
+	{
+		id: "lab",
+		label: "Lab & Diagnostics",
+		icon: "biotech",
+		permission: "LAB:READ",
+		order: 9,
+		visible: true,
+		children: [
+			{
+				id: "lab-orders",
+				label: "Lab Orders",
+				path: "/dashboard/lab",
+				permission: "LAB:READ",
+				order: 1,
+			},
+			{
+				id: "lab-create-order",
+				label: "Create Order",
+				path: "/dashboard/lab/create",
+				permission: "LAB:CREATE",
+				order: 2,
+			},
+			{
+				id: "lab-test-catalog",
+				label: "Test Catalog",
+				path: "/dashboard/lab/tests",
+				permission: "LAB:READ",
+				order: 3,
+			},
+		],
+	},
+
 	// Inventory - Pharmacists
 	{
 		id: "inventory",
@@ -237,7 +270,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		icon: "inventory",
 		path: "/dashboard/inventory",
 		permission: "INVENTORY:READ",
-		order: 9,
+		order: 10,
 		visible: true,
 		children: [
 			{
@@ -278,7 +311,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		icon: "queue",
 		path: "/dashboard/patients/opd-queue",
 		permission: "QUEUE:MANAGE",
-		order: 10,
+		order: 11,
 		visible: true,
 	},
 
@@ -288,7 +321,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		label: "Departments",
 		icon: "business",
 		permission: "DEPARTMENT:READ",
-		order: 11,
+		order: 12,
 		visible: true,
 		children: [
 			{
@@ -315,7 +348,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		icon: "assignment",
 		path: "/dashboard/reports",
 		permission: "REPORT:READ",
-		order: 12,
+		order: 13,
 		visible: true,
 		children: [
 			{
@@ -349,7 +382,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		icon: "settings",
 		path: "/dashboard/settings",
 		permission: "SETTINGS:MANAGE",
-		order: 13,
+		order: 14,
 		visible: true,
 		children: [
 			{
@@ -411,7 +444,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		icon: "shield_check",
 		path: "/dashboard/admin/compliance",
 		permission: "COMPLIANCE:MANAGE",
-		order: 14,
+		order: 15,
 		visible: true,
 	},
 
@@ -421,7 +454,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		label: "Security Admin",
 		icon: "security",
 		permission: "SECURITY:READ",
-		order: 15,
+		order: 16,
 		visible: true,
 		children: [
 			{

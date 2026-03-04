@@ -4,7 +4,7 @@
  * Business logic for listing all data subject requests (admin)
  */
 
-import { createServiceLogger } from "@/lib/logger";
+import { createServiceLogger } from "../../../lib/logger";
 import { listDataSubjectRequests } from "../repositories/admin.compliance.repository";
 import type {
 	ListRequestsInput,

@@ -5,8 +5,8 @@
  */
 
 import { DataExportFormat, DataSubjectRequestStatus } from "@hms/db";
-import { ForbiddenError, GoneError, NotFoundError } from "@/errors";
-import { createServiceLogger, logSuccess } from "@/lib/logger";
+import { ForbiddenError, GoneError, NotFoundError } from "../../../errors";
+import { createServiceLogger, logSuccess } from "../../../lib/logger";
 import { ComplianceErrorCodes } from "../compliance.constants";
 import { findDataSubjectRequestById } from "../repositories/shared.compliance.repository";
 import type { GetExportStatusOutput } from "../validations/get-export-status.compliance.validation";
