@@ -1,10 +1,4 @@
-import {
-	Counter,
-	LabOrder,
-	LabOrderStatus,
-	Patient,
-	TestCatalog,
-} from "@hms/db";
+import { Counter, LabOrder, Patient, TestCatalog } from "@hms/db";
 import request from "supertest";
 import { v4 as uuidv4 } from "uuid";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -14,18 +8,17 @@ import {
 	createAuthTestContext,
 } from "../../helpers/auth-test-context";
 
-describe("POST /api/lab/orders/:orderId/collect - Collects sample successfully", () => {
+describe("POST /api/lab/orders/:orderId/collect - Returns 400 for invalid staff", () => {
 	let context: AuthTestContext;
 	let accessToken: string;
 	let patientId: string;
 	let testCatalogId: string;
 	let createdLabOrderId: string;
-	let invalidStatusOrderId: string;
 
 	beforeAll(async () => {
 		context = await createAuthTestContext({
 			roleName: "DOCTOR",
-			rolePermissions: ["LAB:CREATE", "LAB:READ", "LAB:COLLECT"],
+			rolePermissions: ["LAB:CREATE", "LAB:COLLECT"],
 		});
 		const tokens = await context.issuePasswordTokens();
 		accessToken = tokens.accessToken;
@@ -65,7 +58,6 @@ describe("POST /api/lab/orders/:orderId/collect - Collects sample successfully",
 		});
 		testCatalogId = String(testCatalog._id);
 
-		// Create a lab order to collect sample for
 		const createResponse = await request(app)
 			.post("/api/lab/orders")
 			.set("Authorization", `Bearer ${accessToken}`)
@@ -77,31 +69,11 @@ describe("POST /api/lab/orders/:orderId/collect - Collects sample successfully",
 			});
 
 		createdLabOrderId = createResponse.body.id;
-
-		// Create a second lab order and set it to SAMPLE_COLLECTED for the invalid-status test
-		const invalidStatusResponse = await request(app)
-			.post("/api/lab/orders")
-			.set("Authorization", `Bearer ${accessToken}`)
-			.send({
-				patientId,
-				doctorId: context.staffId,
-				tests: [{ testId: testCatalogId, priority: "ROUTINE" }],
-				diagnosis: "Invalid status test",
-			});
-
-		invalidStatusOrderId = invalidStatusResponse.body.id;
-		await LabOrder.updateOne(
-			{ _id: invalidStatusOrderId },
-			{ $set: { status: LabOrderStatus.SAMPLE_COLLECTED } },
-		);
 	}, 30000);
 
 	afterAll(async () => {
 		if (createdLabOrderId) {
 			await LabOrder.deleteOne({ _id: createdLabOrderId });
-		}
-		if (invalidStatusOrderId) {
-			await LabOrder.deleteOne({ _id: invalidStatusOrderId });
 		}
 		await Counter.deleteOne({ tenantId: context.hospitalId, type: "lab" });
 		if (testCatalogId) {
@@ -113,11 +85,11 @@ describe("POST /api/lab/orders/:orderId/collect - Collects sample successfully",
 		await context.cleanup();
 	});
 
-	it("collects sample successfully", async () => {
+	it("returns 400 INVALID_STAFF when collectedBy staff does not exist", async () => {
+		const fakeStaffId = uuidv4();
 		const payload = {
 			sampleType: "BLOOD",
-			collectedBy: context.staffId,
-			notes: "Fasting sample",
+			collectedBy: fakeStaffId,
 		};
 
 		const response = await request(app)
@@ -125,45 +97,7 @@ describe("POST /api/lab/orders/:orderId/collect - Collects sample successfully",
 			.set("Authorization", `Bearer ${accessToken}`)
 			.send(payload);
 
-		expect(response.status).toBe(200);
-		expect(response.body.id).toBe(createdLabOrderId);
-		expect(response.body.status).toBe("SAMPLE_COLLECTED");
-		expect(response.body.sampleDetails).toBeDefined();
-		expect(response.body.sampleDetails.sampleType).toBe("BLOOD");
-		expect(response.body.sampleDetails.collectedBy.id).toBe(context.staffId);
-		expect(response.body.sampleDetails.sampleId).toBeDefined();
-		expect(response.body.sampleDetails.collectedAt).toBeDefined();
-		expect(response.body.sampleDetails.notes).toBe("Fasting sample");
-	});
-
-	it("returns 400 INVALID_STATUS when order is not in ORDERED status", async () => {
-		const payload = {
-			sampleType: "BLOOD",
-			collectedBy: context.staffId,
-		};
-
-		const response = await request(app)
-			.post(`/api/lab/orders/${invalidStatusOrderId}/collect`)
-			.set("Authorization", `Bearer ${accessToken}`)
-			.send(payload);
-
 		expect(response.status).toBe(400);
-		expect(response.body.code).toBe("INVALID_STATUS");
-	});
-
-	it("returns 404 for non-existent order", async () => {
-		const fakeOrderId = uuidv4();
-		const payload = {
-			sampleType: "BLOOD",
-			collectedBy: context.staffId,
-		};
-
-		const response = await request(app)
-			.post(`/api/lab/orders/${fakeOrderId}/collect`)
-			.set("Authorization", `Bearer ${accessToken}`)
-			.send(payload);
-
-		expect(response.status).toBe(404);
-		expect(response.body.code).toBe("NOT_FOUND");
+		expect(response.body.code).toBe("INVALID_STAFF");
 	});
 });

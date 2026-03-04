@@ -1,4 +1,4 @@
-import { Counter, TestCatalog } from "@hms/db";
+import { Counter, LabOrder, TestCatalog } from "@hms/db";
 import {
 	createRepositoryLogger,
 	logDatabaseOperation,
@@ -39,6 +39,39 @@ export async function generateLabOrderId({
 		return orderId;
 	} catch (error) {
 		logError(logger, error, "Failed to generate lab order ID");
+		throw error;
+	}
+}
+
+/**
+ * Find a lab order by ID within a tenant
+ */
+export async function findLabOrderById({
+	tenantId,
+	orderId,
+}: {
+	tenantId: string;
+	orderId: string;
+}) {
+	try {
+		logger.debug({ tenantId, orderId }, "Finding lab order by ID");
+
+		const labOrder = await LabOrder.findOne({
+			_id: orderId,
+			tenantId,
+		}).lean();
+
+		logDatabaseOperation(
+			logger,
+			"findOne",
+			"labOrder",
+			{ tenantId, orderId },
+			labOrder ? { _id: labOrder._id, found: true } : { found: false },
+		);
+
+		return labOrder;
+	} catch (error) {
+		logError(logger, error, "Failed to find lab order by ID");
 		throw error;
 	}
 }
