@@ -42,7 +42,6 @@ export async function updateLabOrderResults({
 	try {
 		logger.debug({ tenantId, orderId, status }, "Updating lab order results");
 
-		// Build the $set for each test's resultDetails
 		const updateSet: Record<string, unknown> = {
 			status,
 			resultEnteredBy,
@@ -53,50 +52,30 @@ export async function updateLabOrderResults({
 			updateSet.resultNotes = resultNotes;
 		}
 
-		// First, do the atomic update for status and top-level fields
+		// Set each test's resultDetails using arrayFilters
+		const arrayFilters: Record<string, string>[] = [];
+		for (let i = 0; i < results.length; i++) {
+			const result = results[i];
+			updateSet[`tests.$[elem${i}].resultDetails`] = result.resultDetails;
+			arrayFilters.push({ [`elem${i}.testId`]: result.testId });
+		}
+
+		// Single atomic operation: status guard + top-level fields + all test results
 		const labOrder = await LabOrder.findOneAndUpdate(
 			{ _id: orderId, tenantId, status: expectedStatus },
 			{ $set: updateSet },
-			{ new: true },
+			{ new: true, arrayFilters },
 		).lean();
-
-		if (!labOrder) {
-			return null;
-		}
-
-		// Now update each test's resultDetails
-		const bulkOps = results.map((result) => ({
-			updateOne: {
-				filter: {
-					_id: orderId,
-					tenantId,
-					"tests.testId": result.testId,
-				},
-				update: {
-					$set: {
-						"tests.$.resultDetails": result.resultDetails,
-					},
-				},
-			},
-		}));
-
-		await LabOrder.bulkWrite(bulkOps);
-
-		// Fetch the updated order
-		const updatedOrder = await LabOrder.findOne({
-			_id: orderId,
-			tenantId,
-		}).lean();
 
 		logDatabaseOperation(
 			logger,
 			"findOneAndUpdate",
 			"labOrder",
 			{ tenantId, orderId },
-			updatedOrder ? { _id: updatedOrder._id, status } : { found: false },
+			labOrder ? { _id: labOrder._id, status } : { found: false },
 		);
 
-		return updatedOrder;
+		return labOrder;
 	} catch (error) {
 		logError(logger, error, "Failed to update lab order results");
 		throw error;

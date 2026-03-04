@@ -43,6 +43,7 @@ export const Actions = {
 	EXPORT: "EXPORT",
 	REPORT: "REPORT",
 	COLLECT: "COLLECT",
+	VERIFY: "VERIFY",
 } as const;
 
 // Permission type
@@ -192,6 +193,7 @@ export const Permissions = {
 	LAB_DELETE: "LAB:DELETE" as Permission,
 	LAB_MANAGE: "LAB:MANAGE" as Permission,
 	LAB_COLLECT: "LAB:COLLECT" as Permission,
+	LAB_VERIFY: "LAB:VERIFY" as Permission,
 } as const;
 
 // Pre-defined role names
