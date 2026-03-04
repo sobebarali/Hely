@@ -29,6 +29,7 @@ export const Resources = {
 	COMPLIANCE: "COMPLIANCE",
 	BILLING: "BILLING",
 	SUBSCRIPTION: "SUBSCRIPTION",
+	LAB: "LAB",
 } as const;
 
 // Actions
@@ -182,6 +183,13 @@ export const Permissions = {
 	// Subscription permissions
 	SUBSCRIPTION_READ: "SUBSCRIPTION:READ" as Permission,
 	SUBSCRIPTION_MANAGE: "SUBSCRIPTION:MANAGE" as Permission,
+
+	// Lab permissions
+	LAB_CREATE: "LAB:CREATE" as Permission,
+	LAB_READ: "LAB:READ" as Permission,
+	LAB_UPDATE: "LAB:UPDATE" as Permission,
+	LAB_DELETE: "LAB:DELETE" as Permission,
+	LAB_MANAGE: "LAB:MANAGE" as Permission,
 } as const;
 
 // Pre-defined role names
@@ -233,6 +241,7 @@ export const RolePermissions: Record<RoleName, Permission[]> = {
 		Permissions.COMPLIANCE_MANAGE,
 		Permissions.BILLING_MANAGE,
 		Permissions.SUBSCRIPTION_MANAGE,
+		Permissions.LAB_MANAGE,
 	],
 
 	[RoleNames.HOSPITAL_ADMIN]: [
@@ -269,6 +278,7 @@ export const RolePermissions: Record<RoleName, Permission[]> = {
 		Permissions.BILLING_MANAGE,
 		Permissions.SUBSCRIPTION_READ,
 		Permissions.SUBSCRIPTION_MANAGE,
+		Permissions.LAB_MANAGE,
 	],
 
 	[RoleNames.DOCTOR]: [
@@ -287,6 +297,9 @@ export const RolePermissions: Record<RoleName, Permission[]> = {
 		Permissions.ADMISSION_READ,
 		Permissions.ADMISSION_UPDATE,
 		Permissions.DASHBOARD_VIEW,
+		Permissions.LAB_CREATE,
+		Permissions.LAB_READ,
+		Permissions.LAB_UPDATE,
 	],
 
 	[RoleNames.NURSE]: [

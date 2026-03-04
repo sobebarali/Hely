@@ -82,6 +82,8 @@ export {
 } from "./inventory.model";
 // Key Rotation
 export { KeyRotation } from "./key-rotation.model";
+// Lab Order
+export { LabOrder, LabOrderStatus, TestPriority } from "./lab-order.model";
 // Medicine
 export { Medicine, MedicineCategory, MedicineType } from "./medicine.model";
 // Organization/Tenant (formerly Hospital)
@@ -130,6 +132,13 @@ export {
 	SubscriptionStatus,
 	type SubscriptionStatusValue,
 } from "./subscription.model";
+// Test Catalog
+export {
+	SampleType,
+	TestCatalog,
+	TestCatalogStatus,
+	TestCategory,
+} from "./test-catalog.model";
 // Vitals
 export {
 	AlertSeverity,

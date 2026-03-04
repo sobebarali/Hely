@@ -9,6 +9,7 @@ export const CounterType = {
 	APPOINTMENT: "appointment",
 	ADMISSION: "admission",
 	EMPLOYEE: "employee",
+	LAB: "lab",
 } as const;
 
 // Main schema
