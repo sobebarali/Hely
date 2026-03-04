@@ -8,6 +8,7 @@ import { collectLabOrderController } from "./controllers/collect.lab-orders.cont
 import { createLabOrderController } from "./controllers/create.lab-orders.controller";
 import { enterLabResultsController } from "./controllers/enter-results.lab-orders.controller";
 import { listLabOrdersController } from "./controllers/list.lab-orders.controller";
+import { listTestCatalogController } from "./controllers/list-tests.lab-catalog.controller";
 import { reportLabOrderController } from "./controllers/report.lab-orders.controller";
 import { verifyLabOrderController } from "./controllers/verify.lab-orders.controller";
 
@@ -16,6 +17,7 @@ import { collectLabOrderSchema } from "./validations/collect.lab-orders.validati
 import { createLabOrderSchema } from "./validations/create.lab-orders.validation";
 import { enterLabResultSchema } from "./validations/enter-results.lab-orders.validation";
 import { listLabOrdersSchema } from "./validations/list.lab-orders.validation";
+import { listTestCatalogSchema } from "./validations/list-tests.lab-catalog.validation";
 import { reportLabOrderSchema } from "./validations/report.lab-orders.validation";
 import { verifyLabOrderSchema } from "./validations/verify.lab-orders.validation";
 
@@ -23,6 +25,14 @@ const router = Router();
 
 // All routes require authentication
 router.use(authenticate);
+
+// GET /api/lab/tests - List test catalog
+router.get(
+	"/tests",
+	authorize("LAB:READ"),
+	validate(listTestCatalogSchema),
+	listTestCatalogController,
+);
 
 // GET /api/lab/orders - List lab orders
 router.get(
