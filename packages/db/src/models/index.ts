@@ -83,7 +83,12 @@ export {
 // Key Rotation
 export { KeyRotation } from "./key-rotation.model";
 // Lab Order
-export { LabOrder, LabOrderStatus, TestPriority } from "./lab-order.model";
+export {
+	LabOrder,
+	LabOrderStatus,
+	ResultFlag,
+	TestPriority,
+} from "./lab-order.model";
 // Medicine
 export { Medicine, MedicineCategory, MedicineType } from "./medicine.model";
 // Organization/Tenant (formerly Hospital)

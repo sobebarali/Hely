@@ -17,6 +17,13 @@ export const TestPriority = {
 	STAT: "STAT",
 } as const;
 
+export const ResultFlag = {
+	NORMAL: "NORMAL",
+	LOW: "LOW",
+	HIGH: "HIGH",
+	CRITICAL: "CRITICAL",
+} as const;
+
 const labOrderTestSchema = new Schema(
 	{
 		testId: { type: String, required: true },
@@ -33,6 +40,16 @@ const labOrderTestSchema = new Schema(
 			default: LabOrderStatus.ORDERED,
 		},
 		clinicalNotes: { type: String },
+		resultDetails: {
+			value: { type: String },
+			unit: { type: String },
+			normalRange: { type: String },
+			flag: {
+				type: String,
+				enum: Object.values(ResultFlag),
+			},
+			interpretation: { type: String },
+		},
 	},
 	{ _id: false },
 );
@@ -62,6 +79,9 @@ const labOrderSchema = new Schema(
 			sampleId: { type: String },
 			notes: { type: String },
 		},
+		resultEnteredBy: { type: String, ref: "Staff" },
+		resultEnteredAt: { type: Date },
+		resultNotes: { type: String },
 		diagnosis: { type: String },
 		notes: { type: String },
 	},

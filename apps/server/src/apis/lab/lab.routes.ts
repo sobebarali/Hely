@@ -6,11 +6,13 @@ import { validate } from "../../middlewares/validate";
 // Controllers
 import { collectLabOrderController } from "./controllers/collect.lab-orders.controller";
 import { createLabOrderController } from "./controllers/create.lab-orders.controller";
+import { enterLabResultsController } from "./controllers/enter-results.lab-orders.controller";
 import { listLabOrdersController } from "./controllers/list.lab-orders.controller";
 
 // Validations
 import { collectLabOrderSchema } from "./validations/collect.lab-orders.validation";
 import { createLabOrderSchema } from "./validations/create.lab-orders.validation";
+import { enterLabResultSchema } from "./validations/enter-results.lab-orders.validation";
 import { listLabOrdersSchema } from "./validations/list.lab-orders.validation";
 
 const router = Router();
@@ -40,6 +42,14 @@ router.post(
 	authorize("LAB:COLLECT"),
 	validate(collectLabOrderSchema),
 	collectLabOrderController,
+);
+
+// POST /api/lab/orders/:orderId/results - Enter results for lab order
+router.post(
+	"/orders/:orderId/results",
+	authorize("LAB:RESULT"),
+	validate(enterLabResultSchema),
+	enterLabResultsController,
 );
 
 export default router;
