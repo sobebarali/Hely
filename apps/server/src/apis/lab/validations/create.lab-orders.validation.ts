@@ -1,6 +1,9 @@
+import { TestPriority } from "@hms/db";
 import { z } from "zod";
 
-const TestPriorityEnum = z.enum(["ROUTINE", "URGENT", "STAT"]);
+const TestPriorityEnum = z.enum(
+	Object.values(TestPriority) as [string, ...string[]],
+);
 
 export const createLabOrderSchema = z.object({
 	body: z.object({

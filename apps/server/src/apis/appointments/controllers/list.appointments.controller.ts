@@ -19,9 +19,13 @@ export const listAppointmentsController = authenticatedHandler(
 
 		logInput(logger, req.query, "List appointments request received");
 
+		const query = req.query as unknown as ListAppointmentsInput;
+
 		const result = await listAppointmentsService({
 			tenantId: req.user.tenantId,
-			...(req.query as unknown as ListAppointmentsInput),
+			...query,
+			page: Number(query.page) || 1,
+			limit: Number(query.limit) || 20,
 		});
 
 		const duration = Date.now() - startTime;

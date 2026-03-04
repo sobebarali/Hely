@@ -46,12 +46,9 @@ export interface LabOrderListItem {
 	createdAt: string;
 }
 
-export interface PaginationInfo {
-	page: number;
-	limit: number;
-	total: number;
-	totalPages: number;
-}
+export type { PaginationInfo } from "../../../lib/types/pagination";
+
+import type { PaginationInfo } from "../../../lib/types/pagination";
 
 export interface ListLabOrdersOutput {
 	data: LabOrderListItem[];

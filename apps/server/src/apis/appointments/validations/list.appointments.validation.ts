@@ -1,3 +1,4 @@
+import { AppointmentStatus, AppointmentType } from "@hms/db";
 import { z } from "zod";
 import type {
 	DepartmentSummary,
@@ -6,25 +7,13 @@ import type {
 	TimeSlot,
 } from "./create.appointments.validation";
 
-// Status enum for filtering
-const AppointmentStatusEnum = z.enum([
-	"SCHEDULED",
-	"CONFIRMED",
-	"CHECKED_IN",
-	"IN_PROGRESS",
-	"COMPLETED",
-	"CANCELLED",
-	"NO_SHOW",
-]);
+const AppointmentStatusEnum = z.enum(
+	Object.values(AppointmentStatus) as [string, ...string[]],
+);
 
-// Type enum for filtering
-const AppointmentTypeEnum = z.enum([
-	"CONSULTATION",
-	"FOLLOW_UP",
-	"PROCEDURE",
-	"EMERGENCY",
-	"ROUTINE_CHECK",
-]);
+const AppointmentTypeEnum = z.enum(
+	Object.values(AppointmentType) as [string, ...string[]],
+);
 
 // Zod schema for runtime validation
 export const listAppointmentsSchema = z.object({
@@ -65,15 +54,10 @@ export interface AppointmentListItem {
 	createdAt: string;
 }
 
-// Pagination info
-export interface PaginationInfo {
-	page: number;
-	limit: number;
-	total: number;
-	totalPages: number;
-}
+export type { PaginationInfo } from "../../../lib/types/pagination";
 
-// Output type - manually defined for response structure
+import type { PaginationInfo } from "../../../lib/types/pagination";
+
 export interface ListAppointmentsOutput {
 	data: AppointmentListItem[];
 	pagination: PaginationInfo;

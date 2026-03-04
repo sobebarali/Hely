@@ -1,16 +1,13 @@
+import { AppointmentPriority, AppointmentType } from "@hms/db";
 import { z } from "zod";
 
-// Appointment type enum
-const AppointmentTypeEnum = z.enum([
-	"CONSULTATION",
-	"FOLLOW_UP",
-	"PROCEDURE",
-	"EMERGENCY",
-	"ROUTINE_CHECK",
-]);
+const AppointmentTypeEnum = z.enum(
+	Object.values(AppointmentType) as [string, ...string[]],
+);
 
-// Priority enum
-const PriorityEnum = z.enum(["NORMAL", "URGENT", "EMERGENCY"]);
+const PriorityEnum = z.enum(
+	Object.values(AppointmentPriority) as [string, ...string[]],
+);
 
 // Zod schema for runtime validation
 export const createAppointmentSchema = z.object({

@@ -58,9 +58,13 @@ export async function listAppointmentsService({
 	];
 
 	const [patients, doctors, departments] = await Promise.all([
-		findPatientsByIds({ tenantId, patientIds }),
-		findStaffByIds({ tenantId, staffIds: doctorIds }),
-		findDepartmentsByIds({ tenantId, departmentIds }),
+		patientIds.length > 0 ? findPatientsByIds({ tenantId, patientIds }) : [],
+		doctorIds.length > 0
+			? findStaffByIds({ tenantId, staffIds: doctorIds })
+			: [],
+		departmentIds.length > 0
+			? findDepartmentsByIds({ tenantId, departmentIds })
+			: [],
 	]);
 
 	// Create lookup maps

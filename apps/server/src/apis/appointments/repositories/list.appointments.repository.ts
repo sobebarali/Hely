@@ -71,19 +71,17 @@ export async function listAppointments({
 			}
 		}
 
-		// Count total
-		const total = await Appointment.countDocuments(query);
-
-		// Calculate pagination
 		const skip = (page - 1) * limit;
 		const sortDirection = sortOrder === "asc" ? 1 : -1;
 
-		// Fetch appointments
-		const appointments = await Appointment.find(query)
-			.sort({ [sortBy]: sortDirection })
-			.skip(skip)
-			.limit(limit)
-			.lean();
+		const [total, appointments] = await Promise.all([
+			Appointment.countDocuments(query),
+			Appointment.find(query)
+				.sort({ [sortBy]: sortDirection })
+				.skip(skip)
+				.limit(limit)
+				.lean(),
+		]);
 
 		logDatabaseOperation(
 			logger,
