@@ -50,8 +50,10 @@ export async function listLabOrdersService({
 	const doctorIds = [...new Set(result.data.map((order) => order.doctorId))];
 
 	const [patients, doctors] = await Promise.all([
-		findPatientsByIds({ tenantId, patientIds }),
-		findStaffByIds({ tenantId, staffIds: doctorIds }),
+		patientIds.length > 0 ? findPatientsByIds({ tenantId, patientIds }) : [],
+		doctorIds.length > 0
+			? findStaffByIds({ tenantId, staffIds: doctorIds })
+			: [],
 	]);
 
 	// Create lookup maps

@@ -19,9 +19,13 @@ export const listLabOrdersController = authenticatedHandler(
 
 		logInput(logger, req.query, "List lab orders request received");
 
+		const query = req.query as unknown as ListLabOrdersInput;
+
 		const result = await listLabOrdersService({
 			tenantId: req.user.tenantId,
-			...(req.query as unknown as ListLabOrdersInput),
+			...query,
+			page: Number(query.page) || 1,
+			limit: Number(query.limit) || 20,
 		});
 
 		const duration = Date.now() - startTime;

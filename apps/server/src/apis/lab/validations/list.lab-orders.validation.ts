@@ -1,3 +1,4 @@
+import { LabOrderStatus, TestPriority } from "@hms/db";
 import { z } from "zod";
 import type {
 	DoctorSummary,
@@ -5,15 +6,13 @@ import type {
 	TestItemSummary,
 } from "./create.lab-orders.validation";
 
-const LabOrderStatusEnum = z.enum([
-	"ORDERED",
-	"SAMPLE_COLLECTED",
-	"IN_PROGRESS",
-	"COMPLETED",
-	"CANCELLED",
-]);
+const LabOrderStatusEnum = z.enum(
+	Object.values(LabOrderStatus) as [string, ...string[]],
+);
 
-const TestPriorityEnum = z.enum(["ROUTINE", "URGENT", "STAT"]);
+const TestPriorityEnum = z.enum(
+	Object.values(TestPriority) as [string, ...string[]],
+);
 
 export const listLabOrdersSchema = z.object({
 	query: z.object({

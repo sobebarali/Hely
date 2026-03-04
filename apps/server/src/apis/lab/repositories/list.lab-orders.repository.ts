@@ -28,11 +28,8 @@ export async function listLabOrders({
 	tenantId: string;
 } & ListLabOrdersInput) {
 	try {
-		const numPage = Number(page) || 1;
-		const numLimit = Number(limit) || 20;
-
 		logger.debug(
-			{ tenantId, page: numPage, limit: numLimit, patientId, doctorId, status },
+			{ tenantId, page, limit, patientId, doctorId, status },
 			"Listing lab orders",
 		);
 
@@ -67,32 +64,33 @@ export async function listLabOrders({
 			query.$or = [{ orderId: { $regex: search, $options: "i" } }];
 		}
 
-		const total = await LabOrder.countDocuments(query);
-
-		const skip = (numPage - 1) * numLimit;
+		const skip = (page - 1) * limit;
 		const sortDirection = sortOrder === "asc" ? 1 : -1;
 
-		const labOrders = await LabOrder.find(query)
-			.sort({ [sortBy]: sortDirection })
-			.skip(skip)
-			.limit(numLimit)
-			.lean();
+		const [total, labOrders] = await Promise.all([
+			LabOrder.countDocuments(query),
+			LabOrder.find(query)
+				.sort({ [sortBy]: sortDirection })
+				.skip(skip)
+				.limit(limit)
+				.lean(),
+		]);
 
 		logDatabaseOperation(
 			logger,
 			"find",
 			"labOrder",
-			{ tenantId, page: numPage, limit: numLimit },
+			{ tenantId, page, limit },
 			{ count: labOrders.length, total },
 		);
 
 		return {
 			data: labOrders,
 			pagination: {
-				page: numPage,
-				limit: numLimit,
+				page,
+				limit,
 				total,
-				totalPages: Math.ceil(total / numLimit),
+				totalPages: Math.ceil(total / limit),
 			},
 		};
 	} catch (error) {
