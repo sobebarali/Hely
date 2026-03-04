@@ -28,18 +28,17 @@ interface CreateLabOrderParams {
 
 export async function createLabOrder(params: CreateLabOrderParams) {
 	try {
+		const id = uuidv4();
+
 		logger.debug(
-			{ tenantId: params.tenantId, orderId: params.orderId },
+			{ id, tenantId: params.tenantId, orderId: params.orderId },
 			"Creating lab order",
 		);
 
-		const id = uuidv4();
-		await LabOrder.create({
+		const labOrder = await LabOrder.create({
 			_id: id,
 			...params,
 		});
-
-		const labOrder = await LabOrder.findById(id).lean();
 
 		logDatabaseOperation(
 			logger,
@@ -49,7 +48,7 @@ export async function createLabOrder(params: CreateLabOrderParams) {
 			{ _id: id },
 		);
 
-		return labOrder!;
+		return labOrder;
 	} catch (error) {
 		logError(logger, error, "Failed to create lab order");
 		throw error;

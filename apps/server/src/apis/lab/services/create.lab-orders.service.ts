@@ -57,7 +57,6 @@ export async function createLabOrderService({
 		);
 	}
 
-	// Build a lookup map for catalog data
 	const catalogMap = new Map(catalogTests.map((t) => [String(t._id), t]));
 
 	// Generate order ID
@@ -65,11 +64,11 @@ export async function createLabOrderService({
 
 	// Build test items with catalog data
 	const testItems = tests.map((t) => {
-		const catalog = catalogMap.get(t.testId)!;
+		const catalog = catalogMap.get(t.testId);
 		return {
 			testId: t.testId,
-			testName: catalog.name,
-			testCode: catalog.code,
+			testName: catalog?.name ?? "",
+			testCode: catalog?.code ?? "",
 			priority: t.priority || "ROUTINE",
 			clinicalNotes: t.clinicalNotes,
 		};
@@ -108,7 +107,7 @@ export async function createLabOrderService({
 			firstName: doctor.firstName,
 			lastName: doctor.lastName,
 		},
-		tests: labOrder.tests.map((t: any) => ({
+		tests: labOrder.tests.map((t) => ({
 			testId: t.testId,
 			testName: t.testName,
 			testCode: t.testCode,

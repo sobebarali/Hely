@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+const TestPriorityEnum = z.enum(["ROUTINE", "URGENT", "STAT"]);
+
 export const createLabOrderSchema = z.object({
 	body: z.object({
 		patientId: z.string().min(1, "Patient ID is required"),
@@ -8,7 +10,7 @@ export const createLabOrderSchema = z.object({
 			.array(
 				z.object({
 					testId: z.string().min(1, "Test ID is required"),
-					priority: z.enum(["ROUTINE", "URGENT", "STAT"]).default("ROUTINE"),
+					priority: TestPriorityEnum.default("ROUTINE"),
 					clinicalNotes: z.string().optional(),
 				}),
 			)
@@ -24,29 +26,35 @@ export type CreateLabOrderInput = z.infer<
 	typeof createLabOrderSchema.shape.body
 >;
 
+export interface PatientSummary {
+	id: string;
+	patientId: string;
+	firstName: string;
+	lastName: string;
+}
+
+export interface DoctorSummary {
+	id: string;
+	employeeId: string;
+	firstName: string;
+	lastName: string;
+}
+
+export interface TestItemSummary {
+	testId: string;
+	testName: string;
+	testCode: string;
+	priority: string;
+	status: string;
+	clinicalNotes?: string;
+}
+
 export interface CreateLabOrderOutput {
 	id: string;
 	orderId: string;
-	patient: {
-		id: string;
-		patientId: string;
-		firstName: string;
-		lastName: string;
-	};
-	doctor: {
-		id: string;
-		employeeId: string;
-		firstName: string;
-		lastName: string;
-	};
-	tests: Array<{
-		testId: string;
-		testName: string;
-		testCode: string;
-		priority: string;
-		status: string;
-		clinicalNotes?: string;
-	}>;
+	patient: PatientSummary;
+	doctor: DoctorSummary;
+	tests: TestItemSummary[];
 	status: string;
 	diagnosis?: string;
 	notes?: string;
