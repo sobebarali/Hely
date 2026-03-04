@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { SampleType } from "./test-catalog.model";
 
 const { Schema, model } = mongoose;
 
@@ -50,6 +51,16 @@ const labOrderSchema = new Schema(
 			type: String,
 			enum: Object.values(LabOrderStatus),
 			default: LabOrderStatus.ORDERED,
+		},
+		sampleDetails: {
+			sampleType: {
+				type: String,
+				enum: Object.values(SampleType),
+			},
+			collectedBy: { type: String, ref: "Staff" },
+			collectedAt: { type: Date },
+			sampleId: { type: String },
+			notes: { type: String },
 		},
 		diagnosis: { type: String },
 		notes: { type: String },

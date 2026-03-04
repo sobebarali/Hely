@@ -42,6 +42,7 @@ export const Actions = {
 	VIEW: "VIEW",
 	EXPORT: "EXPORT",
 	REPORT: "REPORT",
+	COLLECT: "COLLECT",
 } as const;
 
 // Permission type
@@ -190,6 +191,7 @@ export const Permissions = {
 	LAB_UPDATE: "LAB:UPDATE" as Permission,
 	LAB_DELETE: "LAB:DELETE" as Permission,
 	LAB_MANAGE: "LAB:MANAGE" as Permission,
+	LAB_COLLECT: "LAB:COLLECT" as Permission,
 } as const;
 
 // Pre-defined role names
@@ -300,6 +302,7 @@ export const RolePermissions: Record<RoleName, Permission[]> = {
 		Permissions.LAB_CREATE,
 		Permissions.LAB_READ,
 		Permissions.LAB_UPDATE,
+		Permissions.LAB_COLLECT,
 	],
 
 	[RoleNames.NURSE]: [
@@ -313,6 +316,7 @@ export const RolePermissions: Record<RoleName, Permission[]> = {
 		Permissions.ADMISSION_READ,
 		Permissions.ADMISSION_UPDATE,
 		Permissions.DASHBOARD_VIEW,
+		Permissions.LAB_COLLECT,
 	],
 
 	[RoleNames.PHARMACIST]: [
