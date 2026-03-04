@@ -4,6 +4,7 @@ import {
 	logDatabaseOperation,
 	logError,
 } from "../../../lib/logger";
+import { escapeRegex } from "../../../utils/crypto";
 import type { ListTestCatalogInput } from "../validations/list-tests.lab-catalog.validation";
 
 const logger = createRepositoryLogger("listTestCatalog");
@@ -37,9 +38,10 @@ export async function listTestCatalog({
 		}
 
 		if (search) {
+			const escapedSearch = escapeRegex(search);
 			query.$or = [
-				{ name: { $regex: search, $options: "i" } },
-				{ code: { $regex: search, $options: "i" } },
+				{ name: { $regex: escapedSearch, $options: "i" } },
+				{ code: { $regex: escapedSearch, $options: "i" } },
 			];
 		}
 

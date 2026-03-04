@@ -46,7 +46,7 @@ export async function listTestCatalogService({
 				min: r.min as number | undefined,
 				max: r.max as number | undefined,
 				unit: r.unit as string | undefined,
-				gender: (r.gender as string) || "ALL",
+				gender: r.gender as string,
 			}),
 		),
 	}));
