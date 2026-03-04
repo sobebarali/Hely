@@ -18,10 +18,12 @@ import { seedAllAdmissions } from "./admissions.seed";
 import { seedAllAppointments } from "./appointments.seed";
 import { seedAllDispensing } from "./dispensing.seed";
 import { seedAllInventory } from "./inventory.seed";
+import { seedAllLabOrders } from "./lab-orders.seed";
 import { seedAllMedicines } from "./medicines.seed";
 import { seedOrganizations } from "./organizations.seed";
 import { seedAllPatients } from "./patients.seed";
 import { seedAllPrescriptions } from "./prescriptions.seed";
+import { seedAllTestCatalog } from "./test-catalog.seed";
 import { seedAllVitals } from "./vitals.seed";
 
 const logger = createServiceLogger("seedAll");
@@ -36,6 +38,8 @@ interface SeedResult {
 	vitals: number;
 	admissions: number;
 	dispensing: number;
+	testCatalog: number;
+	labOrders: number;
 }
 
 /**
@@ -54,6 +58,8 @@ export async function seedAll(): Promise<SeedResult> {
 		vitals: 0,
 		admissions: 0,
 		dispensing: 0,
+		testCatalog: 0,
+		labOrders: 0,
 	};
 
 	// 1. Organizations (includes departments, users, roles)
@@ -104,6 +110,16 @@ export async function seedAll(): Promise<SeedResult> {
 	result.dispensing = await seedAllDispensing();
 	console.log(`   ✅ ${result.dispensing} dispensing records`);
 
+	// 10. Test Catalog
+	console.log("\n🧪 Seeding test catalog...");
+	result.testCatalog = await seedAllTestCatalog();
+	console.log(`   ✅ ${result.testCatalog} test catalog entries`);
+
+	// 11. Lab Orders (needs patients, test catalog)
+	console.log("\n🔬 Seeding lab orders...");
+	result.labOrders = await seedAllLabOrders();
+	console.log(`   ✅ ${result.labOrders} lab orders`);
+
 	logger.info(result, "Complete seed process finished");
 	return result;
 }
@@ -140,6 +156,8 @@ Summary:
   Vitals:        ${result.vitals}
   Admissions:    ${result.admissions}
   Dispensing:    ${result.dispensing}
+  Test Catalog:  ${result.testCatalog}
+  Lab Orders:    ${result.labOrders}
 
 Duration: ${duration}s
 

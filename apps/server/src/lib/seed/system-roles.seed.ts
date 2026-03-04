@@ -61,10 +61,26 @@ export async function seedSystemRoles({
 			}).session(session ?? null);
 
 			if (existingRole) {
-				logger.debug(
-					{ tenantId, roleName: roleData.name },
-					"System role already exists, skipping",
-				);
+				// Update permissions if they have changed
+				const currentPerms = new Set(existingRole.permissions as string[]);
+				const expectedPerms = new Set(roleData.permissions as string[]);
+				const needsUpdate =
+					currentPerms.size !== expectedPerms.size ||
+					roleData.permissions.some((p) => !currentPerms.has(p));
+
+				if (needsUpdate) {
+					existingRole.permissions = roleData.permissions;
+					await existingRole.save({ session });
+					logger.info(
+						{ tenantId, roleName: roleData.name },
+						"System role permissions updated",
+					);
+				} else {
+					logger.debug(
+						{ tenantId, roleName: roleData.name },
+						"System role already exists, permissions up to date",
+					);
+				}
 				continue;
 			}
 

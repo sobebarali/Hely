@@ -24,7 +24,7 @@ export const addTestToCatalogSchema = z.object({
 					min: z.number().optional(),
 					max: z.number().optional(),
 					unit: z.string().optional(),
-					gender: z.string().optional(),
+					gender: z.enum(["MALE", "FEMALE", "ALL"]).optional(),
 				}),
 			)
 			.optional(),

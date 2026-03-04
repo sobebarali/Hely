@@ -1,5 +1,6 @@
-import { TestCatalog } from "@hms/db";
+import { TestCatalog, TestCatalogStatus } from "@hms/db";
 import { v4 as uuidv4 } from "uuid";
+import { ConflictError } from "../../../errors";
 import {
 	createRepositoryLogger,
 	logDatabaseOperation,
@@ -7,31 +8,6 @@ import {
 } from "../../../lib/logger";
 
 const logger = createRepositoryLogger("addTestCatalog");
-
-export async function findTestByCode({
-	tenantId,
-	code,
-}: {
-	tenantId: string;
-	code: string;
-}) {
-	try {
-		const test = await TestCatalog.findOne({ tenantId, code }).lean();
-
-		logDatabaseOperation(logger, "findOne", "testCatalog", {
-			tenantId,
-			code,
-		});
-
-		return test;
-	} catch (error) {
-		logError(logger, error, "Failed to find test by code", {
-			tenantId,
-			code,
-		});
-		throw error;
-	}
-}
 
 export async function createTestCatalogEntry(params: {
 	tenantId: string;
@@ -60,7 +36,7 @@ export async function createTestCatalogEntry(params: {
 		const entry = await TestCatalog.create({
 			_id: id,
 			...params,
-			status: "ACTIVE",
+			status: TestCatalogStatus.ACTIVE,
 		});
 
 		logDatabaseOperation(
@@ -73,6 +49,16 @@ export async function createTestCatalogEntry(params: {
 
 		return entry;
 	} catch (error) {
+		if (
+			error instanceof Error &&
+			(error.message.includes("E11000") ||
+				error.message.includes("duplicate key"))
+		) {
+			throw new ConflictError(
+				`Test with code '${params.code}' already exists`,
+				"DUPLICATE_CODE",
+			);
+		}
 		logError(logger, error, "Failed to create test catalog entry", {
 			tenantId: params.tenantId,
 		});

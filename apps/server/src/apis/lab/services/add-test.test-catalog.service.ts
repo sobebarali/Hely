@@ -1,9 +1,5 @@
-import { BadRequestError } from "../../../errors";
 import { createServiceLogger } from "../../../lib/logger";
-import {
-	createTestCatalogEntry,
-	findTestByCode,
-} from "../repositories/add-test.test-catalog.repository";
+import { createTestCatalogEntry } from "../repositories/add-test.test-catalog.repository";
 import type {
 	AddTestToCatalogInput,
 	AddTestToCatalogOutput,
@@ -13,39 +9,19 @@ const logger = createServiceLogger("addTestCatalog");
 
 export async function addTestToCatalogService({
 	tenantId,
-	name,
-	code,
-	category,
-	sampleType,
-	turnaroundTime,
-	price,
-	referenceRanges,
+	...input
 }: {
 	tenantId: string;
 } & AddTestToCatalogInput): Promise<AddTestToCatalogOutput> {
-	logger.info({ tenantId, code, name }, "Adding test to catalog");
+	logger.info(
+		{ tenantId, code: input.code, name: input.name },
+		"Adding test to catalog",
+	);
 
-	const existing = await findTestByCode({ tenantId, code });
-	if (existing) {
-		throw new BadRequestError(
-			`Test with code '${code}' already exists`,
-			"DUPLICATE_CODE",
-		);
-	}
-
-	const entry = await createTestCatalogEntry({
-		tenantId,
-		name,
-		code,
-		category,
-		sampleType,
-		turnaroundTime,
-		price,
-		referenceRanges,
-	});
+	const entry = await createTestCatalogEntry({ tenantId, ...input });
 
 	logger.info(
-		{ testId: entry._id, code },
+		{ testId: entry._id, code: input.code },
 		"Test added to catalog successfully",
 	);
 
@@ -55,9 +31,9 @@ export async function addTestToCatalogService({
 		code: entry.code,
 		category: entry.category,
 		sampleType: entry.sampleType,
-		turnaroundTime: entry.turnaroundTime ?? "",
-		price: entry.price ?? 0,
-		status: entry.status ?? "ACTIVE",
+		turnaroundTime: entry.turnaroundTime!,
+		price: entry.price!,
+		status: entry.status!,
 		referenceRanges: (entry.referenceRanges || []).map(
 			(r: Record<string, unknown>) => ({
 				label: r.label as string,

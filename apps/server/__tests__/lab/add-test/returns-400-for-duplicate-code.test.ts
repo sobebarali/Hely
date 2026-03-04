@@ -8,7 +8,7 @@ import {
 	createAuthTestContext,
 } from "../../helpers/auth-test-context";
 
-describe("POST /api/lab/tests - Returns 400 for duplicate code", () => {
+describe("POST /api/lab/tests - Returns 409 for duplicate code", () => {
 	let context: AuthTestContext;
 	let accessToken: string;
 	let existingTestId: string;
@@ -45,7 +45,7 @@ describe("POST /api/lab/tests - Returns 400 for duplicate code", () => {
 		await context.cleanup();
 	});
 
-	it("returns 400 with DUPLICATE_CODE when code already exists", async () => {
+	it("returns 409 with DUPLICATE_CODE when code already exists", async () => {
 		const payload = {
 			name: "Another Test",
 			code: testCode,
@@ -60,7 +60,7 @@ describe("POST /api/lab/tests - Returns 400 for duplicate code", () => {
 			.set("Authorization", `Bearer ${accessToken}`)
 			.send(payload);
 
-		expect(response.status).toBe(400);
+		expect(response.status).toBe(409);
 		expect(response.body.code).toBe("DUPLICATE_CODE");
 	});
 });
