@@ -81,7 +81,6 @@ describe("POST /api/lab/orders/:orderId/verify - Returns 400 for invalid staff",
 			});
 
 		createdLabOrderId = createResponse.body.id;
-		const testIdInOrder = createResponse.body.tests[0].testId;
 
 		// Collect sample
 		await request(app)

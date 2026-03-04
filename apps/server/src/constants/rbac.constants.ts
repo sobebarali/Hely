@@ -44,6 +44,7 @@ export const Actions = {
 	REPORT: "REPORT",
 	COLLECT: "COLLECT",
 	VERIFY: "VERIFY",
+	RESULT: "RESULT",
 } as const;
 
 // Permission type
@@ -193,6 +194,7 @@ export const Permissions = {
 	LAB_DELETE: "LAB:DELETE" as Permission,
 	LAB_MANAGE: "LAB:MANAGE" as Permission,
 	LAB_COLLECT: "LAB:COLLECT" as Permission,
+	LAB_RESULT: "LAB:RESULT" as Permission,
 	LAB_VERIFY: "LAB:VERIFY" as Permission,
 } as const;
 
