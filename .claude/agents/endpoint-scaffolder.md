@@ -39,6 +39,7 @@ Before creating any files:
 2. If it exists, read existing files in that domain to match conventions exactly
 3. If it does NOT exist, read a well-established domain (e.g., `patients`) as reference
 4. Read the relevant model from `packages/db/src/models/` to understand the schema
+5. Read existing API documentation from `apps/docs/src/content/docs/api/` to understand documentation conventions and how existing endpoints are documented for this domain
 
 ### Step 2: Create All Layers
 
