@@ -32,6 +32,13 @@ export {
 	AuditLog,
 } from "./audit-log.model";
 export { Account, Session, User, Verification } from "./auth.model";
+// Clinical Note
+export {
+	ClinicalNote,
+	ClinicalNoteStatus,
+	ClinicalNoteType,
+	DiagnosisType,
+} from "./clinical-note.model";
 // Consent
 export {
 	Consent,
@@ -89,6 +96,8 @@ export {
 	ResultFlag,
 	TestPriority,
 } from "./lab-order.model";
+// Medical History
+export { AllergySeverity, MedicalHistory } from "./medical-history.model";
 // Medicine
 export { Medicine, MedicineCategory, MedicineType } from "./medicine.model";
 // Organization/Tenant (formerly Hospital)
@@ -109,6 +118,8 @@ export {
 	PrescriptionStatus,
 	PrescriptionTemplate,
 } from "./prescription.model";
+// Problem List
+export { ProblemList, ProblemStatus } from "./problem-list.model";
 // Report
 export {
 	Report,

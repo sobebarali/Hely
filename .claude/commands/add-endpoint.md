@@ -64,32 +64,48 @@ Check if this specific endpoint already exists by looking for `{action}.{domain}
 
 Then go to Step 3 with the single action.
 
-## Step 3: Scaffold
+## Step 3: Scaffold (One Agent Per Endpoint)
 
-Use the Agent tool to launch the `endpoint-scaffolder` agent.
+Launch a **separate `endpoint-scaffolder` agent for each NEW endpoint**. This ensures each endpoint gets full attention and avoids hitting turn limits.
 
-**For module mode**, scaffold all endpoints in a single agent call:
+**For module mode**, launch one agent per NEW endpoint in parallel:
 
-> Scaffold the following NEW endpoints for the `{domain}` module. Read the API documentation at `apps/docs/src/content/docs/api/` for this domain — it is the primary source of truth for endpoint contracts (method, path, request/response schema, status codes, business rules). Also read API docs for these dependent domains: {list from Step 2A}.
+For each endpoint in the NEW list, use the Agent tool with this prompt:
+
+> Scaffold the `{action}` endpoint for the `{domain}` domain. Read the API documentation at `apps/docs/src/content/docs/api/` for this domain — it is the primary source of truth for endpoint contracts (method, path, request/response schema, status codes, business rules). Also read API docs for these dependent domains: {list from Step 2A}.
 >
-> Endpoints to scaffold (NEW only): {list of NEW endpoints from Step 2A}
-> Endpoints that already exist (DO NOT recreate): {list of EXISTS endpoints}
+> This endpoint: {METHOD} {path} — {action}
+> Endpoints that already exist (DO NOT recreate or modify their route entries): {list of EXISTS endpoints}
 >
-> For each NEW endpoint, create all 6 layers: validation, repository, service, controller, route entry, and test files. When adding routes, preserve any existing routes in the routes file — only ADD new ones. Return the list of all files created and modified.
+> Create all 6 layers: validation, repository, service, controller, route entry, and test files. When adding to the routes file, preserve ALL existing routes — only ADD this endpoint's route. Return the list of all files created and modified.
 
-**For single endpoint mode:**
+Launch ALL scaffolder agents in parallel (multiple Agent tool calls in one response). Wait for all to complete. Collect the lists of created/modified files from each.
+
+**For single endpoint mode**, launch one scaffolder agent:
 
 > Scaffold a `{action}` endpoint for the `{domain}` domain. Read the API documentation from `apps/docs/src/content/docs/api/` for this domain — it is the primary source of truth. Also read API docs for any dependent domains referenced in the doc. Then create all 6 layers: validation, repository, service, controller, route, and test files. Return the list of all files created and modified.
 
 Wait for the agent to complete. Capture the list of created/modified files.
 
-## Step 4: Review
+**IMPORTANT**: After all scaffolder agents complete, verify the routes file (`{domain}.routes.ts`) is not corrupted from parallel writes. If multiple agents modified it, consolidate the route entries so all NEW endpoints are properly registered without duplicates.
 
-Use the Agent tool to launch the `endpoint-reviewer` agent:
+## Step 4: Review (One Agent Per Endpoint)
 
-> Review all endpoints in the `{domain}` domain. Focus on: security (tenantId isolation), bugs, anti-patterns, best practices, and test coverage. Verify the implementation matches the API documentation. Suggest concrete fixes for any issues found.
+Launch a **separate `endpoint-reviewer` agent for each endpoint** that was scaffolded. This ensures thorough review per endpoint.
 
-Wait for the agent to complete. Capture the review findings.
+For each scaffolded endpoint, use the Agent tool with this prompt:
+
+> Review the `{action}` endpoint in the `{domain}` domain. Files to review:
+> - Validation: `apps/server/src/apis/{domain}/validations/{action}.{domain}.validation.ts`
+> - Repository: `apps/server/src/apis/{domain}/repositories/{action}.{domain}.repository.ts`
+> - Service: `apps/server/src/apis/{domain}/services/{action}.{domain}.service.ts`
+> - Controller: `apps/server/src/apis/{domain}/controllers/{action}.{domain}.controller.ts`
+> - Route entry in: `apps/server/src/apis/{domain}/{domain}.routes.ts`
+> - Tests: `apps/server/__tests__/{domain}/{action}/`
+>
+> Focus on: security (tenantId isolation), bugs, anti-patterns, best practices, and test coverage. Verify the implementation matches the API documentation at `apps/docs/src/content/docs/api/`. Suggest concrete fixes for any issues found.
+
+Launch ALL reviewer agents in parallel. Wait for all to complete. Collect the review findings from each.
 
 ## Step 5: Run Tests
 

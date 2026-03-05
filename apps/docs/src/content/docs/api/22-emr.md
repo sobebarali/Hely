@@ -143,27 +143,32 @@ Required. Bearer token with `EMR:READ` permission.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| id | string | Clinical note ID |
-| noteId | string | Unique identifier |
+| id | string | Clinical note ID (internal UUID) |
+| noteId | string | Unique human-readable identifier |
 | patientId | string | Patient ID |
-| patient | object | Patient details |
-| encounterId | string | Associated encounter ID |
+| encounterId | string | Associated encounter ID (if provided) |
 | type | string | Note type |
-| chiefComplaint | string | Chief complaint |
-| subjective | string | Subjective findings |
-| objective | string | Objective findings |
-| assessment | string | Assessment |
-| plan | string | Treatment plan |
-| content | string | Free-text content |
+| chiefComplaint | string | Chief complaint (if set) |
+| subjective | string | Subjective findings (if set) |
+| objective | string | Objective findings (if set) |
+| assessment | string | Assessment (if set) |
+| plan | string | Treatment plan (if set) |
+| content | string | Free-text content (if set) |
 | diagnosis | array | Diagnosis codes |
 | procedures | array | Procedures |
 | status | string | Note status |
-| author | object | Author details |
-| signedBy | object | Signer details (if signed) |
-| signedAt | string | Sign timestamp |
+| authorId | string | Author's staff ID |
+| signedBy | string | Staff ID of signer (if signed) |
+| signedAt | string | Sign timestamp (if signed) |
 | amendments | array | Note amendments |
+| amendments[].reason | string | Amendment reason |
+| amendments[].content | string | Amendment content |
+| amendments[].amendedBy | string | Staff ID who amended |
+| amendments[].amendedAt | string | ISO 8601 amendment timestamp |
 | createdAt | string | ISO 8601 timestamp |
 | updatedAt | string | ISO 8601 timestamp |
+
+**Note**: The `patient` and `author` fields shown in earlier versions are not populated — the response contains `authorId` (string) and `signedBy` (string ID), not expanded objects.
 
 ### Errors
 
@@ -210,8 +215,8 @@ Required. Bearer token with `EMR:UPDATE` permission.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| id | string | Clinical note ID |
-| status | string | Note status |
+| id | string | Clinical note ID (internal UUID) |
+| status | string | Note status (`DRAFT`) |
 | updatedAt | string | ISO 8601 timestamp |
 
 ### Errors
@@ -226,8 +231,8 @@ Required. Bearer token with `EMR:UPDATE` permission.
 
 ### Business Rules
 
-- Only `DRAFT` notes can be updated
-- Only the original author can update a note
+- Only `DRAFT` notes can be updated (returns 400 `NOTE_ALREADY_SIGNED` for any non-DRAFT status, including `AMENDED`)
+- Only the original author can update a note (returns 403 `FORBIDDEN`)
 - Signed notes must be amended instead of updated
 
 ---
@@ -254,9 +259,9 @@ Required. Bearer token with `EMR:SIGN` permission.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| id | string | Clinical note ID |
+| id | string | Clinical note ID (internal UUID) |
 | status | string | Updated to `SIGNED` |
-| signedBy | object | Staff who signed |
+| signedBy | string | Staff ID who signed |
 | signedAt | string | ISO 8601 timestamp |
 
 ### Errors
@@ -271,8 +276,8 @@ Required. Bearer token with `EMR:SIGN` permission.
 
 ### Business Rules
 
-- Note must be in `DRAFT` status
-- Only the author or a supervising physician can sign
+- Note must be in `DRAFT` status (returns 400 `INVALID_STATUS` otherwise)
+- Any authenticated staff member with `EMR:SIGN` permission can sign (the "author or supervising physician only" restriction is not enforced in the current implementation)
 - Signing is irreversible — note becomes part of the permanent record
 - Status transitions to `SIGNED`
 
@@ -307,12 +312,12 @@ Required. Bearer token with `EMR:AMEND` permission.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| id | string | Clinical note ID |
+| id | string | Clinical note ID (internal UUID) |
 | status | string | `AMENDED` |
-| amendments | array | List of amendments |
+| amendments | array | List of all amendments (full history) |
 | amendments[].reason | string | Amendment reason |
 | amendments[].content | string | Amendment content |
-| amendments[].amendedBy | object | Staff who amended |
+| amendments[].amendedBy | string | Staff ID who amended |
 | amendments[].amendedAt | string | ISO 8601 timestamp |
 
 ### Errors
@@ -327,9 +332,10 @@ Required. Bearer token with `EMR:AMEND` permission.
 
 ### Business Rules
 
-- Only `SIGNED` or `AMENDED` notes can be amended
+- Only `SIGNED` or `AMENDED` notes can be amended (returns 400 `INVALID_STATUS` for `DRAFT`)
 - Original content is preserved; amendment is appended
 - Full audit trail of all amendments is maintained
+- Multiple sequential amendments are allowed
 
 ---
 
@@ -426,8 +432,9 @@ Required. Bearer token with `EMR:UPDATE` permission.
 
 ### Business Rules
 
-- All changes are audited with before/after values
-- Allergy updates trigger medication interaction checks
+- Uses upsert semantics: creates the history document on first call, updates on subsequent calls
+- Partial updates are supported: only fields included in the request body are updated; omitted fields retain their existing values
+- The auditing and medication interaction checking described below are not implemented in the current version
 
 ---
 
@@ -451,7 +458,7 @@ Required. Bearer token with `EMR:READ` permission.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| status | string | ACTIVE | Filter by status: `ACTIVE`, `RESOLVED`, `ALL` |
+| status | string | `ACTIVE` | Filter by status: `ACTIVE`, `RESOLVED`, or `ALL` (returns all regardless of status) |
 
 ### Response
 
@@ -466,7 +473,7 @@ Required. Bearer token with `EMR:READ` permission.
 | data[].status | string | `ACTIVE` or `RESOLVED` |
 | data[].onsetDate | string | Date problem was identified |
 | data[].resolvedDate | string | Date problem was resolved |
-| data[].addedBy | object | Staff who added |
+| data[].addedBy | string | Staff ID who added |
 | data[].createdAt | string | ISO 8601 timestamp |
 
 ### Errors
@@ -510,12 +517,12 @@ Required. Bearer token with `EMR:CREATE` permission.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| id | string | Problem ID |
+| id | string | Problem ID (internal UUID) |
 | code | string | ICD-10 code |
 | description | string | Problem description |
 | status | string | `ACTIVE` |
-| onsetDate | string | Onset date |
-| addedBy | object | Staff who added |
+| onsetDate | string | Onset date (ISO 8601, if provided) |
+| addedBy | string | Staff ID who added |
 | createdAt | string | ISO 8601 timestamp |
 
 ### Errors
@@ -568,7 +575,7 @@ Required. Bearer token with `EMR:READ` permission.
 | data[].title | string | Event title/summary |
 | data[].description | string | Event description |
 | data[].metadata | object | Type-specific metadata |
-| data[].author | object | Staff responsible |
+| data[].author | object | Staff responsible (contains only `id` field: `{ id: string }`, present when `authorId` exists on the source record) |
 | data[].occurredAt | string | ISO 8601 timestamp |
 | pagination | object | Pagination details |
 
@@ -582,9 +589,10 @@ Required. Bearer token with `EMR:READ` permission.
 
 ### Business Rules
 
-- Timeline aggregates events from all clinical modules
+- Timeline aggregates events from: clinical notes, vitals, lab orders, prescriptions, appointments, and admissions
 - Events sorted by occurrence date (newest first)
-- Each event links back to its source record
+- Pagination is applied in-memory after fetching all matching events (not at the database level); for patients with very large histories this may have performance implications
+- The `total` in the pagination response reflects the count of events for the requested filters, not just the current page
 
 ---
 

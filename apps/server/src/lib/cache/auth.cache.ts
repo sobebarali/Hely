@@ -33,6 +33,7 @@ export async function cacheSession({
 	email,
 	name,
 	tenantId,
+	staffId,
 	roles,
 	permissions,
 	expiresIn = AUTH_CACHE_TTL.SESSION,
@@ -42,6 +43,7 @@ export async function cacheSession({
 	email: string;
 	name: string;
 	tenantId: string;
+	staffId?: string;
 	roles: string[];
 	permissions: string[];
 	expiresIn?: number;
@@ -61,6 +63,7 @@ export async function cacheSession({
 		email,
 		name,
 		tenantId,
+		staffId,
 		roles,
 		permissions,
 		cachedAt: Date.now(),
@@ -88,6 +91,7 @@ export async function getCachedSession({
 	email: string;
 	name: string;
 	tenantId: string;
+	staffId?: string;
 	roles: string[];
 	permissions: string[];
 } | null> {

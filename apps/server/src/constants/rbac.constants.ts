@@ -30,6 +30,8 @@ export const Resources = {
 	BILLING: "BILLING",
 	SUBSCRIPTION: "SUBSCRIPTION",
 	LAB: "LAB",
+	EMR: "EMR",
+	TELEMEDICINE: "TELEMEDICINE",
 } as const;
 
 // Actions
@@ -45,6 +47,8 @@ export const Actions = {
 	COLLECT: "COLLECT",
 	VERIFY: "VERIFY",
 	RESULT: "RESULT",
+	SIGN: "SIGN",
+	AMEND: "AMEND",
 } as const;
 
 // Permission type
@@ -196,6 +200,22 @@ export const Permissions = {
 	LAB_COLLECT: "LAB:COLLECT" as Permission,
 	LAB_RESULT: "LAB:RESULT" as Permission,
 	LAB_VERIFY: "LAB:VERIFY" as Permission,
+
+	// EMR permissions
+	EMR_CREATE: "EMR:CREATE" as Permission,
+	EMR_READ: "EMR:READ" as Permission,
+	EMR_UPDATE: "EMR:UPDATE" as Permission,
+	EMR_DELETE: "EMR:DELETE" as Permission,
+	EMR_MANAGE: "EMR:MANAGE" as Permission,
+	EMR_SIGN: "EMR:SIGN" as Permission,
+	EMR_AMEND: "EMR:AMEND" as Permission,
+
+	// Telemedicine permissions
+	TELEMEDICINE_CREATE: "TELEMEDICINE:CREATE" as Permission,
+	TELEMEDICINE_READ: "TELEMEDICINE:READ" as Permission,
+	TELEMEDICINE_UPDATE: "TELEMEDICINE:UPDATE" as Permission,
+	TELEMEDICINE_DELETE: "TELEMEDICINE:DELETE" as Permission,
+	TELEMEDICINE_MANAGE: "TELEMEDICINE:MANAGE" as Permission,
 } as const;
 
 // Pre-defined role names
@@ -248,6 +268,8 @@ export const RolePermissions: Record<RoleName, Permission[]> = {
 		Permissions.BILLING_MANAGE,
 		Permissions.SUBSCRIPTION_MANAGE,
 		Permissions.LAB_MANAGE,
+		Permissions.EMR_MANAGE,
+		Permissions.TELEMEDICINE_MANAGE,
 	],
 
 	[RoleNames.HOSPITAL_ADMIN]: [
@@ -285,6 +307,8 @@ export const RolePermissions: Record<RoleName, Permission[]> = {
 		Permissions.SUBSCRIPTION_READ,
 		Permissions.SUBSCRIPTION_MANAGE,
 		Permissions.LAB_MANAGE,
+		Permissions.EMR_MANAGE,
+		Permissions.TELEMEDICINE_MANAGE,
 	],
 
 	[RoleNames.DOCTOR]: [
@@ -307,6 +331,13 @@ export const RolePermissions: Record<RoleName, Permission[]> = {
 		Permissions.LAB_READ,
 		Permissions.LAB_UPDATE,
 		Permissions.LAB_COLLECT,
+		Permissions.EMR_CREATE,
+		Permissions.EMR_READ,
+		Permissions.EMR_UPDATE,
+		Permissions.EMR_SIGN,
+		Permissions.EMR_AMEND,
+		Permissions.TELEMEDICINE_CREATE,
+		Permissions.TELEMEDICINE_READ,
 	],
 
 	[RoleNames.NURSE]: [
@@ -321,6 +352,7 @@ export const RolePermissions: Record<RoleName, Permission[]> = {
 		Permissions.ADMISSION_UPDATE,
 		Permissions.DASHBOARD_VIEW,
 		Permissions.LAB_COLLECT,
+		Permissions.EMR_READ,
 	],
 
 	[RoleNames.PHARMACIST]: [

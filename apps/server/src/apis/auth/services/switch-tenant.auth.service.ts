@@ -174,6 +174,7 @@ export async function switchTenant({
 		email: user.email,
 		name: user.name,
 		tenantId: targetTenantId,
+		staffId: String(staff._id),
 		roles: roleNames,
 		permissions: uniquePermissions,
 		expiresIn: TOKEN_CONFIG.ACCESS_TOKEN_EXPIRY,

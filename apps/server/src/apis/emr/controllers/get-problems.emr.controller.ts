@@ -1,0 +1,42 @@
+import type { Response } from "express";
+import {
+	createControllerLogger,
+	logInput,
+	logSuccess,
+} from "../../../lib/logger";
+import {
+	type AuthenticatedRequest,
+	authenticatedHandler,
+} from "../../../utils/async-handler";
+import { getProblemsService } from "../services/get-problems.emr.service";
+
+const logger = createControllerLogger("getProblems");
+
+export const getProblemsController = authenticatedHandler(
+	async (req: AuthenticatedRequest, res: Response) => {
+		const startTime = Date.now();
+
+		logInput(
+			logger,
+			{ patientId: req.params.patientId, query: req.query },
+			"Get problem list request received",
+		);
+
+		const result = await getProblemsService({
+			tenantId: req.user.tenantId,
+			patientId: req.params.patientId as string,
+			status: req.query.status as string | undefined,
+		});
+
+		const duration = Date.now() - startTime;
+
+		logSuccess(
+			logger,
+			{ patientId: req.params.patientId, count: result.data.length },
+			"Problem list retrieved successfully",
+			duration,
+		);
+
+		res.status(200).json(result);
+	},
+);

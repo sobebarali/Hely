@@ -121,6 +121,7 @@ async function authenticateAsync(
 				email: cachedSession.email,
 				name: cachedSession.name,
 				tenantId: cachedSession.tenantId,
+				staffId: cachedSession.staffId,
 				roles: cachedSession.roles,
 				permissions: cachedSession.permissions,
 			};
