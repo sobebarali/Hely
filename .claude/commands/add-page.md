@@ -36,45 +36,60 @@ Based on the endpoints, determine which pages to scaffold. Typical mapping:
 | `PATCH/PUT /api/{domain}/:id` (update) | Edit form page (or inline in detail) | `edit.tsx` or part of `$id.tsx` |
 | Domain-specific actions | Additional pages as needed | e.g., `history.tsx`, `calendar.tsx` |
 
+Then **check which pages already exist** by scanning:
+- `apps/web/src/routes/dashboard/{domain}/` — look for existing route files (`index.tsx`, `$id.tsx`, `create.tsx`, etc.)
+- `apps/web/src/lib/{domain}-client.ts` — check if API client exists
+- `apps/web/src/hooks/use-{domain}.ts` — check if hooks exist
+
+Categorize each page as **NEW** (needs scaffolding) or **EXISTS** (skip).
+
 Present the plan to the user:
 
 ```
 ## Frontend pages for {domain} module
 
-Based on the API docs, I'll create:
-1. List page — /dashboard/{domain}/ (table with filters, pagination)
-2. Detail page — /dashboard/{domain}/$id (view single item)
-3. Create page — /dashboard/{domain}/create (form)
+From API docs:
+1. List page — /dashboard/{domain}/          [NEW]
+2. Detail page — /dashboard/{domain}/$id     [EXISTS - skip]
+3. Create page — /dashboard/{domain}/create  [NEW]
 ... (other pages based on endpoints)
 
+Will scaffold: {count} new pages
+Already exist: {count} pages (skipped)
+
 Shared layers:
-- API client: src/lib/{domain}-client.ts
-- Hooks: src/hooks/use-{domain}.ts
+- API client: src/lib/{domain}-client.ts     [EXISTS - will ADD new functions]
+- Hooks: src/hooks/use-{domain}.ts           [EXISTS - will ADD new hooks]
 - Components: src/components/{domain}/
 
 Proceed?
 ```
 
-After confirmation, go to Step 3.
+If ALL pages already exist, inform the user and ask if they want to review existing code instead.
+
+After confirmation, go to Step 3 with only the **NEW** pages.
 
 ## Step 2B: Single Page Mode
 
-Proceed directly to Step 3 with the single page type.
+Check if this specific page already exists at `apps/web/src/routes/dashboard/{domain}/{page-file}.tsx`. If it exists, inform the user and ask if they want to overwrite or review the existing code instead.
+
+Proceed to Step 3 with the single page type.
 
 ## Step 3: Scaffold
 
 Use the Agent tool to launch the `page-scaffolder` agent with this prompt:
 
 **For module mode:**
-> Scaffold the complete frontend for the `{domain}` module. Read the API docs at `apps/docs/src/content/docs/api/` and the backend routes at `apps/server/src/apis/{domain}/{domain}.routes.ts` to understand all endpoints.
+> Scaffold the following NEW frontend pages for the `{domain}` module. Read the API docs at `apps/docs/src/content/docs/api/` and the backend routes at `apps/server/src/apis/{domain}/{domain}.routes.ts` to understand all endpoints.
 >
-> Create these pages: {list of pages from Step 2A}
+> Pages to scaffold (NEW only): {list of NEW pages from Step 2A}
+> Pages that already exist (DO NOT recreate): {list of EXISTS pages}
 >
 > Create all required layers:
-> 1. API client (`src/lib/{domain}-client.ts`) — functions for ALL endpoints
-> 2. TanStack Query hooks (`src/hooks/use-{domain}.ts`) — hooks for ALL endpoints
-> 3. Domain components (`src/components/{domain}/`)
-> 4. Route pages (`src/routes/dashboard/{domain}/`)
+> 1. API client (`src/lib/{domain}-client.ts`) — ADD functions for new endpoints only, preserve existing functions
+> 2. TanStack Query hooks (`src/hooks/use-{domain}.ts`) — ADD hooks for new endpoints only, preserve existing hooks
+> 3. Domain components (`src/components/{domain}/`) — create new components as needed
+> 4. Route pages (`src/routes/dashboard/{domain}/`) — only create NEW route files
 >
 > Return the list of all files created and modified.
 

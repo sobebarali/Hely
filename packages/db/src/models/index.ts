@@ -137,6 +137,12 @@ export {
 	SubscriptionStatus,
 	type SubscriptionStatusValue,
 } from "./subscription.model";
+// Telemedicine Visit
+export {
+	TelemedicineVisit,
+	TelemedicineVisitStatus,
+	TelemedicineVisitType,
+} from "./telemedicine-visit.model";
 // Test Catalog
 export {
 	SampleType,

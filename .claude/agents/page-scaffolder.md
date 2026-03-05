@@ -42,13 +42,14 @@ You will receive a domain and page type (e.g., "billing" and "list", or "invento
 
 ## Process
 
-### Step 1: Research Existing Patterns
+### Step 1: Research Existing Patterns & Detect Existing Pages
 Before creating any files:
 1. Check if the domain already has frontend files: `apps/web/src/lib/{domain}-client.ts`, `apps/web/src/hooks/use-{domain}.ts`, `apps/web/src/routes/dashboard/{domain}/`
 2. If it exists, read existing files in that domain to match conventions exactly
-3. If it does NOT exist, read a well-established domain (e.g., `patients`) as reference
-4. Read the corresponding API endpoint code from `apps/server/src/apis/{domain}/` to understand request/response shapes
-5. Read the relevant model from `packages/db/src/models/` to understand the data schema
+3. **Detect existing pages**: scan `apps/web/src/routes/dashboard/{domain}/` for existing route files. Do NOT recreate pages that already exist — only scaffold NEW ones. When adding to API client or hooks files, preserve existing functions and only ADD new ones.
+4. If the domain does NOT exist, read a well-established domain (e.g., `patients`) as reference
+5. Read the corresponding API endpoint code from `apps/server/src/apis/{domain}/` to understand request/response shapes
+6. Read the relevant model from `packages/db/src/models/` to understand the data schema
 
 ### Step 2: Create All Layers
 

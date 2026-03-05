@@ -33,15 +33,19 @@ You will receive a domain and action (e.g., "patients" and "discharge").
 
 ## Process
 
-### Step 1: Research Existing Patterns
-Before creating any files:
-1. Check if the domain already exists: `apps/server/src/apis/{domain}/`
-2. If it exists, read existing files in that domain to match conventions exactly
-3. If it does NOT exist, read a well-established domain (e.g., `patients`) as reference
-4. Read the relevant model from `packages/db/src/models/` to understand the schema
-5. Read existing API documentation from `apps/docs/src/content/docs/api/` to understand documentation conventions and how existing endpoints are documented for this domain
+### Step 1: Read API Documentation (Primary Source of Truth)
+Before creating any files, read the API documentation to understand exactly what to build:
+1. Read the API doc for this domain from `apps/docs/src/content/docs/api/` — this defines the endpoint contract (method, path, request/response schema, status codes, business rules)
+2. Read API docs for any **dependent domains** referenced in the doc (e.g., if lab endpoints reference patients or departments, read those docs too to understand the relationships)
 
-### Step 2: Create All Layers
+### Step 2: Research Existing Code & Detect Existing Endpoints
+3. Check if the domain already exists: `apps/server/src/apis/{domain}/`
+4. If it exists, read existing files in that domain to match conventions exactly
+5. **Detect existing endpoints**: scan for existing service files (`{action}.{domain}.service.ts`) and route entries in `{domain}.routes.ts`. Do NOT recreate endpoints that already exist — only scaffold NEW ones. When adding routes, preserve existing routes and only ADD new entries.
+6. If the domain does NOT exist, read a well-established domain (e.g., `patients`) as reference
+7. Read the relevant model from `packages/db/src/models/` to understand the schema
+
+### Step 3: Create All Layers
 
 Create these files following the exact naming convention `{action}.{domain}.{layer}.ts`:
 
@@ -98,7 +102,7 @@ Create these files following the exact naming convention `{action}.{domain}.{lay
   - Authorization error (wrong permissions)
   - Domain-specific error cases (not found, conflict, etc.)
 
-### Step 3: Register Routes (if new domain)
+### Step 4: Register Routes (if new domain)
 If creating a new domain, check `apps/server/src/apis/index.ts` or equivalent route registration file and add the new domain routes.
 
 ## Output

@@ -19,6 +19,7 @@ import prescriptionsRoutes from "./apis/prescriptions/prescriptions.routes";
 import reportsRoutes from "./apis/reports/reports.routes";
 import rolesRoutes from "./apis/roles/roles.routes";
 import securityRoutes from "./apis/security/security.routes";
+import telemedicineRoutes from "./apis/telemedicine/telemedicine.routes";
 import usersRoutes from "./apis/users/users.routes";
 import vitalsRoutes from "./apis/vitals/vitals.routes";
 import { logger } from "./lib/logger";
@@ -108,6 +109,7 @@ app.use("/api/users", usersRoutes);
 app.use("/api/patients", patientsRoutes);
 app.use("/api/prescriptions", prescriptionsRoutes);
 app.use("/api/menu", menuRoutes);
+app.use("/api/telemedicine", telemedicineRoutes);
 app.use("/api/vitals", vitalsRoutes);
 app.use("/api/reports", reportsRoutes);
 
