@@ -1,0 +1,70 @@
+{
+	"version": 1,
+	"skills": {
+		"api-design": {
+			"source": "supercent-io/skills-template",
+			"sourceType": "github",
+			"computedHash": "9e1bf8ae7221dba7639be5e20b8656026a2d22a70b46ad99b732ba7c7bef03ad"
+		},
+		"api-design-principles": {
+			"source": "wshobson/agents",
+			"sourceType": "github",
+			"computedHash": "74d1cdb3f538a1f2758001f65132e6fd634dd0d3c8fdff54e6439a97f72499d9"
+		},
+		"api-documentation": {
+			"source": "supercent-io/skills-template",
+			"sourceType": "github",
+			"computedHash": "27f2781ea4b22a3bfaa3047b3e424f618ef9248809029b71f98139a7b50693ce"
+		},
+		"architecture-patterns": {
+			"source": "wshobson/agents",
+			"sourceType": "github",
+			"computedHash": "67711f2580e7196ad1730ca61513783f31943fb56fa5e308373f2dfd38ee15f4"
+		},
+		"backend-testing": {
+			"source": "supercent-io/skills-template",
+			"sourceType": "github",
+			"computedHash": "f6639145fd0e2324be8d3b0449592a6db4a2af85f15550df2e26f960e38bcb5b"
+		},
+		"debugging": {
+			"source": "supercent-io/skills-template",
+			"sourceType": "github",
+			"computedHash": "97c3070d5a6ef912cb7fe04ae6bc843ae5844d7bb10b4caa49284509ccd78e10"
+		},
+		"nodejs-backend-patterns": {
+			"source": "wshobson/agents",
+			"sourceType": "github",
+			"computedHash": "4c6bf8fbd9a13d61e326ddeb210af5854fea3b253922a7981bd7718f3b765c08"
+		},
+		"receiving-code-review": {
+			"source": "obra/superpowers",
+			"sourceType": "github",
+			"computedHash": "2760c85d4f4117b0006e7ba755f4bbd61f8f4c185f347999763c97f507274e30"
+		},
+		"requesting-code-review": {
+			"source": "obra/superpowers",
+			"sourceType": "github",
+			"computedHash": "93a837ba79c3c3f0b3e503fd9d8b54c638337d73d200c1af3bca9607264bf0e0"
+		},
+		"security-best-practices": {
+			"source": "supercent-io/skills-template",
+			"sourceType": "github",
+			"computedHash": "4647247fd17c7a3a48605fa5c935915295dcb9a3dcf5c9ba5209194bffbf6993"
+		},
+		"systematic-debugging": {
+			"source": "obra/superpowers",
+			"sourceType": "github",
+			"computedHash": "72e9ab72627e4fd8ed26a582e82309a98ecdc4f6e1c99418430ac05682c9e91d"
+		},
+		"typescript-advanced-types": {
+			"source": "wshobson/agents",
+			"sourceType": "github",
+			"computedHash": "a03a83996ae9d2f4dd6d4db08899d61761c7d5351bce4c695d20a21197742a36"
+		},
+		"verification-before-completion": {
+			"source": "obra/superpowers",
+			"sourceType": "github",
+			"computedHash": "9b446f0c7fe1cfb560b1d34439523b1a76d5f177290007b2c053a1c749a4a8ba"
+		}
+	}
+}
