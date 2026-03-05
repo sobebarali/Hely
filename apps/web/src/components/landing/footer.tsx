@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { UseHelyLogo } from "@/components/icons";
+import { HelyLogo } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 
 export function Footer() {
@@ -37,8 +37,8 @@ export function Footer() {
 						{/* Brand */}
 						<div>
 							<div className="flex items-center gap-2">
-								<UseHelyLogo className="h-6 w-6 text-primary" />
-								<span className="font-bold text-lg">useHely</span>
+								<HelyLogo className="h-6 w-6 text-primary" />
+								<span className="font-bold text-lg">Hely</span>
 							</div>
 							<p className="mt-4 text-muted-foreground text-sm">
 								Simplifying healthcare operations for hospitals, clinics, and
@@ -128,7 +128,7 @@ export function Footer() {
 					{/* Bottom */}
 					<div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 sm:flex-row">
 						<p className="text-muted-foreground text-sm">
-							&copy; {new Date().getFullYear()} useHely. All rights reserved.
+							&copy; {new Date().getFullYear()} Hely. All rights reserved.
 						</p>
 						<div className="flex items-center gap-4">
 							<a

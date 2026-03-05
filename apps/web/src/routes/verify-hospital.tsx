@@ -7,7 +7,7 @@ import {
 	ShieldCheck,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { UseHelyLogo } from "@/components/icons";
+import { HelyLogo } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useVerifyHospital } from "@/hooks/use-hospital";
@@ -48,9 +48,9 @@ function VerifyHospitalPage() {
 			<div className="absolute top-6 left-6">
 				<Link to="/" className="flex items-center gap-2">
 					<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-						<UseHelyLogo className="h-5 w-5 text-primary" />
+						<HelyLogo className="h-5 w-5 text-primary" />
 					</div>
-					<span className="font-bold text-lg">useHely</span>
+					<span className="font-bold text-lg">Hely</span>
 				</Link>
 			</div>
 

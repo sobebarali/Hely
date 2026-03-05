@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import { UseHelyLogo } from "@/components/icons";
+import { HelyLogo } from "@/components/icons";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { useIsAuthenticated } from "@/hooks/use-auth";
@@ -22,8 +22,8 @@ export function Header() {
 				<div className="flex h-16 items-center justify-between">
 					{/* Logo */}
 					<Link to="/" className="flex items-center gap-2">
-						<UseHelyLogo className="h-6 w-6 text-primary" />
-						<span className="font-bold text-lg">useHely</span>
+						<HelyLogo className="h-6 w-6 text-primary" />
+						<span className="font-bold text-lg">Hely</span>
 					</Link>
 
 					{/* Desktop Navigation */}

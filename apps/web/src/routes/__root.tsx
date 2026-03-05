@@ -15,12 +15,12 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 	head: () => ({
 		meta: [
 			{
-				title: "useHely",
+				title: "Hely",
 			},
 			{
 				name: "description",
 				content:
-					"useHely - A comprehensive multi-tenant SaaS platform for hospital operations",
+					"Hely - A comprehensive multi-tenant SaaS platform for hospital operations",
 			},
 		],
 		links: [

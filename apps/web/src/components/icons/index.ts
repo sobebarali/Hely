@@ -1,1 +1,1 @@
-export { UseHelyLogo } from "./usehely-logo";
+export { HelyLogo } from "./hely-logo";

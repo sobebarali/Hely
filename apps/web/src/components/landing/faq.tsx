@@ -90,7 +90,7 @@ export function FAQ() {
 						Frequently Asked Questions
 					</h2>
 					<p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-						Everything you need to know about useHely.
+						Everything you need to know about Hely.
 					</p>
 				</div>
 
