@@ -5,6 +5,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
 	authClient,
+	type BrandingDetails,
 	type HospitalDetails,
 	type HospitalStatus,
 	type RegisterHospitalInput,
@@ -104,6 +105,36 @@ export function useUpdateHospitalStatus() {
 				queryKey: hospitalKeys.detail(variables.hospitalId),
 			});
 		},
+	});
+}
+
+/**
+ * Hook for branding update mutation
+ */
+export function useUpdateBranding() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (data: Partial<BrandingDetails>) =>
+			authClient.updateBranding(data),
+		onSuccess: (_, __, ___) => {
+			queryClient.invalidateQueries({ queryKey: hospitalKeys.all });
+		},
+	});
+}
+
+/**
+ * Hook for branding asset upload mutation
+ */
+export function useUploadBrandingAsset() {
+	return useMutation({
+		mutationFn: ({
+			type,
+			image,
+		}: {
+			type: "logo" | "favicon";
+			image: string;
+		}) => authClient.uploadBrandingAsset({ type, image }),
 	});
 }
 

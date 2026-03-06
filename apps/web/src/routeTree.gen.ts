@@ -46,6 +46,7 @@ import { Route as DashboardSettingsNotificationsRouteImport } from './routes/das
 import { Route as DashboardSettingsGeneralRouteImport } from './routes/dashboard/settings/general'
 import { Route as DashboardSettingsDataExportRouteImport } from './routes/dashboard/settings/data-export'
 import { Route as DashboardSettingsDataDeletionRouteImport } from './routes/dashboard/settings/data-deletion'
+import { Route as DashboardSettingsBrandingRouteImport } from './routes/dashboard/settings/branding'
 import { Route as DashboardReportsRevenueRouteImport } from './routes/dashboard/reports/revenue'
 import { Route as DashboardReportsPatientsRouteImport } from './routes/dashboard/reports/patients'
 import { Route as DashboardReportsGenerateRouteImport } from './routes/dashboard/reports/generate'
@@ -276,6 +277,12 @@ const DashboardSettingsDataDeletionRoute =
     path: '/data-deletion',
     getParentRoute: () => DashboardSettingsRoute,
   } as any)
+const DashboardSettingsBrandingRoute =
+  DashboardSettingsBrandingRouteImport.update({
+    id: '/branding',
+    path: '/branding',
+    getParentRoute: () => DashboardSettingsRoute,
+  } as any)
 const DashboardReportsRevenueRoute = DashboardReportsRevenueRouteImport.update({
   id: '/reports/revenue',
   path: '/reports/revenue',
@@ -502,6 +509,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/reports/generate': typeof DashboardReportsGenerateRoute
   '/dashboard/reports/patients': typeof DashboardReportsPatientsRoute
   '/dashboard/reports/revenue': typeof DashboardReportsRevenueRoute
+  '/dashboard/settings/branding': typeof DashboardSettingsBrandingRoute
   '/dashboard/settings/data-deletion': typeof DashboardSettingsDataDeletionRoute
   '/dashboard/settings/data-export': typeof DashboardSettingsDataExportRoute
   '/dashboard/settings/general': typeof DashboardSettingsGeneralRoute
@@ -570,6 +578,7 @@ export interface FileRoutesByTo {
   '/dashboard/reports/generate': typeof DashboardReportsGenerateRoute
   '/dashboard/reports/patients': typeof DashboardReportsPatientsRoute
   '/dashboard/reports/revenue': typeof DashboardReportsRevenueRoute
+  '/dashboard/settings/branding': typeof DashboardSettingsBrandingRoute
   '/dashboard/settings/data-deletion': typeof DashboardSettingsDataDeletionRoute
   '/dashboard/settings/data-export': typeof DashboardSettingsDataExportRoute
   '/dashboard/settings/general': typeof DashboardSettingsGeneralRoute
@@ -643,6 +652,7 @@ export interface FileRoutesById {
   '/dashboard/reports/generate': typeof DashboardReportsGenerateRoute
   '/dashboard/reports/patients': typeof DashboardReportsPatientsRoute
   '/dashboard/reports/revenue': typeof DashboardReportsRevenueRoute
+  '/dashboard/settings/branding': typeof DashboardSettingsBrandingRoute
   '/dashboard/settings/data-deletion': typeof DashboardSettingsDataDeletionRoute
   '/dashboard/settings/data-export': typeof DashboardSettingsDataExportRoute
   '/dashboard/settings/general': typeof DashboardSettingsGeneralRoute
@@ -717,6 +727,7 @@ export interface FileRouteTypes {
     | '/dashboard/reports/generate'
     | '/dashboard/reports/patients'
     | '/dashboard/reports/revenue'
+    | '/dashboard/settings/branding'
     | '/dashboard/settings/data-deletion'
     | '/dashboard/settings/data-export'
     | '/dashboard/settings/general'
@@ -785,6 +796,7 @@ export interface FileRouteTypes {
     | '/dashboard/reports/generate'
     | '/dashboard/reports/patients'
     | '/dashboard/reports/revenue'
+    | '/dashboard/settings/branding'
     | '/dashboard/settings/data-deletion'
     | '/dashboard/settings/data-export'
     | '/dashboard/settings/general'
@@ -857,6 +869,7 @@ export interface FileRouteTypes {
     | '/dashboard/reports/generate'
     | '/dashboard/reports/patients'
     | '/dashboard/reports/revenue'
+    | '/dashboard/settings/branding'
     | '/dashboard/settings/data-deletion'
     | '/dashboard/settings/data-export'
     | '/dashboard/settings/general'
@@ -1163,6 +1176,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsDataDeletionRouteImport
       parentRoute: typeof DashboardSettingsRoute
     }
+    '/dashboard/settings/branding': {
+      id: '/dashboard/settings/branding'
+      path: '/branding'
+      fullPath: '/dashboard/settings/branding'
+      preLoaderRoute: typeof DashboardSettingsBrandingRouteImport
+      parentRoute: typeof DashboardSettingsRoute
+    }
     '/dashboard/reports/revenue': {
       id: '/dashboard/reports/revenue'
       path: '/reports/revenue'
@@ -1432,6 +1452,7 @@ const DashboardAdminRouteWithChildren = DashboardAdminRoute._addFileChildren(
 )
 
 interface DashboardSettingsRouteChildren {
+  DashboardSettingsBrandingRoute: typeof DashboardSettingsBrandingRoute
   DashboardSettingsDataDeletionRoute: typeof DashboardSettingsDataDeletionRoute
   DashboardSettingsDataExportRoute: typeof DashboardSettingsDataExportRoute
   DashboardSettingsGeneralRoute: typeof DashboardSettingsGeneralRoute
@@ -1443,6 +1464,7 @@ interface DashboardSettingsRouteChildren {
 }
 
 const DashboardSettingsRouteChildren: DashboardSettingsRouteChildren = {
+  DashboardSettingsBrandingRoute: DashboardSettingsBrandingRoute,
   DashboardSettingsDataDeletionRoute: DashboardSettingsDataDeletionRoute,
   DashboardSettingsDataExportRoute: DashboardSettingsDataExportRoute,
   DashboardSettingsGeneralRoute: DashboardSettingsGeneralRoute,
