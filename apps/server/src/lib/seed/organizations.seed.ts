@@ -397,6 +397,8 @@ async function seedUsers({
 							status: "ACTIVE",
 							forcePasswordChange: false,
 							passwordHistory: [hashedPassword],
+							createdAt: new Date(),
+							updatedAt: new Date(),
 						},
 					],
 					{ session },
@@ -563,10 +565,50 @@ async function seedOrganization(
 		if (existing) {
 			logger.info(
 				{ slug: config.slug },
-				"Organization already exists, skipping",
+				"Organization already exists, checking for missing staff records",
 			);
-			await session.abortTransaction();
-			return null;
+
+			const tenantId = String(existing._id);
+
+			// Get role map for existing org
+			const roles = await Role.find({ tenantId, isSystem: true }).session(
+				session,
+			);
+			const roleMap = new Map(
+				roles.map((r) => [r.name as string, String(r._id)]),
+			);
+
+			// Get department map for existing org
+			const departments = await Department.find({ tenantId }).session(session);
+			const departmentMap = new Map(
+				departments.map((d) => [d.code as string, String(d._id)]),
+			);
+
+			// Seed users (will create missing staff records)
+			const staffByRole = await seedUsers({
+				tenantId,
+				emailPrefix: config.emailPrefix,
+				departmentMap,
+				roleMap,
+				session,
+			});
+
+			// Update department heads if any new staff were created
+			if (staffByRole.size > 0) {
+				await updateDepartmentHeads({
+					tenantId,
+					departmentMap,
+					staffByRole,
+					session,
+				});
+			}
+
+			await session.commitTransaction();
+			return {
+				tenantId,
+				departments: 0,
+				users: staffByRole.size,
+			};
 		}
 
 		// Create organization
