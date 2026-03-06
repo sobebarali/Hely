@@ -53,7 +53,7 @@ function BrandingSettingsPage() {
 	const hospitalBranding = session?.hospital?.branding;
 
 	return (
-		<div className="flex flex-col gap-4 p-4 md:gap-6 md:p-6">
+		<div className="flex flex-col gap-4 md:gap-6">
 			<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 				<div>
 					<h1 className="font-bold text-2xl">Branding Settings</h1>
@@ -626,7 +626,7 @@ function BrandingEditForm({
 
 function BrandingSkeleton() {
 	return (
-		<div className="flex flex-col gap-4 p-4 md:gap-6 md:p-6">
+		<div className="flex flex-col gap-4 md:gap-6">
 			<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 				<div className="space-y-2">
 					<Skeleton className="h-8 w-48" />
