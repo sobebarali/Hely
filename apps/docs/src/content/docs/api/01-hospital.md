@@ -423,6 +423,139 @@ PENDING → VERIFIED → ACTIVE → SUSPENDED → INACTIVE
 
 ---
 
+## Get Branding by Domain
+
+**GET** `/api/hospitals/branding?domain=...`
+
+Retrieves the white-label branding configuration for a custom domain. Used by the frontend to load tenant-specific branding on unauthenticated pages.
+
+### Authentication
+
+None required (public endpoint). Rate limited.
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| domain | string | Yes | Custom domain to look up (e.g. `portal.myclinic.com`) |
+
+### Response
+
+**Status: 200 OK**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| appName | string \| null | Custom application name |
+| logoUrl | string \| null | URL to custom logo image |
+| faviconUrl | string \| null | URL to custom favicon |
+| supportEmail | string \| null | Custom support email |
+| primaryColor | string \| null | Hex color (e.g. `#3b82f6`) |
+| accentColor | string \| null | Hex accent color |
+| customDomain | string \| null | The custom domain |
+
+### Errors
+
+| Status | Code | Description |
+|--------|------|-------------|
+| 400 | BAD_REQUEST | Missing `domain` query parameter |
+| 404 | NOT_FOUND | No organization found for this domain |
+| 429 | RATE_LIMIT_EXCEEDED | Too many requests |
+
+---
+
+## Update Branding
+
+**PATCH** `/api/hospitals/branding`
+
+Updates the white-label branding configuration for the authenticated user's organization.
+
+### Authentication
+
+Required. Bearer token with `TENANT:UPDATE` permission.
+
+### Request Body
+
+All fields optional. Pass `null` to remove a field.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| appName | string | Custom application name (1-100 chars) |
+| logoUrl | string | URL to custom logo (must be valid URL) |
+| faviconUrl | string | URL to custom favicon (must be valid URL) |
+| supportEmail | string | Custom support email (must be valid email) |
+| primaryColor | string | Hex color code (e.g. `#3b82f6`) |
+| accentColor | string | Hex color code (e.g. `#1e40af`) |
+| customDomain | string \| null | Custom domain (e.g. `portal.myclinic.com`). Pass `null` to remove |
+
+### Response
+
+**Status: 200 OK**
+
+Returns the full branding object (same fields as Get Branding response).
+
+### Errors
+
+| Status | Code | Description |
+|--------|------|-------------|
+| 400 | VALIDATION_ERROR | Invalid field values (bad hex color, invalid URL, etc.) |
+| 401 | UNAUTHORIZED | Missing or invalid token |
+| 403 | FORBIDDEN | Insufficient permissions |
+
+### Business Rules
+
+- Branding is scoped to the tenant derived from the JWT — no tenant ID in the request
+- Custom domain must be a valid domain format (e.g. `portal.myclinic.com`)
+- Setting a field to `null` removes it (reverts to platform defaults)
+- Changes take effect immediately for all users in the tenant
+
+---
+
+## Upload Branding Asset
+
+**POST** `/api/hospitals/branding/:type`
+
+Uploads a logo or favicon image for the organization's branding.
+
+### Authentication
+
+Required. Bearer token with `TENANT:UPDATE` permission.
+
+### Path Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| type | string | Asset type: `logo` or `favicon` |
+
+### Request Body
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| image | string | Yes | Base64-encoded image data (e.g. `data:image/png;base64,...`) |
+
+### Response
+
+**Status: 200 OK**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| url | string | Public URL of the uploaded asset |
+
+### Errors
+
+| Status | Code | Description |
+|--------|------|-------------|
+| 400 | VALIDATION_ERROR | Invalid image data or unsupported type |
+| 401 | UNAUTHORIZED | Missing or invalid token |
+| 403 | FORBIDDEN | Insufficient permissions |
+
+### Business Rules
+
+- Only `logo` and `favicon` types are accepted
+- Image is stored and a public URL is returned
+- The returned URL can then be set via the Update Branding endpoint
+
+---
+
 ## Tenant Isolation
 
 All API requests include tenant context derived from the JWT token.
