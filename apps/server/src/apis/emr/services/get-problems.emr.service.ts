@@ -14,7 +14,7 @@ export async function getProblemsService({
 	patientId: string;
 	status?: string;
 }) {
-	logger.info({ tenantId, patientId, status }, "Getting problem list");
+	logger.debug({ patientId, status }, "Getting problem list");
 
 	const patient = await findPatientById({ tenantId, patientId });
 	if (!patient) {
@@ -24,7 +24,7 @@ export async function getProblemsService({
 	const problems = await findProblemsByPatient({
 		tenantId,
 		patientId,
-		status: status || "ACTIVE",
+		status,
 	});
 
 	const data = problems.map((p) => ({

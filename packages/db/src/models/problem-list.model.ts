@@ -37,6 +37,7 @@ const problemListSchema = new Schema(
 problemListSchema.index({ tenantId: 1, patientId: 1, status: 1 });
 problemListSchema.index({ tenantId: 1, patientId: 1, code: 1 });
 problemListSchema.index({ tenantId: 1, createdAt: -1 });
+problemListSchema.index({ tenantId: 1, patientId: 1, createdAt: -1 });
 
 const ProblemList = model("ProblemList", problemListSchema);
 

@@ -198,7 +198,7 @@ function NotificationSettingsPage() {
 			// In a real app, this would call an API to save preferences
 			await new Promise((resolve) => setTimeout(resolve, 1000));
 			toast.success("Notification preferences saved successfully");
-		} catch (error) {
+		} catch (_error) {
 			toast.error("Failed to save notification preferences");
 		} finally {
 			setIsSaving(false);

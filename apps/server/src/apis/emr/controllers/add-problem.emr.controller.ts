@@ -10,6 +10,7 @@ import {
 	authenticatedHandler,
 } from "../../../utils/async-handler";
 import { addProblemService } from "../services/add-problem.emr.service";
+import type { AddProblemInput } from "../validations/add-problem.emr.validation";
 
 const logger = createControllerLogger("addProblem");
 
@@ -19,7 +20,7 @@ export const addProblemController = authenticatedHandler(
 
 		logInput(
 			logger,
-			{ patientId: req.params.patientId, body: req.body },
+			{ patientId: req.params.patientId, code: req.body.code },
 			"Add problem request received",
 		);
 
@@ -30,11 +31,12 @@ export const addProblemController = authenticatedHandler(
 			);
 		}
 
+		const input = req.body as AddProblemInput;
 		const result = await addProblemService({
 			tenantId: req.user.tenantId,
-			patientId: req.params.patientId as string,
+			patientId: req.params.patientId,
 			addedBy: req.user.staffId,
-			...req.body,
+			...input,
 		});
 
 		const duration = Date.now() - startTime;

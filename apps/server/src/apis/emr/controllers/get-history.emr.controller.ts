@@ -24,7 +24,7 @@ export const getHistoryController = authenticatedHandler(
 
 		const result = await getHistoryService({
 			tenantId: req.user.tenantId,
-			patientId: req.params.patientId as string,
+			patientId: req.params.patientId,
 		});
 
 		const duration = Date.now() - startTime;

@@ -102,6 +102,7 @@ clinicalNoteSchema.index({ tenantId: 1, type: 1 });
 clinicalNoteSchema.index({ tenantId: 1, status: 1 });
 clinicalNoteSchema.index({ tenantId: 1, createdAt: -1 });
 clinicalNoteSchema.index({ tenantId: 1, encounterId: 1 });
+clinicalNoteSchema.index({ tenantId: 1, updatedAt: -1 });
 
 // Field-level encryption for PHI data
 clinicalNoteSchema.plugin(fieldEncryptionPlugin, {
@@ -112,6 +113,8 @@ clinicalNoteSchema.plugin(fieldEncryptionPlugin, {
 		"assessment",
 		"plan",
 		"content",
+		"amendments.reason",
+		"amendments.content",
 	],
 	getMasterKey: () => process.env.ENCRYPTION_MASTER_KEY,
 });

@@ -9,6 +9,7 @@ import {
 	authenticatedHandler,
 } from "../../../utils/async-handler";
 import { listNotesService } from "../services/list-notes.emr.service";
+import type { ListNotesQuery } from "../validations/list-notes.emr.validation";
 
 const logger = createControllerLogger("listNotes");
 
@@ -18,13 +19,19 @@ export const listNotesController = authenticatedHandler(
 
 		logInput(
 			logger,
-			{ query: req.query },
+			{
+				page: req.query.page,
+				limit: req.query.limit,
+				type: req.query.type,
+				status: req.query.status,
+			},
 			"List clinical notes request received",
 		);
 
+		const query = req.query as unknown as ListNotesQuery;
 		const result = await listNotesService({
 			tenantId: req.user.tenantId,
-			...req.query,
+			...query,
 		});
 
 		const duration = Date.now() - startTime;

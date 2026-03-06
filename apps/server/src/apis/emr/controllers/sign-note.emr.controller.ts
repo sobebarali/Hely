@@ -32,7 +32,7 @@ export const signNoteController = authenticatedHandler(
 
 		const result = await signNoteService({
 			tenantId: req.user.tenantId,
-			noteId: req.params.noteId as string,
+			noteId: req.params.noteId,
 			signedBy: req.user.staffId,
 		});
 

@@ -23,6 +23,7 @@
 		"seed:dispensing": "tsx src/lib/seed/dispensing.seed.ts",
 		"seed:test-catalog": "tsx src/lib/seed/test-catalog.seed.ts",
 		"seed:lab-orders": "tsx src/lib/seed/lab-orders.seed.ts",
+		"seed:emr": "tsx src/lib/seed/emr.seed.ts",
 		"seed:all": "tsx src/lib/seed/seed-all.ts"
 	},
 	"dependencies": {

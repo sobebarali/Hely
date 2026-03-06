@@ -197,7 +197,7 @@ async function generateReportPDF({
 				];
 
 				for (let j = 0; j < columns.length; j++) {
-					const col = columns[j]!;
+					const col = columns[j] as (typeof columns)[number];
 					doc.text(rowData[j] || "", currentX + 2, rowY, {
 						width: col.width - 4,
 						height: 12,

@@ -16,7 +16,7 @@ export async function timelineService({
 	tenantId: string;
 	patientId: string;
 } & TimelineQuery) {
-	logger.info({ tenantId, patientId }, "Getting patient timeline");
+	logger.debug({ patientId }, "Getting patient timeline");
 
 	const patient = await findPatientById({ tenantId, patientId });
 	if (!patient) {

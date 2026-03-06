@@ -10,6 +10,7 @@ import {
 	authenticatedHandler,
 } from "../../../utils/async-handler";
 import { updateNoteService } from "../services/update-note.emr.service";
+import type { UpdateNoteInput } from "../validations/update-note.emr.validation";
 
 const logger = createControllerLogger("updateNote");
 
@@ -19,7 +20,7 @@ export const updateNoteController = authenticatedHandler(
 
 		logInput(
 			logger,
-			{ noteId: req.params.noteId, body: req.body },
+			{ noteId: req.params.noteId, fieldsProvided: Object.keys(req.body) },
 			"Update clinical note request received",
 		);
 
@@ -30,11 +31,12 @@ export const updateNoteController = authenticatedHandler(
 			);
 		}
 
+		const input = req.body as UpdateNoteInput;
 		const result = await updateNoteService({
 			tenantId: req.user.tenantId,
-			noteId: req.params.noteId as string,
+			noteId: req.params.noteId,
 			userId: req.user.staffId,
-			...req.body,
+			...input,
 		});
 
 		const duration = Date.now() - startTime;

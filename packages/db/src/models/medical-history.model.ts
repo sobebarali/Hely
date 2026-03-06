@@ -106,6 +106,10 @@ const medicalHistorySchema = new Schema(
 medicalHistorySchema.index({ tenantId: 1, patientId: 1 }, { unique: true });
 
 // Field-level encryption for PHI data
+// TODO: PHI fields (allergies, medications, surgicalHistory, familyHistory,
+// socialHistory, immunizations, pastMedicalHistory) should be encrypted.
+// The current fieldEncryptionPlugin only supports top-level string fields,
+// not arrays/sub-documents. Extend the plugin to support these types.
 medicalHistorySchema.plugin(fieldEncryptionPlugin, {
 	fields: [],
 	getMasterKey: () => process.env.ENCRYPTION_MASTER_KEY,

@@ -570,6 +570,9 @@ async function seedOrganization(
 
 			const tenantId = String(existing._id);
 
+			// Re-seed system roles to update permissions if they changed
+			await seedSystemRoles({ tenantId, session });
+
 			// Get role map for existing org
 			const roles = await Role.find({ tenantId, isSystem: true }).session(
 				session,

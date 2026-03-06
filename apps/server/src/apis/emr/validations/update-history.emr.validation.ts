@@ -20,8 +20,18 @@ export const updateHistorySchema = z.object({
 					name: z.string().min(1),
 					dosage: z.string().optional(),
 					frequency: z.string().optional(),
-					startDate: z.string().optional(),
-					endDate: z.string().optional(),
+					startDate: z
+						.string()
+						.refine((v) => !Number.isNaN(Date.parse(v)), {
+							message: "Must be a valid ISO 8601 date",
+						})
+						.optional(),
+					endDate: z
+						.string()
+						.refine((v) => !Number.isNaN(Date.parse(v)), {
+							message: "Must be a valid ISO 8601 date",
+						})
+						.optional(),
 				}),
 			)
 			.optional(),
@@ -29,7 +39,12 @@ export const updateHistorySchema = z.object({
 			.array(
 				z.object({
 					procedure: z.string().min(1),
-					date: z.string().optional(),
+					date: z
+						.string()
+						.refine((v) => !Number.isNaN(Date.parse(v)), {
+							message: "Must be a valid ISO 8601 date",
+						})
+						.optional(),
 					notes: z.string().optional(),
 				}),
 			)
@@ -56,7 +71,12 @@ export const updateHistorySchema = z.object({
 			.array(
 				z.object({
 					vaccine: z.string().min(1),
-					date: z.string().optional(),
+					date: z
+						.string()
+						.refine((v) => !Number.isNaN(Date.parse(v)), {
+							message: "Must be a valid ISO 8601 date",
+						})
+						.optional(),
 					notes: z.string().optional(),
 				}),
 			)
@@ -65,7 +85,12 @@ export const updateHistorySchema = z.object({
 			.array(
 				z.object({
 					condition: z.string().min(1),
-					diagnosedDate: z.string().optional(),
+					diagnosedDate: z
+						.string()
+						.refine((v) => !Number.isNaN(Date.parse(v)), {
+							message: "Must be a valid ISO 8601 date",
+						})
+						.optional(),
 					status: z.string().optional(),
 					notes: z.string().optional(),
 				}),

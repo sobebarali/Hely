@@ -1,5 +1,6 @@
 import { MedicalHistory } from "@hms/db";
 import { v4 as uuidv4 } from "uuid";
+import { InternalError } from "../../../errors";
 import {
 	createRepositoryLogger,
 	logDatabaseOperation,
@@ -31,7 +32,7 @@ export async function upsertMedicalHistory({
 		).lean();
 
 		if (!history) {
-			throw new Error("Failed to upsert medical history");
+			throw new InternalError("Failed to upsert medical history");
 		}
 
 		logDatabaseOperation(
@@ -44,7 +45,10 @@ export async function upsertMedicalHistory({
 
 		return history as unknown as MedicalHistoryLean;
 	} catch (error) {
-		logError(logger, error, "Failed to upsert medical history", { tenantId });
+		logError(logger, error, "Failed to upsert medical history", {
+			tenantId,
+			patientId,
+		});
 		throw error;
 	}
 }

@@ -204,13 +204,39 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		],
 	},
 
+	// EMR - Clinical Notes & Medical History
+	{
+		id: "emr",
+		label: "EMR",
+		icon: "clinical_notes",
+		permission: "EMR:READ",
+		order: 8,
+		visible: true,
+		children: [
+			{
+				id: "emr-notes",
+				label: "Clinical Notes",
+				path: "/dashboard/emr/notes",
+				permission: "EMR:READ",
+				order: 1,
+			},
+			{
+				id: "emr-overview",
+				label: "EMR Overview",
+				path: "/dashboard/emr",
+				permission: "EMR:READ",
+				order: 2,
+			},
+		],
+	},
+
 	// Pharmacy - Pharmacists
 	{
 		id: "pharmacy",
 		label: "Dispensing",
 		icon: "local_pharmacy",
 		permission: "DISPENSING:READ",
-		order: 8,
+		order: 9,
 		visible: true,
 		children: [
 			{
@@ -236,7 +262,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		label: "Lab & Diagnostics",
 		icon: "biotech",
 		permission: "LAB:READ",
-		order: 9,
+		order: 10,
 		visible: true,
 		children: [
 			{
@@ -270,7 +296,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		icon: "inventory",
 		path: "/dashboard/inventory",
 		permission: "INVENTORY:READ",
-		order: 10,
+		order: 11,
 		visible: true,
 		children: [
 			{
@@ -311,7 +337,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		icon: "queue",
 		path: "/dashboard/patients/opd-queue",
 		permission: "QUEUE:MANAGE",
-		order: 11,
+		order: 12,
 		visible: true,
 	},
 
@@ -321,7 +347,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		label: "Departments",
 		icon: "business",
 		permission: "DEPARTMENT:READ",
-		order: 12,
+		order: 13,
 		visible: true,
 		children: [
 			{
@@ -348,7 +374,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		icon: "assignment",
 		path: "/dashboard/reports",
 		permission: "REPORT:READ",
-		order: 13,
+		order: 14,
 		visible: true,
 		children: [
 			{
@@ -382,7 +408,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		icon: "settings",
 		path: "/dashboard/settings",
 		permission: "SETTINGS:MANAGE",
-		order: 14,
+		order: 15,
 		visible: true,
 		children: [
 			{
@@ -451,7 +477,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		icon: "shield_check",
 		path: "/dashboard/admin/compliance",
 		permission: "COMPLIANCE:MANAGE",
-		order: 15,
+		order: 16,
 		visible: true,
 	},
 
@@ -461,7 +487,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		label: "Security Admin",
 		icon: "security",
 		permission: "SECURITY:READ",
-		order: 16,
+		order: 17,
 		visible: true,
 		children: [
 			{

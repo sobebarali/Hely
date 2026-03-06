@@ -54,7 +54,7 @@ function GeneralSettingsPage() {
 		try {
 			const response = await billingPortalMutation.mutateAsync();
 			window.open(response.url, "_blank");
-		} catch (error) {
+		} catch (_error) {
 			toast.error("Failed to open billing portal");
 		}
 	};
@@ -171,136 +171,125 @@ function SubscriptionInformationCard({
 	const isFree = subscription.plan === "FREE";
 
 	return (
-		<>
-			<Card>
-				<CardHeader>
-					<div className="flex items-center justify-between">
-						<div className="flex items-center gap-2">
-							<div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-								<CreditCard className="h-5 w-5 text-primary" />
-							</div>
-							<div>
-								<CardTitle>Subscription Details</CardTitle>
-								<CardDescription>
-									Your current plan and billing information
-								</CardDescription>
-							</div>
+		<Card>
+			<CardHeader>
+				<div className="flex items-center justify-between">
+					<div className="flex items-center gap-2">
+						<div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+							<CreditCard className="h-5 w-5 text-primary" />
 						</div>
-						<Badge variant={statusVariant}>{subscription.status}</Badge>
+						<div>
+							<CardTitle>Subscription Details</CardTitle>
+							<CardDescription>
+								Your current plan and billing information
+							</CardDescription>
+						</div>
 					</div>
-				</CardHeader>
-				<CardContent className="space-y-6">
-					<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					<Badge variant={statusVariant}>{subscription.status}</Badge>
+				</div>
+			</CardHeader>
+			<CardContent className="space-y-6">
+				<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					<div className="space-y-1">
+						<Label className="text-muted-foreground text-xs">
+							Current Plan
+						</Label>
+						<p className="font-semibold text-lg">{subscription.plan}</p>
+					</div>
+					<div className="space-y-1">
+						<Label className="text-muted-foreground text-xs">
+							Billing Cycle
+						</Label>
+						<p className="font-medium">
+							{isFree ? "N/A" : subscription.billingCycle}
+						</p>
+					</div>
+					{!isFree && (
 						<div className="space-y-1">
-							<Label className="text-muted-foreground text-xs">
-								Current Plan
-							</Label>
-							<p className="font-semibold text-lg">{subscription.plan}</p>
-						</div>
-						<div className="space-y-1">
-							<Label className="text-muted-foreground text-xs">
-								Billing Cycle
-							</Label>
+							<Label className="text-muted-foreground text-xs">Amount</Label>
 							<p className="font-medium">
-								{isFree ? "N/A" : subscription.billingCycle}
+								{subscription.currency} {(subscription.amount / 100).toFixed(2)}
+								<span className="text-muted-foreground text-sm">
+									/{subscription.billingCycle === "MONTHLY" ? "month" : "year"}
+								</span>
 							</p>
 						</div>
-						{!isFree && (
-							<div className="space-y-1">
-								<Label className="text-muted-foreground text-xs">Amount</Label>
-								<p className="font-medium">
-									{subscription.currency}{" "}
-									{(subscription.amount / 100).toFixed(2)}
-									<span className="text-muted-foreground text-sm">
-										/
-										{subscription.billingCycle === "MONTHLY" ? "month" : "year"}
-									</span>
-								</p>
-							</div>
-						)}
+					)}
+				</div>
+
+				<Separator />
+
+				<div className="grid gap-4 sm:grid-cols-2">
+					<div className="flex items-start gap-3">
+						<Calendar className="mt-0.5 h-4 w-4 text-muted-foreground" />
+						<div className="space-y-1">
+							<Label className="text-muted-foreground text-xs">
+								Current Period
+							</Label>
+							<p className="text-sm">
+								{new Date(subscription.currentPeriodStart).toLocaleDateString()}{" "}
+								- {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
+							</p>
+						</div>
 					</div>
-
-					<Separator />
-
-					<div className="grid gap-4 sm:grid-cols-2">
+					{!isFree && subscription.nextBillingDate && (
 						<div className="flex items-start gap-3">
 							<Calendar className="mt-0.5 h-4 w-4 text-muted-foreground" />
 							<div className="space-y-1">
 								<Label className="text-muted-foreground text-xs">
-									Current Period
+									Next Billing Date
 								</Label>
 								<p className="text-sm">
-									{new Date(
-										subscription.currentPeriodStart,
-									).toLocaleDateString()}{" "}
-									-{" "}
-									{new Date(subscription.currentPeriodEnd).toLocaleDateString()}
+									{new Date(subscription.nextBillingDate).toLocaleDateString()}
 								</p>
 							</div>
 						</div>
-						{!isFree && subscription.nextBillingDate && (
-							<div className="flex items-start gap-3">
-								<Calendar className="mt-0.5 h-4 w-4 text-muted-foreground" />
-								<div className="space-y-1">
-									<Label className="text-muted-foreground text-xs">
-										Next Billing Date
-									</Label>
-									<p className="text-sm">
-										{new Date(
-											subscription.nextBillingDate,
-										).toLocaleDateString()}
-									</p>
-								</div>
-							</div>
-						)}
+					)}
+				</div>
+
+				{subscription.cancelledAt && subscription.cancellationReason && (
+					<Alert variant="destructive">
+						<AlertDescription>
+							<p className="font-medium">
+								Subscription cancelled on{" "}
+								{new Date(subscription.cancelledAt).toLocaleDateString()}
+							</p>
+							<p className="text-sm">
+								Reason: {subscription.cancellationReason}
+							</p>
+							{subscription.gracePeriodEnds && (
+								<p className="mt-1 text-sm">
+									Access until:{" "}
+									{new Date(subscription.gracePeriodEnds).toLocaleDateString()}
+								</p>
+							)}
+						</AlertDescription>
+					</Alert>
+				)}
+
+				{hasBillingAccess && !isFree && (
+					<div className="flex gap-2">
+						<Button
+							onClick={onOpenPortal}
+							disabled={isLoadingPortal}
+							variant="default"
+						>
+							{isLoadingPortal ? (
+								<>
+									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									Opening...
+								</>
+							) : (
+								<>
+									<ExternalLink className="mr-2 h-4 w-4" />
+									Manage Billing
+								</>
+							)}
+						</Button>
 					</div>
-
-					{subscription.cancelledAt && subscription.cancellationReason && (
-						<Alert variant="destructive">
-							<AlertDescription>
-								<p className="font-medium">
-									Subscription cancelled on{" "}
-									{new Date(subscription.cancelledAt).toLocaleDateString()}
-								</p>
-								<p className="text-sm">
-									Reason: {subscription.cancellationReason}
-								</p>
-								{subscription.gracePeriodEnds && (
-									<p className="mt-1 text-sm">
-										Access until:{" "}
-										{new Date(
-											subscription.gracePeriodEnds,
-										).toLocaleDateString()}
-									</p>
-								)}
-							</AlertDescription>
-						</Alert>
-					)}
-
-					{hasBillingAccess && !isFree && (
-						<div className="flex gap-2">
-							<Button
-								onClick={onOpenPortal}
-								disabled={isLoadingPortal}
-								variant="default"
-							>
-								{isLoadingPortal ? (
-									<>
-										<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-										Opening...
-									</>
-								) : (
-									<>
-										<ExternalLink className="mr-2 h-4 w-4" />
-										Manage Billing
-									</>
-								)}
-							</Button>
-						</div>
-					)}
-				</CardContent>
-			</Card>
-		</>
+				)}
+			</CardContent>
+		</Card>
 	);
 }
 

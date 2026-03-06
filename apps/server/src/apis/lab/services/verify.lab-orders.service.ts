@@ -81,7 +81,7 @@ export async function verifyLabOrderService({
 
 	return {
 		id: String(updatedOrder._id),
-		status: updatedOrder.status!,
+		status: updatedOrder.status as string,
 		verifiedBy: {
 			id: String(staff._id),
 			employeeId: staff.employeeId,

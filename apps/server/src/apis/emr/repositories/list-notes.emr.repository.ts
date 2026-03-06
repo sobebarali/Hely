@@ -6,6 +6,10 @@ import {
 } from "../../../lib/logger";
 import type { ClinicalNoteLean } from "./shared.emr.repository";
 
+function escapeRegex(value: string): string {
+	return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 const logger = createRepositoryLogger("listNotes");
 
 export interface ListNotesResult {
@@ -64,11 +68,12 @@ export async function listClinicalNotes({
 		}
 
 		if (search) {
+			const escaped = escapeRegex(search);
 			filter.$or = [
-				{ chiefComplaint: { $regex: search, $options: "i" } },
-				{ content: { $regex: search, $options: "i" } },
-				{ subjective: { $regex: search, $options: "i" } },
-				{ assessment: { $regex: search, $options: "i" } },
+				{ chiefComplaint: { $regex: escaped, $options: "i" } },
+				{ content: { $regex: escaped, $options: "i" } },
+				{ subjective: { $regex: escaped, $options: "i" } },
+				{ assessment: { $regex: escaped, $options: "i" } },
 			];
 		}
 
@@ -79,7 +84,16 @@ export async function listClinicalNotes({
 		const sortField = sortBy || "createdAt";
 		const sortDir = sortOrder === "asc" ? 1 : -1;
 
-		const notes = await ClinicalNote.find(filter)
+		const notes = await ClinicalNote.find(filter, {
+			noteId: 1,
+			patientId: 1,
+			type: 1,
+			status: 1,
+			authorId: 1,
+			chiefComplaint: 1,
+			createdAt: 1,
+			updatedAt: 1,
+		})
 			.sort({ [sortField]: sortDir })
 			.skip(skip)
 			.limit(limit)

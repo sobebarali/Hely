@@ -107,7 +107,7 @@ describe("POST /api/emr/notes/:noteId/sign - Sign clinical note", () => {
 			.post(`/api/emr/notes/${noteId}/sign`)
 			.set("Authorization", `Bearer ${accessToken}`);
 
-		expect(response.status).toBe(400);
+		expect(response.status).toBe(404);
 	});
 
 	it("rejects update of a signed note", async () => {

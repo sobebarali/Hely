@@ -48,6 +48,7 @@ const iconMap: Record<string, LucideIcon> = {
 	shield_check: ShieldCheck,
 	security: Shield,
 	biotech: FlaskConical,
+	clinical_notes: FileText,
 };
 
 // Convert server menu items to NavMain format

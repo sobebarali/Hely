@@ -52,7 +52,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { Textarea } from "@/components/ui/textarea";
 import { type TestCatalogItem, useAddTest, useLabTests } from "@/hooks/use-lab";
 import type { ApiError } from "@/lib/api-client";
 import { authClient } from "@/lib/auth-client";

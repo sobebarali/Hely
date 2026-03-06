@@ -15,20 +15,9 @@ import {
 	MoreHorizontal,
 	Plus,
 	Search,
-	Trash2,
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,7 +25,6 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -77,7 +65,7 @@ function TemplatesListPage() {
 	const [search, setSearch] = useState("");
 	const [categoryFilter, setCategoryFilter] = useState<string>("");
 	const [sorting, setSorting] = useState<SortingState>([]);
-	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+	const [_deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 	const [selectedTemplate, setSelectedTemplate] =
 		useState<TemplateListItem | null>(null);
 
@@ -88,7 +76,7 @@ function TemplatesListPage() {
 	});
 	const deleteTemplateMutation = useDeleteTemplate();
 
-	const handleDeleteTemplate = async () => {
+	const _handleDeleteTemplate = async () => {
 		if (!selectedTemplate) return;
 		try {
 			await deleteTemplateMutation.mutateAsync(selectedTemplate.id);

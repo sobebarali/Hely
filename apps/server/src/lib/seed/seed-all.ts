@@ -17,6 +17,7 @@ import { createServiceLogger } from "../logger";
 import { seedAllAdmissions } from "./admissions.seed";
 import { seedAllAppointments } from "./appointments.seed";
 import { seedAllDispensing } from "./dispensing.seed";
+import { seedAllEmr } from "./emr.seed";
 import { seedAllInventory } from "./inventory.seed";
 import { seedAllLabOrders } from "./lab-orders.seed";
 import { seedAllMedicines } from "./medicines.seed";
@@ -40,6 +41,7 @@ interface SeedResult {
 	dispensing: number;
 	testCatalog: number;
 	labOrders: number;
+	emr: number;
 }
 
 /**
@@ -60,6 +62,7 @@ export async function seedAll(): Promise<SeedResult> {
 		dispensing: 0,
 		testCatalog: 0,
 		labOrders: 0,
+		emr: 0,
 	};
 
 	// 1. Organizations (includes departments, users, roles)
@@ -120,6 +123,11 @@ export async function seedAll(): Promise<SeedResult> {
 	result.labOrders = await seedAllLabOrders();
 	console.log(`   ✅ ${result.labOrders} lab orders`);
 
+	// 12. EMR (needs patients, staff)
+	console.log("\n📋 Seeding EMR data...");
+	result.emr = await seedAllEmr();
+	console.log(`   ✅ ${result.emr} EMR records`);
+
 	logger.info(result, "Complete seed process finished");
 	return result;
 }
@@ -142,7 +150,7 @@ async function main(): Promise<void> {
 		const result = await seedAll();
 		const duration = ((Date.now() - startTime) / 1000).toFixed(2);
 
-		console.log("\n" + "━".repeat(50));
+		console.log(`\n${"━".repeat(50)}`);
 		console.log("🎉 SEED COMPLETE");
 		console.log("━".repeat(50));
 		console.log(`
@@ -158,6 +166,7 @@ Summary:
   Dispensing:    ${result.dispensing}
   Test Catalog:  ${result.testCatalog}
   Lab Orders:    ${result.labOrders}
+  EMR:           ${result.emr}
 
 Duration: ${duration}s
 

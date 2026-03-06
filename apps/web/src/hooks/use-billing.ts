@@ -3,13 +3,7 @@
  */
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-	type ApiError,
-	type BillingPortalResponse,
-	type BillingSubscription,
-	getBillingPortal,
-	getBillingSubscription,
-} from "@/lib/billing-client";
+import { getBillingPortal, getBillingSubscription } from "@/lib/billing-client";
 
 // Query keys
 export const billingKeys = {

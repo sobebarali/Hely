@@ -9,6 +9,7 @@ import {
 	authenticatedHandler,
 } from "../../../utils/async-handler";
 import { timelineService } from "../services/timeline.emr.service";
+import type { TimelineQuery } from "../validations/timeline.emr.validation";
 
 const logger = createControllerLogger("timeline");
 
@@ -18,14 +19,19 @@ export const timelineController = authenticatedHandler(
 
 		logInput(
 			logger,
-			{ patientId: req.params.patientId, query: req.query },
+			{
+				patientId: req.params.patientId,
+				type: req.query.type,
+				page: req.query.page,
+			},
 			"Patient timeline request received",
 		);
 
+		const query = req.query as unknown as TimelineQuery;
 		const result = await timelineService({
 			tenantId: req.user.tenantId,
-			patientId: req.params.patientId as string,
-			...req.query,
+			patientId: req.params.patientId,
+			...query,
 		});
 
 		const duration = Date.now() - startTime;

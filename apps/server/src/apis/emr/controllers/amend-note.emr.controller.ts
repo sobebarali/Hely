@@ -10,6 +10,7 @@ import {
 	authenticatedHandler,
 } from "../../../utils/async-handler";
 import { amendNoteService } from "../services/amend-note.emr.service";
+import type { AmendNoteInput } from "../validations/amend-note.emr.validation";
 
 const logger = createControllerLogger("amendNote");
 
@@ -19,7 +20,7 @@ export const amendNoteController = authenticatedHandler(
 
 		logInput(
 			logger,
-			{ noteId: req.params.noteId, body: req.body },
+			{ noteId: req.params.noteId },
 			"Amend clinical note request received",
 		);
 
@@ -30,11 +31,13 @@ export const amendNoteController = authenticatedHandler(
 			);
 		}
 
+		const { reason, content } = req.body as AmendNoteInput;
 		const result = await amendNoteService({
 			tenantId: req.user.tenantId,
-			noteId: req.params.noteId as string,
+			noteId: req.params.noteId,
 			amendedBy: req.user.staffId,
-			...req.body,
+			reason,
+			content,
 		});
 
 		const duration = Date.now() - startTime;

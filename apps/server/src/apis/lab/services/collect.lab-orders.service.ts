@@ -74,7 +74,7 @@ export async function collectLabOrderService({
 	return {
 		id: String(updatedOrder._id),
 		orderId: updatedOrder.orderId,
-		status: updatedOrder.status!,
+		status: updatedOrder.status as string,
 		sampleDetails: {
 			sampleType,
 			collectedBy: {

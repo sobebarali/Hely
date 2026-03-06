@@ -264,8 +264,8 @@ export async function seedLabOrders({
 	let count = 0;
 
 	for (let i = 0; i < LAB_ORDERS_CONFIG.length; i++) {
-		const config = LAB_ORDERS_CONFIG[i]!;
-		const patient = patients[i % patients.length]!;
+		const config = LAB_ORDERS_CONFIG[i] as (typeof LAB_ORDERS_CONFIG)[number];
+		const patient = patients[i % patients.length] as (typeof patients)[number];
 
 		// Build tests array from test codes
 		const tests = config.testCodes
@@ -290,7 +290,7 @@ export async function seedLabOrders({
 					const resultSet = config.results[code as keyof typeof config.results];
 					if (resultSet && Array.isArray(resultSet) && resultSet.length > 0) {
 						// Use the first result entry for this test's resultDetails
-						const firstResult = resultSet[0]!;
+						const firstResult = resultSet[0] as (typeof resultSet)[number];
 						testEntry.resultDetails = {
 							value: firstResult.value,
 							unit: firstResult.unit,
@@ -352,7 +352,7 @@ export async function seedLabOrders({
 			config.status === LabOrderStatus.RESULTS_ENTERED ||
 			config.status === LabOrderStatus.VERIFIED
 		) {
-			const primaryTestCode = config.testCodes[0]!;
+			const primaryTestCode = config.testCodes[0] as string;
 			const primaryTest = testCatalogMap.get(primaryTestCode);
 			orderData.sampleDetails = {
 				sampleType: primaryTest ? primaryTest.sampleType : SampleType.BLOOD,

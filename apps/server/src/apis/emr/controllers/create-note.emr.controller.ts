@@ -10,6 +10,7 @@ import {
 	authenticatedHandler,
 } from "../../../utils/async-handler";
 import { createNoteService } from "../services/create-note.emr.service";
+import type { CreateNoteInput } from "../validations/create-note.emr.validation";
 
 const logger = createControllerLogger("createNote");
 
@@ -17,7 +18,11 @@ export const createNoteController = authenticatedHandler(
 	async (req: AuthenticatedRequest, res: Response) => {
 		const startTime = Date.now();
 
-		logInput(logger, req.body, "Create clinical note request received");
+		logInput(
+			logger,
+			{ patientId: req.body.patientId, type: req.body.type },
+			"Create clinical note request received",
+		);
 
 		if (!req.user.staffId) {
 			throw new ForbiddenError(
@@ -26,10 +31,11 @@ export const createNoteController = authenticatedHandler(
 			);
 		}
 
+		const input = req.body as CreateNoteInput;
 		const result = await createNoteService({
 			tenantId: req.user.tenantId,
 			authorId: req.user.staffId,
-			...req.body,
+			...input,
 		});
 
 		const duration = Date.now() - startTime;

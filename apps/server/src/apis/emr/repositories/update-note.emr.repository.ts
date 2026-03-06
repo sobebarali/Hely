@@ -1,4 +1,5 @@
 import { ClinicalNote } from "@hms/db";
+import { NotFoundError } from "../../../errors";
 import {
 	createRepositoryLogger,
 	logDatabaseOperation,
@@ -27,7 +28,7 @@ export async function updateClinicalNote({
 		).lean();
 
 		if (!note) {
-			throw new Error("Failed to update clinical note");
+			throw new NotFoundError("Clinical note not found", "NOT_FOUND");
 		}
 
 		logDatabaseOperation(
@@ -58,7 +59,7 @@ export async function signClinicalNote({
 		logger.debug({ tenantId, noteId }, "Signing clinical note");
 
 		const note = await ClinicalNote.findOneAndUpdate(
-			{ _id: noteId, tenantId },
+			{ _id: noteId, tenantId, status: "DRAFT" },
 			{
 				$set: {
 					status: "SIGNED",
@@ -70,7 +71,10 @@ export async function signClinicalNote({
 		).lean();
 
 		if (!note) {
-			throw new Error("Failed to sign clinical note");
+			throw new NotFoundError(
+				"Clinical note not found or not in DRAFT state",
+				"NOT_FOUND",
+			);
 		}
 
 		logDatabaseOperation(
@@ -115,7 +119,7 @@ export async function amendClinicalNote({
 		).lean();
 
 		if (!note) {
-			throw new Error("Failed to amend clinical note");
+			throw new NotFoundError("Clinical note not found", "NOT_FOUND");
 		}
 
 		logDatabaseOperation(

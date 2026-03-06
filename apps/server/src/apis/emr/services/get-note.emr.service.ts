@@ -11,7 +11,7 @@ export async function getNoteService({
 	tenantId: string;
 	noteId: string;
 }) {
-	logger.info({ tenantId, noteId }, "Getting clinical note");
+	logger.debug({ noteId }, "Getting clinical note");
 
 	const note = await findClinicalNoteById({ tenantId, noteId });
 	if (!note) {
@@ -23,6 +23,7 @@ export async function getNoteService({
 		noteId: note.noteId,
 		patientId: note.patientId,
 		encounterId: note.encounterId,
+		admissionId: note.admissionId,
 		type: note.type,
 		chiefComplaint: note.chiefComplaint,
 		subjective: note.subjective,

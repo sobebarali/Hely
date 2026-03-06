@@ -9,7 +9,7 @@ const logger = createControllerLogger("updateBranding");
 export const updateBrandingController = asyncHandler(
 	async (req: Request, res: Response) => {
 		const startTime = Date.now();
-		const hospitalId = req.user!.tenantId;
+		const hospitalId = req.user?.tenantId;
 		const data = req.body as UpdateBrandingInput;
 
 		logger.info({ hospitalId }, "Update branding controller started");

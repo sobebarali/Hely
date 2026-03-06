@@ -9,6 +9,7 @@ import {
 	authenticatedHandler,
 } from "../../../utils/async-handler";
 import { updateHistoryService } from "../services/update-history.emr.service";
+import type { UpdateHistoryInput } from "../validations/update-history.emr.validation";
 
 const logger = createControllerLogger("updateHistory");
 
@@ -18,14 +19,18 @@ export const updateHistoryController = authenticatedHandler(
 
 		logInput(
 			logger,
-			{ patientId: req.params.patientId, body: req.body },
+			{
+				patientId: req.params.patientId,
+				fieldsProvided: Object.keys(req.body),
+			},
 			"Update medical history request received",
 		);
 
+		const input = req.body as UpdateHistoryInput;
 		const result = await updateHistoryService({
 			tenantId: req.user.tenantId,
-			patientId: req.params.patientId as string,
-			...req.body,
+			patientId: req.params.patientId,
+			...input,
 		});
 
 		const duration = Date.now() - startTime;

@@ -24,7 +24,7 @@ export const getNoteController = authenticatedHandler(
 
 		const result = await getNoteService({
 			tenantId: req.user.tenantId,
-			noteId: req.params.noteId as string,
+			noteId: req.params.noteId,
 		});
 
 		const duration = Date.now() - startTime;

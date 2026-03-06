@@ -12,11 +12,11 @@ export async function getHistoryService({
 	tenantId: string;
 	patientId: string;
 }) {
-	logger.info({ tenantId, patientId }, "Getting medical history");
+	logger.debug({ patientId }, "Getting medical history");
 
 	const patient = await findPatientById({ tenantId, patientId });
 	if (!patient) {
-		throw new NotFoundError("Patient not found", "NOT_FOUND");
+		throw new NotFoundError("Patient not found");
 	}
 
 	const history = await findMedicalHistoryByPatient({ tenantId, patientId });
@@ -31,7 +31,7 @@ export async function getHistoryService({
 			socialHistory: {},
 			immunizations: [],
 			pastMedicalHistory: [],
-			updatedAt: new Date().toISOString(),
+			updatedAt: null,
 		};
 	}
 

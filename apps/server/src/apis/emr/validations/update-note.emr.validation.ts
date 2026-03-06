@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const updateNoteSchema = z.object({
 	params: z.object({
-		noteId: z.string().min(1, "Note ID is required"),
+		noteId: z.string().min(1, "Note ID is required").max(128),
 	}),
 	body: z.object({
 		chiefComplaint: z.string().optional(),

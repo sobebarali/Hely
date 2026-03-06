@@ -55,8 +55,8 @@ const getR2Client = (): S3Client | null => {
 		region: "auto",
 		endpoint: `https://${config.accountId}.r2.cloudflarestorage.com`,
 		credentials: {
-			accessKeyId: config.accessKeyId!,
-			secretAccessKey: config.secretAccessKey!,
+			accessKeyId: config.accessKeyId as string,
+			secretAccessKey: config.secretAccessKey as string,
 		},
 	});
 

@@ -18,13 +18,13 @@ export const getProblemsController = authenticatedHandler(
 
 		logInput(
 			logger,
-			{ patientId: req.params.patientId, query: req.query },
+			{ patientId: req.params.patientId, status: req.query.status },
 			"Get problem list request received",
 		);
 
 		const result = await getProblemsService({
 			tenantId: req.user.tenantId,
-			patientId: req.params.patientId as string,
+			patientId: req.params.patientId,
 			status: req.query.status as string | undefined,
 		});
 

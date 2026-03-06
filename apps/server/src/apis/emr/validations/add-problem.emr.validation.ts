@@ -7,7 +7,12 @@ export const addProblemSchema = z.object({
 	body: z.object({
 		code: z.string().min(1, "ICD-10 code is required"),
 		description: z.string().min(1, "Problem description is required"),
-		onsetDate: z.string().optional(),
+		onsetDate: z
+			.string()
+			.refine((v) => !Number.isNaN(Date.parse(v)), {
+				message: "onsetDate must be a valid ISO 8601 date",
+			})
+			.optional(),
 		notes: z.string().optional(),
 	}),
 });

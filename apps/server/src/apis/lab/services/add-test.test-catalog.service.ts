@@ -31,9 +31,9 @@ export async function addTestToCatalogService({
 		code: entry.code,
 		category: entry.category,
 		sampleType: entry.sampleType,
-		turnaroundTime: entry.turnaroundTime!,
-		price: entry.price!,
-		status: entry.status!,
+		turnaroundTime: entry.turnaroundTime as string,
+		price: entry.price as number,
+		status: entry.status as string,
 		referenceRanges: (entry.referenceRanges || []).map(
 			(r: Record<string, unknown>) => ({
 				label: r.label as string,

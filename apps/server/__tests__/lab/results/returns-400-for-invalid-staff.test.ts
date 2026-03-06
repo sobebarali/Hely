@@ -1,10 +1,4 @@
-import {
-	Counter,
-	LabOrder,
-	LabOrderStatus,
-	Patient,
-	TestCatalog,
-} from "@hms/db";
+import { Counter, LabOrder, Patient, TestCatalog } from "@hms/db";
 import request from "supertest";
 import { v4 as uuidv4 } from "uuid";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";

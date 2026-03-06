@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const amendNoteSchema = z.object({
 	params: z.object({
-		noteId: z.string().min(1, "Note ID is required"),
+		noteId: z.string().min(1, "Note ID is required").max(128),
 	}),
 	body: z.object({
 		reason: z.string().min(1, "Reason for amendment is required"),

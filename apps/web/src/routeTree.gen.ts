@@ -28,6 +28,7 @@ import { Route as DashboardPrescriptionsIndexRouteImport } from './routes/dashbo
 import { Route as DashboardPatientsIndexRouteImport } from './routes/dashboard/patients/index'
 import { Route as DashboardLabIndexRouteImport } from './routes/dashboard/lab/index'
 import { Route as DashboardInventoryIndexRouteImport } from './routes/dashboard/inventory/index'
+import { Route as DashboardEmrIndexRouteImport } from './routes/dashboard/emr/index'
 import { Route as DashboardDoctorsIndexRouteImport } from './routes/dashboard/doctors/index'
 import { Route as DashboardDispensingIndexRouteImport } from './routes/dashboard/dispensing/index'
 import { Route as DashboardDepartmentsIndexRouteImport } from './routes/dashboard/departments/index'
@@ -75,9 +76,13 @@ import { Route as DashboardAppointmentsIdRouteImport } from './routes/dashboard/
 import { Route as DashboardAdminSecurityRouteImport } from './routes/dashboard/admin/security'
 import { Route as DashboardAdminComplianceRouteImport } from './routes/dashboard/admin/compliance'
 import { Route as DashboardPrescriptionsTemplatesIndexRouteImport } from './routes/dashboard/prescriptions/templates/index'
+import { Route as DashboardEmrNotesIndexRouteImport } from './routes/dashboard/emr/notes/index'
 import { Route as DashboardAdminSecurityIndexRouteImport } from './routes/dashboard/admin/security/index'
 import { Route as DashboardPrescriptionsTemplatesCreateRouteImport } from './routes/dashboard/prescriptions/templates/create'
 import { Route as DashboardPrescriptionsTemplatesIdRouteImport } from './routes/dashboard/prescriptions/templates/$id'
+import { Route as DashboardEmrPatientsPatientIdRouteImport } from './routes/dashboard/emr/patients/$patientId'
+import { Route as DashboardEmrNotesCreateRouteImport } from './routes/dashboard/emr/notes/create'
+import { Route as DashboardEmrNotesNoteIdRouteImport } from './routes/dashboard/emr/notes/$noteId'
 import { Route as DashboardAdminSecurityKeysRouteImport } from './routes/dashboard/admin/security/keys'
 import { Route as DashboardAdminSecurityEventsRouteImport } from './routes/dashboard/admin/security/events'
 
@@ -175,6 +180,11 @@ const DashboardLabIndexRoute = DashboardLabIndexRouteImport.update({
 const DashboardInventoryIndexRoute = DashboardInventoryIndexRouteImport.update({
   id: '/inventory/',
   path: '/inventory/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardEmrIndexRoute = DashboardEmrIndexRouteImport.update({
+  id: '/emr/',
+  path: '/emr/',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardDoctorsIndexRoute = DashboardDoctorsIndexRouteImport.update({
@@ -439,6 +449,11 @@ const DashboardPrescriptionsTemplatesIndexRoute =
     path: '/prescriptions/templates/',
     getParentRoute: () => DashboardRoute,
   } as any)
+const DashboardEmrNotesIndexRoute = DashboardEmrNotesIndexRouteImport.update({
+  id: '/emr/notes/',
+  path: '/emr/notes/',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardAdminSecurityIndexRoute =
   DashboardAdminSecurityIndexRouteImport.update({
     id: '/',
@@ -457,6 +472,22 @@ const DashboardPrescriptionsTemplatesIdRoute =
     path: '/prescriptions/templates/$id',
     getParentRoute: () => DashboardRoute,
   } as any)
+const DashboardEmrPatientsPatientIdRoute =
+  DashboardEmrPatientsPatientIdRouteImport.update({
+    id: '/emr/patients/$patientId',
+    path: '/emr/patients/$patientId',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardEmrNotesCreateRoute = DashboardEmrNotesCreateRouteImport.update({
+  id: '/emr/notes/create',
+  path: '/emr/notes/create',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardEmrNotesNoteIdRoute = DashboardEmrNotesNoteIdRouteImport.update({
+  id: '/emr/notes/$noteId',
+  path: '/emr/notes/$noteId',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardAdminSecurityKeysRoute =
   DashboardAdminSecurityKeysRouteImport.update({
     id: '/keys',
@@ -528,6 +559,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/departments': typeof DashboardDepartmentsIndexRoute
   '/dashboard/dispensing': typeof DashboardDispensingIndexRoute
   '/dashboard/doctors': typeof DashboardDoctorsIndexRoute
+  '/dashboard/emr': typeof DashboardEmrIndexRoute
   '/dashboard/inventory': typeof DashboardInventoryIndexRoute
   '/dashboard/lab': typeof DashboardLabIndexRoute
   '/dashboard/patients': typeof DashboardPatientsIndexRoute
@@ -538,9 +570,13 @@ export interface FileRoutesByFullPath {
   '/dashboard/vitals': typeof DashboardVitalsIndexRoute
   '/dashboard/admin/security/events': typeof DashboardAdminSecurityEventsRoute
   '/dashboard/admin/security/keys': typeof DashboardAdminSecurityKeysRoute
+  '/dashboard/emr/notes/$noteId': typeof DashboardEmrNotesNoteIdRoute
+  '/dashboard/emr/notes/create': typeof DashboardEmrNotesCreateRoute
+  '/dashboard/emr/patients/$patientId': typeof DashboardEmrPatientsPatientIdRoute
   '/dashboard/prescriptions/templates/$id': typeof DashboardPrescriptionsTemplatesIdRoute
   '/dashboard/prescriptions/templates/create': typeof DashboardPrescriptionsTemplatesCreateRoute
   '/dashboard/admin/security/': typeof DashboardAdminSecurityIndexRoute
+  '/dashboard/emr/notes': typeof DashboardEmrNotesIndexRoute
   '/dashboard/prescriptions/templates': typeof DashboardPrescriptionsTemplatesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -597,6 +633,7 @@ export interface FileRoutesByTo {
   '/dashboard/departments': typeof DashboardDepartmentsIndexRoute
   '/dashboard/dispensing': typeof DashboardDispensingIndexRoute
   '/dashboard/doctors': typeof DashboardDoctorsIndexRoute
+  '/dashboard/emr': typeof DashboardEmrIndexRoute
   '/dashboard/inventory': typeof DashboardInventoryIndexRoute
   '/dashboard/lab': typeof DashboardLabIndexRoute
   '/dashboard/patients': typeof DashboardPatientsIndexRoute
@@ -607,9 +644,13 @@ export interface FileRoutesByTo {
   '/dashboard/vitals': typeof DashboardVitalsIndexRoute
   '/dashboard/admin/security/events': typeof DashboardAdminSecurityEventsRoute
   '/dashboard/admin/security/keys': typeof DashboardAdminSecurityKeysRoute
+  '/dashboard/emr/notes/$noteId': typeof DashboardEmrNotesNoteIdRoute
+  '/dashboard/emr/notes/create': typeof DashboardEmrNotesCreateRoute
+  '/dashboard/emr/patients/$patientId': typeof DashboardEmrPatientsPatientIdRoute
   '/dashboard/prescriptions/templates/$id': typeof DashboardPrescriptionsTemplatesIdRoute
   '/dashboard/prescriptions/templates/create': typeof DashboardPrescriptionsTemplatesCreateRoute
   '/dashboard/admin/security': typeof DashboardAdminSecurityIndexRoute
+  '/dashboard/emr/notes': typeof DashboardEmrNotesIndexRoute
   '/dashboard/prescriptions/templates': typeof DashboardPrescriptionsTemplatesIndexRoute
 }
 export interface FileRoutesById {
@@ -671,6 +712,7 @@ export interface FileRoutesById {
   '/dashboard/departments/': typeof DashboardDepartmentsIndexRoute
   '/dashboard/dispensing/': typeof DashboardDispensingIndexRoute
   '/dashboard/doctors/': typeof DashboardDoctorsIndexRoute
+  '/dashboard/emr/': typeof DashboardEmrIndexRoute
   '/dashboard/inventory/': typeof DashboardInventoryIndexRoute
   '/dashboard/lab/': typeof DashboardLabIndexRoute
   '/dashboard/patients/': typeof DashboardPatientsIndexRoute
@@ -681,9 +723,13 @@ export interface FileRoutesById {
   '/dashboard/vitals/': typeof DashboardVitalsIndexRoute
   '/dashboard/admin/security/events': typeof DashboardAdminSecurityEventsRoute
   '/dashboard/admin/security/keys': typeof DashboardAdminSecurityKeysRoute
+  '/dashboard/emr/notes/$noteId': typeof DashboardEmrNotesNoteIdRoute
+  '/dashboard/emr/notes/create': typeof DashboardEmrNotesCreateRoute
+  '/dashboard/emr/patients/$patientId': typeof DashboardEmrPatientsPatientIdRoute
   '/dashboard/prescriptions/templates/$id': typeof DashboardPrescriptionsTemplatesIdRoute
   '/dashboard/prescriptions/templates/create': typeof DashboardPrescriptionsTemplatesCreateRoute
   '/dashboard/admin/security/': typeof DashboardAdminSecurityIndexRoute
+  '/dashboard/emr/notes/': typeof DashboardEmrNotesIndexRoute
   '/dashboard/prescriptions/templates/': typeof DashboardPrescriptionsTemplatesIndexRoute
 }
 export interface FileRouteTypes {
@@ -746,6 +792,7 @@ export interface FileRouteTypes {
     | '/dashboard/departments'
     | '/dashboard/dispensing'
     | '/dashboard/doctors'
+    | '/dashboard/emr'
     | '/dashboard/inventory'
     | '/dashboard/lab'
     | '/dashboard/patients'
@@ -756,9 +803,13 @@ export interface FileRouteTypes {
     | '/dashboard/vitals'
     | '/dashboard/admin/security/events'
     | '/dashboard/admin/security/keys'
+    | '/dashboard/emr/notes/$noteId'
+    | '/dashboard/emr/notes/create'
+    | '/dashboard/emr/patients/$patientId'
     | '/dashboard/prescriptions/templates/$id'
     | '/dashboard/prescriptions/templates/create'
     | '/dashboard/admin/security/'
+    | '/dashboard/emr/notes'
     | '/dashboard/prescriptions/templates'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -815,6 +866,7 @@ export interface FileRouteTypes {
     | '/dashboard/departments'
     | '/dashboard/dispensing'
     | '/dashboard/doctors'
+    | '/dashboard/emr'
     | '/dashboard/inventory'
     | '/dashboard/lab'
     | '/dashboard/patients'
@@ -825,9 +877,13 @@ export interface FileRouteTypes {
     | '/dashboard/vitals'
     | '/dashboard/admin/security/events'
     | '/dashboard/admin/security/keys'
+    | '/dashboard/emr/notes/$noteId'
+    | '/dashboard/emr/notes/create'
+    | '/dashboard/emr/patients/$patientId'
     | '/dashboard/prescriptions/templates/$id'
     | '/dashboard/prescriptions/templates/create'
     | '/dashboard/admin/security'
+    | '/dashboard/emr/notes'
     | '/dashboard/prescriptions/templates'
   id:
     | '__root__'
@@ -888,6 +944,7 @@ export interface FileRouteTypes {
     | '/dashboard/departments/'
     | '/dashboard/dispensing/'
     | '/dashboard/doctors/'
+    | '/dashboard/emr/'
     | '/dashboard/inventory/'
     | '/dashboard/lab/'
     | '/dashboard/patients/'
@@ -898,9 +955,13 @@ export interface FileRouteTypes {
     | '/dashboard/vitals/'
     | '/dashboard/admin/security/events'
     | '/dashboard/admin/security/keys'
+    | '/dashboard/emr/notes/$noteId'
+    | '/dashboard/emr/notes/create'
+    | '/dashboard/emr/patients/$patientId'
     | '/dashboard/prescriptions/templates/$id'
     | '/dashboard/prescriptions/templates/create'
     | '/dashboard/admin/security/'
+    | '/dashboard/emr/notes/'
     | '/dashboard/prescriptions/templates/'
   fileRoutesById: FileRoutesById
 }
@@ -1048,6 +1109,13 @@ declare module '@tanstack/react-router' {
       path: '/inventory'
       fullPath: '/dashboard/inventory'
       preLoaderRoute: typeof DashboardInventoryIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/emr/': {
+      id: '/dashboard/emr/'
+      path: '/emr'
+      fullPath: '/dashboard/emr'
+      preLoaderRoute: typeof DashboardEmrIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/dashboard/doctors/': {
@@ -1379,6 +1447,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardPrescriptionsTemplatesIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/emr/notes/': {
+      id: '/dashboard/emr/notes/'
+      path: '/emr/notes'
+      fullPath: '/dashboard/emr/notes'
+      preLoaderRoute: typeof DashboardEmrNotesIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/admin/security/': {
       id: '/dashboard/admin/security/'
       path: '/'
@@ -1398,6 +1473,27 @@ declare module '@tanstack/react-router' {
       path: '/prescriptions/templates/$id'
       fullPath: '/dashboard/prescriptions/templates/$id'
       preLoaderRoute: typeof DashboardPrescriptionsTemplatesIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/emr/patients/$patientId': {
+      id: '/dashboard/emr/patients/$patientId'
+      path: '/emr/patients/$patientId'
+      fullPath: '/dashboard/emr/patients/$patientId'
+      preLoaderRoute: typeof DashboardEmrPatientsPatientIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/emr/notes/create': {
+      id: '/dashboard/emr/notes/create'
+      path: '/emr/notes/create'
+      fullPath: '/dashboard/emr/notes/create'
+      preLoaderRoute: typeof DashboardEmrNotesCreateRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/emr/notes/$noteId': {
+      id: '/dashboard/emr/notes/$noteId'
+      path: '/emr/notes/$noteId'
+      fullPath: '/dashboard/emr/notes/$noteId'
+      preLoaderRoute: typeof DashboardEmrNotesNoteIdRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/dashboard/admin/security/keys': {
@@ -1517,6 +1613,7 @@ interface DashboardRouteChildren {
   DashboardDepartmentsIndexRoute: typeof DashboardDepartmentsIndexRoute
   DashboardDispensingIndexRoute: typeof DashboardDispensingIndexRoute
   DashboardDoctorsIndexRoute: typeof DashboardDoctorsIndexRoute
+  DashboardEmrIndexRoute: typeof DashboardEmrIndexRoute
   DashboardInventoryIndexRoute: typeof DashboardInventoryIndexRoute
   DashboardLabIndexRoute: typeof DashboardLabIndexRoute
   DashboardPatientsIndexRoute: typeof DashboardPatientsIndexRoute
@@ -1524,8 +1621,12 @@ interface DashboardRouteChildren {
   DashboardReportsIndexRoute: typeof DashboardReportsIndexRoute
   DashboardStaffIndexRoute: typeof DashboardStaffIndexRoute
   DashboardVitalsIndexRoute: typeof DashboardVitalsIndexRoute
+  DashboardEmrNotesNoteIdRoute: typeof DashboardEmrNotesNoteIdRoute
+  DashboardEmrNotesCreateRoute: typeof DashboardEmrNotesCreateRoute
+  DashboardEmrPatientsPatientIdRoute: typeof DashboardEmrPatientsPatientIdRoute
   DashboardPrescriptionsTemplatesIdRoute: typeof DashboardPrescriptionsTemplatesIdRoute
   DashboardPrescriptionsTemplatesCreateRoute: typeof DashboardPrescriptionsTemplatesCreateRoute
+  DashboardEmrNotesIndexRoute: typeof DashboardEmrNotesIndexRoute
   DashboardPrescriptionsTemplatesIndexRoute: typeof DashboardPrescriptionsTemplatesIndexRoute
 }
 
@@ -1568,6 +1669,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardDepartmentsIndexRoute: DashboardDepartmentsIndexRoute,
   DashboardDispensingIndexRoute: DashboardDispensingIndexRoute,
   DashboardDoctorsIndexRoute: DashboardDoctorsIndexRoute,
+  DashboardEmrIndexRoute: DashboardEmrIndexRoute,
   DashboardInventoryIndexRoute: DashboardInventoryIndexRoute,
   DashboardLabIndexRoute: DashboardLabIndexRoute,
   DashboardPatientsIndexRoute: DashboardPatientsIndexRoute,
@@ -1575,10 +1677,14 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardReportsIndexRoute: DashboardReportsIndexRoute,
   DashboardStaffIndexRoute: DashboardStaffIndexRoute,
   DashboardVitalsIndexRoute: DashboardVitalsIndexRoute,
+  DashboardEmrNotesNoteIdRoute: DashboardEmrNotesNoteIdRoute,
+  DashboardEmrNotesCreateRoute: DashboardEmrNotesCreateRoute,
+  DashboardEmrPatientsPatientIdRoute: DashboardEmrPatientsPatientIdRoute,
   DashboardPrescriptionsTemplatesIdRoute:
     DashboardPrescriptionsTemplatesIdRoute,
   DashboardPrescriptionsTemplatesCreateRoute:
     DashboardPrescriptionsTemplatesCreateRoute,
+  DashboardEmrNotesIndexRoute: DashboardEmrNotesIndexRoute,
   DashboardPrescriptionsTemplatesIndexRoute:
     DashboardPrescriptionsTemplatesIndexRoute,
 }

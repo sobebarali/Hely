@@ -17,14 +17,23 @@ export const listNotesSchema = z.object({
 			.optional(),
 		status: z.enum(["DRAFT", "SIGNED", "AMENDED"]).optional(),
 		authorId: z.string().optional(),
-		startDate: z.string().optional(),
-		endDate: z.string().optional(),
+		startDate: z
+			.string()
+			.refine((v) => !Number.isNaN(Date.parse(v)), {
+				message: "startDate must be a valid ISO 8601 date",
+			})
+			.optional(),
+		endDate: z
+			.string()
+			.refine((v) => !Number.isNaN(Date.parse(v)), {
+				message: "endDate must be a valid ISO 8601 date",
+			})
+			.optional(),
 		search: z.string().optional(),
 		sortBy: z
 			.enum(["createdAt", "updatedAt", "type", "status"])
-			.default("createdAt")
-			.optional(),
-		sortOrder: z.enum(["asc", "desc"]).default("desc").optional(),
+			.default("createdAt"),
+		sortOrder: z.enum(["asc", "desc"]).default("desc"),
 	}),
 });
 

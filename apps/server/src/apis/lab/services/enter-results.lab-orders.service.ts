@@ -109,7 +109,7 @@ export async function enterLabResultsService({
 	return {
 		id: String(updatedOrder._id),
 		orderId: updatedOrder.orderId,
-		status: updatedOrder.status!,
+		status: updatedOrder.status as string,
 		tests: updatedOrder.tests.map(
 			(t: {
 				testId: string;
@@ -126,7 +126,7 @@ export async function enterLabResultsService({
 				testId: t.testId,
 				testName: t.testName,
 				testCode: t.testCode,
-				resultDetails: t.resultDetails!,
+				resultDetails: t.resultDetails as NonNullable<typeof t.resultDetails>,
 			}),
 		),
 		enteredBy: {

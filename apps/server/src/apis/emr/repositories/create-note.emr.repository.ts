@@ -47,7 +47,7 @@ export async function createClinicalNote({
 
 		logger.debug({ id, tenantId, patientId }, "Creating clinical note");
 
-		await ClinicalNote.create({
+		const created = await ClinicalNote.create({
 			_id: id,
 			tenantId,
 			noteId,
@@ -68,10 +68,7 @@ export async function createClinicalNote({
 			amendments: [],
 		});
 
-		const note = await ClinicalNote.findOne({ _id: id, tenantId }).lean();
-		if (!note) {
-			throw new Error("Failed to retrieve created clinical note");
-		}
+		const note = created.toObject();
 
 		logDatabaseOperation(
 			logger,

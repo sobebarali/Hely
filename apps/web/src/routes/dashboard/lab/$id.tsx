@@ -7,7 +7,6 @@ import {
 } from "@tanstack/react-router";
 import {
 	ArrowLeft,
-	Calendar,
 	CheckCircle2,
 	ClipboardList,
 	Download,
@@ -15,9 +14,7 @@ import {
 	Loader2,
 	Microscope,
 	ShieldCheck,
-	Stethoscope,
 	TestTube,
-	User,
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";

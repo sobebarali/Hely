@@ -29,7 +29,15 @@ export async function findProblemsByPatient({
 			filter.status = status;
 		}
 
-		const problems = await ProblemList.find(filter)
+		const problems = await ProblemList.find(filter, {
+			code: 1,
+			description: 1,
+			status: 1,
+			onsetDate: 1,
+			resolvedDate: 1,
+			addedBy: 1,
+			createdAt: 1,
+		})
 			.sort({ createdAt: -1 })
 			.lean();
 
@@ -94,7 +102,7 @@ export async function createProblem({
 
 		logger.debug({ id, tenantId, patientId }, "Creating problem");
 
-		await ProblemList.create({
+		const created = await ProblemList.create({
 			_id: id,
 			tenantId,
 			patientId,
@@ -106,10 +114,7 @@ export async function createProblem({
 			addedBy,
 		});
 
-		const problem = await ProblemList.findOne({ _id: id, tenantId }).lean();
-		if (!problem) {
-			throw new Error("Failed to retrieve created problem");
-		}
+		const problem = created.toObject();
 
 		logDatabaseOperation(
 			logger,

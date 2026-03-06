@@ -12,7 +12,7 @@ export async function listNotesService({
 }: {
 	tenantId: string;
 } & ListNotesQuery) {
-	logger.info(
+	logger.debug(
 		{ tenantId, page: pageParam, limit: limitParam },
 		"Listing clinical notes",
 	);
