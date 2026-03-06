@@ -205,7 +205,7 @@ function BrandingDetailsView({
 					</CardTitle>
 					<CardDescription>White-label domain configuration</CardDescription>
 				</CardHeader>
-				<CardContent>
+				<CardContent className="space-y-4">
 					<div className="space-y-1">
 						<Label className="text-muted-foreground text-xs">Domain</Label>
 						<p
@@ -215,6 +215,42 @@ function BrandingDetailsView({
 						>
 							{customDomain || "Not configured"}
 						</p>
+					</div>
+					<div className="rounded-md border border-blue-200 bg-blue-50 p-3 text-blue-800 text-sm dark:border-blue-800 dark:bg-blue-950 dark:text-blue-200">
+						<p className="mb-2 font-medium">
+							How to connect your custom domain:
+						</p>
+						<ol className="list-inside list-decimal space-y-1">
+							<li>
+								Log in to your domain provider (e.g. GoDaddy, Namecheap,
+								Cloudflare)
+							</li>
+							<li>Go to DNS settings for your domain</li>
+							<li>
+								Add a new DNS record with these settings:
+								<ul className="mt-1 ml-5 list-disc space-y-0.5">
+									<li>
+										Type: <strong>CNAME</strong>
+									</li>
+									<li>
+										Name: your subdomain (e.g. "app" if you want
+										app.yourhospital.com)
+									</li>
+									<li>
+										Value:{" "}
+										<code className="rounded bg-blue-100 px-1 py-0.5 font-mono text-xs dark:bg-blue-900">
+											{import.meta.env.VITE_DEFAULT_DOMAIN || "app.usehely.com"}
+										</code>
+									</li>
+								</ul>
+							</li>
+							<li>
+								Save the record, then come back here and click "Edit Branding"
+								to enter your domain
+							</li>
+							<li>DNS changes can take up to 48 hours to take effect</li>
+						</ol>
+						<p className="mt-2 text-xs">Need help? Contact support.</p>
 					</div>
 				</CardContent>
 			</Card>
@@ -577,9 +613,30 @@ function BrandingEditForm({
 										onChange={(e) => field.handleChange(e.target.value)}
 										placeholder="app.yourhospital.com"
 									/>
-									<p className="text-muted-foreground text-xs">
-										Configure a custom domain for your white-label portal
+									<p className="font-medium text-muted-foreground text-xs">
+										How to set this up:
 									</p>
+									<ol className="mt-1 list-inside list-decimal space-y-0.5 text-muted-foreground text-xs">
+										<li>
+											Log in to your domain provider (e.g. GoDaddy, Namecheap,
+											Cloudflare)
+										</li>
+										<li>Go to your domain's DNS settings</li>
+										<li>
+											Add a new CNAME record: Name: your subdomain (e.g. "app")
+											→ Value:{" "}
+											<code className="rounded bg-muted px-1 py-0.5 font-mono">
+												{import.meta.env.VITE_DEFAULT_DOMAIN ||
+													"app.usehely.com"}
+											</code>
+										</li>
+										<li>
+											Enter your full domain below (e.g. app.yourhospital.com)
+										</li>
+										<li>
+											Save — DNS changes can take up to 48 hours to take effect
+										</li>
+									</ol>
 								</div>
 							)}
 						</form.Field>
