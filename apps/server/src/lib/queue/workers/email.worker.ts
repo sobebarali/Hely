@@ -70,7 +70,8 @@ async function sendGenericEmail(data: SendEmailJobData): Promise<void> {
  * Send welcome email with temporary password
  */
 async function sendWelcomeEmail(data: SendWelcomeEmailJobData): Promise<void> {
-	const { to, name, temporaryPassword, hospitalName, loginUrl } = data;
+	const { to, name, temporaryPassword, hospitalName, loginUrl, branding } =
+		data;
 
 	if (process.env.NODE_ENV === "test") {
 		logger.info({ to, name }, "[TEST MODE] Welcome email not sent");
@@ -83,6 +84,7 @@ async function sendWelcomeEmail(data: SendWelcomeEmailJobData): Promise<void> {
 		username: to,
 		temporaryPassword,
 		loginUrl: loginUrl || `${process.env.BACKEND_URL}/login`,
+		branding,
 	};
 
 	const html = getWelcomeEmailTemplate(templateData);
@@ -107,18 +109,18 @@ async function sendWelcomeEmail(data: SendWelcomeEmailJobData): Promise<void> {
 async function sendPasswordResetEmail(
 	data: SendPasswordResetEmailJobData,
 ): Promise<void> {
-	const { to, name, resetUrl } = data;
+	const { to, name, resetUrl, branding } = data;
 
 	if (process.env.NODE_ENV === "test") {
 		logger.info({ to, name }, "[TEST MODE] Password reset email not sent");
 		return;
 	}
 
-	// The template needs hospitalName, but we may not have it - use a default
 	const templateData = {
 		firstName: name,
-		hospitalName: "useHely",
+		hospitalName: branding?.appName || "useHely",
 		resetUrl,
+		branding,
 	};
 
 	const html = getPasswordResetEmailTemplate(templateData);
@@ -143,7 +145,14 @@ async function sendPasswordResetEmail(
 async function sendHospitalVerificationEmail(
 	data: SendHospitalVerificationEmailJobData,
 ): Promise<void> {
-	const { to, hospitalName, verificationUrl, licenseNumber, adminEmail } = data;
+	const {
+		to,
+		hospitalName,
+		verificationUrl,
+		licenseNumber,
+		adminEmail,
+		branding,
+	} = data;
 
 	if (process.env.NODE_ENV === "test") {
 		logger.info(
@@ -158,7 +167,9 @@ async function sendHospitalVerificationEmail(
 		licenseNumber: licenseNumber || "",
 		adminEmail: adminEmail || to,
 		verificationUrl,
-		supportEmail: process.env.EMAIL_FROM || "support@usehely.com",
+		supportEmail:
+			branding?.supportEmail || process.env.EMAIL_FROM || "support@usehely.com",
+		branding,
 	};
 
 	const html = getHospitalVerificationEmailHtml(templateData);
@@ -183,7 +194,7 @@ async function sendHospitalVerificationEmail(
 async function sendLinkedUserEmail(
 	data: SendLinkedUserEmailJobData,
 ): Promise<void> {
-	const { to, name, hospitalName, loginUrl } = data;
+	const { to, name, hospitalName, loginUrl, branding } = data;
 
 	if (process.env.NODE_ENV === "test") {
 		logger.info({ to, name }, "[TEST MODE] Linked user email not sent");
@@ -194,6 +205,7 @@ async function sendLinkedUserEmail(
 		firstName: name,
 		hospitalName,
 		loginUrl: loginUrl || `${process.env.BACKEND_URL}/login`,
+		branding,
 	};
 
 	const html = getLinkedUserEmailTemplate(templateData);

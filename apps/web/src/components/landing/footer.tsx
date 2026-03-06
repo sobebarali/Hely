@@ -2,8 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { HelyLogo } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { useBranding } from "@/contexts/branding-context";
 
 export function Footer() {
+	const { branding } = useBranding();
 	return (
 		<footer className="border-t bg-muted/30">
 			{/* CTA Section */}
@@ -37,18 +39,26 @@ export function Footer() {
 						{/* Brand */}
 						<div>
 							<div className="flex items-center gap-2">
-								<HelyLogo className="h-6 w-6 text-primary" />
-								<span className="font-bold text-lg">Hely</span>
+								{branding.logoUrl ? (
+									<img
+										src={branding.logoUrl}
+										alt={branding.appName}
+										className="h-6 w-auto"
+									/>
+								) : (
+									<HelyLogo className="h-6 w-6 text-primary" />
+								)}
+								<span className="font-bold text-lg">{branding.appName}</span>
 							</div>
 							<p className="mt-4 text-muted-foreground text-sm">
 								Simplifying healthcare operations for hospitals, clinics, and
 								practices.
 							</p>
 							<a
-								href="mailto:info@usehely.com"
+								href={`mailto:${branding.supportEmail}`}
 								className="mt-3 inline-block text-muted-foreground text-sm hover:text-foreground"
 							>
-								info@usehely.com
+								{branding.supportEmail}
 							</a>
 						</div>
 
@@ -105,7 +115,7 @@ export function Footer() {
 								</li>
 								<li>
 									<a
-										href="mailto:info@usehely.com"
+										href={`mailto:${branding.supportEmail}`}
 										className="hover:text-foreground"
 									>
 										Contact
@@ -128,7 +138,8 @@ export function Footer() {
 					{/* Bottom */}
 					<div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 sm:flex-row">
 						<p className="text-muted-foreground text-sm">
-							&copy; {new Date().getFullYear()} Hely. All rights reserved.
+							&copy; {new Date().getFullYear()} {branding.appName}. All rights
+							reserved.
 						</p>
 						<div className="flex items-center gap-4">
 							<a

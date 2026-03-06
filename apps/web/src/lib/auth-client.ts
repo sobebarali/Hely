@@ -73,6 +73,15 @@ export interface AuthUser {
 		id: string;
 		name: string;
 		status: string;
+		branding?: {
+			appName: string | null;
+			logoUrl: string | null;
+			faviconUrl: string | null;
+			supportEmail: string | null;
+			primaryColor: string | null;
+			accentColor: string | null;
+			customDomain: string | null;
+		};
 	};
 	attributes?: {
 		department?: string;
@@ -92,6 +101,16 @@ export interface Hospital {
 export type OrganizationType = "HOSPITAL" | "CLINIC" | "SOLO_PRACTICE";
 export type PricingTier = "FREE" | "STARTER" | "PROFESSIONAL" | "ENTERPRISE";
 
+export interface BrandingDetails {
+	appName: string | null;
+	logoUrl: string | null;
+	faviconUrl: string | null;
+	supportEmail: string | null;
+	primaryColor: string | null;
+	accentColor: string | null;
+	customDomain: string | null;
+}
+
 export interface HospitalDetails {
 	id: string;
 	tenantId: string;
@@ -109,6 +128,7 @@ export interface HospitalDetails {
 	licenseNumber?: string;
 	status: string;
 	pricingTier?: PricingTier;
+	branding?: BrandingDetails;
 	createdAt: string;
 	updatedAt: string;
 }
@@ -555,6 +575,46 @@ export async function updateHospital({
 	return response.data;
 }
 
+export async function updateBranding(
+	data: Partial<BrandingDetails>,
+): Promise<BrandingDetails> {
+	const response = await authenticatedRequest<{
+		success: boolean;
+		data: BrandingDetails;
+	}>("/api/hospitals/branding", {
+		method: "PATCH",
+		body: JSON.stringify(data),
+	});
+	return response.data;
+}
+
+export async function getBrandingByDomain(
+	domain: string,
+): Promise<BrandingDetails> {
+	const response = await apiRequest<{
+		success: boolean;
+		data: BrandingDetails;
+	}>(`/api/hospitals/branding?domain=${encodeURIComponent(domain)}`);
+	return response.data;
+}
+
+export async function uploadBrandingAsset({
+	type,
+	image,
+}: {
+	type: "logo" | "favicon";
+	image: string;
+}): Promise<{ url: string }> {
+	const response = await authenticatedRequest<{
+		success: boolean;
+		data: { url: string };
+	}>(`/api/hospitals/branding/${type}`, {
+		method: "POST",
+		body: JSON.stringify({ image }),
+	});
+	return response.data;
+}
+
 export async function updateHospitalStatus({
 	hospitalId,
 	data,
@@ -595,6 +655,10 @@ export const authClient = {
 	getHospital,
 	updateHospital,
 	updateHospitalStatus,
+	// Branding functions
+	updateBranding,
+	getBrandingByDomain,
+	uploadBrandingAsset,
 	// User tenants functions
 	getUserTenants,
 	switchTenant,

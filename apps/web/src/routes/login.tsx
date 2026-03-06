@@ -13,6 +13,7 @@ import { HelyLogo } from "@/components/icons";
 import SignInForm from "@/components/sign-in-form";
 import SignUpForm from "@/components/sign-up-form";
 import { Button } from "@/components/ui/button";
+import { useBranding } from "@/contexts/branding-context";
 
 export const Route = createFileRoute("/login")({
 	component: LoginPage,
@@ -20,6 +21,7 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
 	const [showSignIn, setShowSignIn] = useState(true);
+	const { branding } = useBranding();
 
 	return (
 		<div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-background via-background to-muted/50">
@@ -56,9 +58,17 @@ function LoginPage() {
 
 						<div className="mb-8 flex items-center gap-3">
 							<div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20 backdrop-blur-sm">
-								<HelyLogo className="h-6 w-6 text-primary" />
+								{branding.logoUrl ? (
+									<img
+										src={branding.logoUrl}
+										alt={branding.appName}
+										className="h-6 w-auto"
+									/>
+								) : (
+									<HelyLogo className="h-6 w-6 text-primary" />
+								)}
 							</div>
-							<span className="font-bold text-xl">Hely</span>
+							<span className="font-bold text-xl">{branding.appName}</span>
 						</div>
 
 						<h1 className="mb-4 font-bold text-4xl leading-tight">
@@ -113,9 +123,17 @@ function LoginPage() {
 						</Button>
 						<div className="flex items-center gap-2">
 							<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-								<HelyLogo className="h-5 w-5 text-primary" />
+								{branding.logoUrl ? (
+									<img
+										src={branding.logoUrl}
+										alt={branding.appName}
+										className="h-5 w-auto"
+									/>
+								) : (
+									<HelyLogo className="h-5 w-5 text-primary" />
+								)}
 							</div>
-							<span className="font-bold text-lg">Hely</span>
+							<span className="font-bold text-lg">{branding.appName}</span>
 						</div>
 					</div>
 

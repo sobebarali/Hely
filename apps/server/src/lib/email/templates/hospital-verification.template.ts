@@ -1,4 +1,9 @@
-import { brandColors, emailStyles, wrapEmailContent } from "./base.template.js";
+import {
+	brandColors,
+	type EmailBranding,
+	emailStyles,
+	wrapEmailContent,
+} from "./base.template.js";
 
 export interface HospitalVerificationEmailData {
 	hospitalName: string;
@@ -6,6 +11,7 @@ export interface HospitalVerificationEmailData {
 	adminEmail: string;
 	verificationUrl: string;
 	supportEmail: string;
+	branding?: EmailBranding;
 }
 
 export function getHospitalVerificationEmailHtml(
@@ -17,6 +23,7 @@ export function getHospitalVerificationEmailHtml(
 		adminEmail,
 		verificationUrl,
 		supportEmail,
+		branding,
 	} = data;
 
 	const content = `
@@ -77,6 +84,7 @@ export function getHospitalVerificationEmailHtml(
 		preheader: `Verify your email to complete ${hospitalName} registration`,
 		content,
 		supportEmail,
+		branding,
 	});
 }
 

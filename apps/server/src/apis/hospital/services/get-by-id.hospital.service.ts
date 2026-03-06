@@ -40,6 +40,8 @@ export async function getHospitalById({
 			"Hospital retrieved successfully",
 		);
 
+		const branding = (hospital as { branding?: Record<string, unknown> })
+			.branding;
 		const result: GetHospitalByIdOutput = {
 			id: String(hospital._id),
 			tenantId: String(hospital._id), // In hospital context, hospital ID serves as tenant ID
@@ -57,6 +59,17 @@ export async function getHospitalById({
 			licenseNumber: hospital.licenseNumber || undefined,
 			status: hospital.status || "PENDING",
 			pricingTier: (hospital as { pricingTier?: string }).pricingTier,
+			branding: branding
+				? {
+						appName: (branding.appName as string) || null,
+						logoUrl: (branding.logoUrl as string) || null,
+						faviconUrl: (branding.faviconUrl as string) || null,
+						supportEmail: (branding.supportEmail as string) || null,
+						primaryColor: (branding.primaryColor as string) || null,
+						accentColor: (branding.accentColor as string) || null,
+						customDomain: (branding.customDomain as string) || null,
+					}
+				: undefined,
 			createdAt: hospital.createdAt.toISOString(),
 			updatedAt: hospital.updatedAt.toISOString(),
 		};

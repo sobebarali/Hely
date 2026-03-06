@@ -44,6 +44,19 @@ const addressSchema = new Schema(
 	{ _id: false },
 );
 
+const brandingSchema = new Schema(
+	{
+		appName: { type: String },
+		logoUrl: { type: String },
+		faviconUrl: { type: String },
+		supportEmail: { type: String },
+		primaryColor: { type: String },
+		accentColor: { type: String },
+		customDomain: { type: String, sparse: true, unique: true },
+	},
+	{ _id: false },
+);
+
 // Main schema
 const organizationSchema = new Schema(
 	{
@@ -75,6 +88,7 @@ const organizationSchema = new Schema(
 		dodoCustomerId: { type: String, sparse: true },
 		verificationToken: { type: String },
 		verificationExpires: { type: Date },
+		branding: { type: brandingSchema },
 		settings: { type: Schema.Types.Mixed },
 		createdAt: { type: Date, required: true },
 		updatedAt: { type: Date, required: true },
@@ -89,6 +103,10 @@ const organizationSchema = new Schema(
 organizationSchema.index({ status: 1 });
 organizationSchema.index({ type: 1 });
 organizationSchema.index({ createdAt: -1 });
+organizationSchema.index(
+	{ "branding.customDomain": 1 },
+	{ sparse: true, unique: true },
+);
 
 const Organization = model("Organization", organizationSchema);
 

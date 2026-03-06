@@ -1,6 +1,8 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { useEffect, useRef } from "react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import Loader from "@/components/loader";
+import { useBranding } from "@/contexts/branding-context";
 import { useSession } from "@/hooks/use-auth";
 import { authClient } from "@/lib/auth-client";
 
@@ -26,6 +28,17 @@ export const Route = createFileRoute("/dashboard")({
 
 function DashboardLayoutRoute() {
 	const { data: session, isLoading } = useSession();
+	const { setBrandingFromAuth } = useBranding();
+
+	// Sync branding from auth session (use JSON comparison to avoid re-renders on object reference change)
+	const prevBrandingRef = useRef<string>("");
+	useEffect(() => {
+		const brandingJson = JSON.stringify(session?.hospital?.branding ?? null);
+		if (brandingJson !== prevBrandingRef.current) {
+			prevBrandingRef.current = brandingJson;
+			setBrandingFromAuth(session?.hospital?.branding);
+		}
+	}, [session?.hospital?.branding, setBrandingFromAuth]);
 
 	if (isLoading) {
 		return (

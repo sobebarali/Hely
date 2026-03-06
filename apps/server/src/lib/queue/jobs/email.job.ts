@@ -4,6 +4,7 @@
  * Type definitions and helpers for email background jobs
  */
 
+import type { EmailBranding } from "../../email/templates/base.template";
 import { emailQueue } from "../queues";
 
 // Job types
@@ -33,6 +34,7 @@ export interface SendWelcomeEmailJobData {
 	temporaryPassword: string;
 	hospitalName: string;
 	loginUrl?: string;
+	branding?: EmailBranding;
 }
 
 export interface SendPasswordResetEmailJobData {
@@ -41,6 +43,7 @@ export interface SendPasswordResetEmailJobData {
 	resetToken: string;
 	resetUrl: string;
 	expiresInMinutes: number;
+	branding?: EmailBranding;
 }
 
 export interface SendHospitalVerificationEmailJobData {
@@ -50,6 +53,7 @@ export interface SendHospitalVerificationEmailJobData {
 	verificationUrl: string;
 	licenseNumber?: string;
 	adminEmail?: string;
+	branding?: EmailBranding;
 }
 
 export interface SendLinkedUserEmailJobData {
@@ -59,6 +63,7 @@ export interface SendLinkedUserEmailJobData {
 	hospitalName: string;
 	temporaryPassword: string;
 	loginUrl?: string;
+	branding?: EmailBranding;
 }
 
 // Job enqueueing helpers

@@ -6,6 +6,7 @@ import {
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { BrandingProvider } from "@/contexts/branding-context";
 import "../index.css";
 
 export type RouterAppContext = Record<string, never>;
@@ -20,7 +21,7 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 			{
 				name: "description",
 				content:
-					"Hely - A comprehensive multi-tenant SaaS platform for hospital operations",
+					"A comprehensive multi-tenant SaaS platform for hospital operations",
 			},
 		],
 		links: [
@@ -42,8 +43,10 @@ function RootComponent() {
 				disableTransitionOnChange
 				storageKey="vite-ui-theme"
 			>
-				<Outlet />
-				<Toaster richColors />
+				<BrandingProvider>
+					<Outlet />
+					<Toaster richColors />
+				</BrandingProvider>
 			</ThemeProvider>
 			<TanStackRouterDevtools position="bottom-left" />
 		</>

@@ -1,50 +1,51 @@
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { useBranding } from "@/contexts/branding-context";
 import { cn } from "@/lib/utils";
 
-const faqs = [
-	{
-		question: "How long does it take to set up?",
-		answer:
-			"Setup takes just minutes. Register your organization, and you're ready to go. Clinics and solo practices are activated instantly, while hospitals verify via email. The system automatically provisions roles, departments, and your admin account.",
-	},
-	{
-		question: "Can I import existing patient data?",
-		answer:
-			"Yes, we provide data import tools for migrating existing patient records. Our API also allows for custom integrations with your existing systems. Contact us at info@usehely.com for large-scale migrations.",
-	},
-	{
-		question: "What happens to my data if I cancel?",
-		answer:
-			"Your data remains available for 30 days after cancellation. You can export all data in CSV/PDF formats before that period ends. After 30 days, data is permanently deleted per our retention policy.",
-	},
-	{
-		question: "Is there API access for custom integrations?",
-		answer:
-			"Yes, Professional and Enterprise plans include full REST API access with comprehensive documentation. You can integrate with lab systems, billing software, and other healthcare tools.",
-	},
-	{
-		question: "How are backups handled?",
-		answer:
-			"We perform automated daily backups with point-in-time recovery. Data is encrypted at rest and stored across multiple availability zones for redundancy.",
-	},
-	{
-		question: "Can multiple organizations use the same platform?",
-		answer:
-			"Absolutely. Our platform allows healthcare networks to manage hospitals, clinics, and practices from a single platform while maintaining complete data separation between facilities.",
-	},
-	{
-		question: "What compliance standards do you follow?",
-		answer:
-			"We build with HIPAA considerations in mind and implement industry-standard security practices including encryption, audit logging, and role-based access control. Contact us at info@usehely.com for detailed compliance documentation.",
-	},
-	{
-		question: "Do you offer training and onboarding?",
-		answer:
-			"Yes, all plans include access to our documentation and video tutorials. Professional plans get priority support, and Enterprise plans include dedicated onboarding sessions and training.",
-	},
-];
+function getFaqs(supportEmail: string) {
+	return [
+		{
+			question: "How long does it take to set up?",
+			answer:
+				"Setup takes just minutes. Register your organization, and you're ready to go. Clinics and solo practices are activated instantly, while hospitals verify via email. The system automatically provisions roles, departments, and your admin account.",
+		},
+		{
+			question: "Can I import existing patient data?",
+			answer: `Yes, we provide data import tools for migrating existing patient records. Our API also allows for custom integrations with your existing systems. Contact us at ${supportEmail} for large-scale migrations.`,
+		},
+		{
+			question: "What happens to my data if I cancel?",
+			answer:
+				"Your data remains available for 30 days after cancellation. You can export all data in CSV/PDF formats before that period ends. After 30 days, data is permanently deleted per our retention policy.",
+		},
+		{
+			question: "Is there API access for custom integrations?",
+			answer:
+				"Yes, Professional and Enterprise plans include full REST API access with comprehensive documentation. You can integrate with lab systems, billing software, and other healthcare tools.",
+		},
+		{
+			question: "How are backups handled?",
+			answer:
+				"We perform automated daily backups with point-in-time recovery. Data is encrypted at rest and stored across multiple availability zones for redundancy.",
+		},
+		{
+			question: "Can multiple organizations use the same platform?",
+			answer:
+				"Absolutely. Our platform allows healthcare networks to manage hospitals, clinics, and practices from a single platform while maintaining complete data separation between facilities.",
+		},
+		{
+			question: "What compliance standards do you follow?",
+			answer: `We build with HIPAA considerations in mind and implement industry-standard security practices including encryption, audit logging, and role-based access control. Contact us at ${supportEmail} for detailed compliance documentation.`,
+		},
+		{
+			question: "Do you offer training and onboarding?",
+			answer:
+				"Yes, all plans include access to our documentation and video tutorials. Professional plans get priority support, and Enterprise plans include dedicated onboarding sessions and training.",
+		},
+	];
+}
 
 function FAQItem({ question, answer }: { question: string; answer: string }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -79,6 +80,9 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 }
 
 export function FAQ() {
+	const { branding } = useBranding();
+	const faqs = getFaqs(branding.supportEmail);
+
 	return (
 		<section className="px-4 py-20 sm:px-6 lg:px-8">
 			<div className="mx-auto max-w-3xl">
@@ -90,7 +94,7 @@ export function FAQ() {
 						Frequently Asked Questions
 					</h2>
 					<p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-						Everything you need to know about Hely.
+						Everything you need to know about {branding.appName}.
 					</p>
 				</div>
 

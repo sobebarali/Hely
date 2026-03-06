@@ -15,11 +15,16 @@ export interface UserAttributes {
 	shift?: string;
 }
 
+// Branding info in response
+import type { BrandingOutput } from "../../hospital/validations/branding.types";
+export type { BrandingOutput };
+
 // Hospital info in response
 export interface HospitalOutput {
 	id: string;
 	name: string;
 	status: string;
+	branding?: BrandingOutput;
 }
 
 // Output type - manually defined for response structure

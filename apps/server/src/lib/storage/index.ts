@@ -32,6 +32,7 @@ export const StoragePrefixes = {
 	COMPLIANCE_EXPORTS: "exports/compliance",
 	REPORTS: "exports/reports",
 	DOCUMENTS: "documents",
+	BRANDING: "branding",
 } as const;
 
 /**
@@ -333,6 +334,95 @@ export async function deleteExportFile({
 	key: string;
 }): Promise<boolean> {
 	return deleteFile({ key });
+}
+
+/**
+ * Generate storage key for branding asset (logo or favicon)
+ */
+export function getBrandingAssetKey({
+	tenantId,
+	type,
+	extension = "png",
+}: {
+	tenantId: string;
+	type: "logo" | "favicon";
+	extension?: string;
+}): string {
+	return `${StoragePrefixes.BRANDING}/${tenantId}/${type}.${extension}`;
+}
+
+/**
+ * Upload branding asset (logo or favicon) from base64 string
+ */
+export async function uploadBrandingAsset({
+	tenantId,
+	type,
+	base64Data,
+}: {
+	tenantId: string;
+	type: "logo" | "favicon";
+	base64Data: string;
+}): Promise<string | null> {
+	if (!checkR2Configured()) {
+		logger.warn(
+			{ tenantId, type },
+			"R2 not configured, skipping branding upload",
+		);
+		return null;
+	}
+
+	const matches = base64Data.match(
+		/^data:image\/(jpeg|png|jpg|svg\+xml|x-icon|vnd\.microsoft\.icon);base64,(.+)$/,
+	);
+	if (!matches || !matches[1] || !matches[2]) {
+		throw new Error(
+			"Invalid base64 image format. Expected: data:image/(jpeg|png|svg+xml);base64,...",
+		);
+	}
+
+	const imageType = matches[1];
+	const imageData = matches[2];
+
+	let extension: string;
+	let contentType: string;
+	if (imageType === "svg+xml") {
+		extension = "svg";
+		contentType = "image/svg+xml";
+	} else if (imageType === "x-icon" || imageType === "vnd.microsoft.icon") {
+		extension = "ico";
+		contentType = "image/x-icon";
+	} else {
+		extension = imageType === "jpeg" ? "jpg" : imageType;
+		contentType = imageType === "png" ? ContentTypes.PNG : ContentTypes.JPEG;
+	}
+
+	const buffer = Buffer.from(imageData, "base64");
+
+	// Limit size to 2MB for branding assets
+	if (buffer.length > 2 * 1024 * 1024) {
+		throw new Error("Branding asset must be less than 2MB");
+	}
+
+	const key = getBrandingAssetKey({ tenantId, type, extension });
+
+	const result = await uploadFile({
+		key,
+		body: buffer,
+		contentType,
+		metadata: {
+			tenantId,
+			type,
+			uploadedAt: new Date().toISOString(),
+		},
+	});
+
+	if (!result) {
+		return null;
+	}
+
+	logger.info({ tenantId, type, key }, "Branding asset uploaded successfully");
+
+	return getSignedDownloadUrl({ key, expiresIn: 86400 * 365 });
 }
 
 // Re-export R2 utilities for direct access if needed

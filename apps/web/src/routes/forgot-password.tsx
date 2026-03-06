@@ -16,6 +16,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { useBranding } from "@/contexts/branding-context";
 import { useHospitalsForEmail } from "@/hooks/use-auth";
 import { useForgotPassword } from "@/hooks/use-users";
 import type { ApiError } from "@/lib/users-client";
@@ -25,6 +26,7 @@ export const Route = createFileRoute("/forgot-password")({
 });
 
 function ForgotPasswordPage() {
+	const { branding } = useBranding();
 	const [email, setEmail] = useState("");
 	const [selectedHospital, setSelectedHospital] = useState("");
 	const [isSubmitted, setIsSubmitted] = useState(false);
@@ -150,10 +152,18 @@ function ForgotPasswordPage() {
 				<div className="w-full max-w-md">
 					<div className="mb-8 text-center">
 						<Link to="/" className="mb-8 inline-flex items-center gap-2">
-							<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-								<HelyLogo className="h-5 w-5 text-primary" />
-							</div>
-							<span className="font-bold text-lg">Hely</span>
+							{branding.logoUrl ? (
+								<img
+									src={branding.logoUrl}
+									alt={branding.appName}
+									className="h-10 w-auto"
+								/>
+							) : (
+								<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+									<HelyLogo className="h-5 w-5 text-primary" />
+								</div>
+							)}
+							<span className="font-bold text-lg">{branding.appName}</span>
 						</Link>
 					</div>
 
@@ -240,10 +250,10 @@ function ForgotPasswordPage() {
 											No organizations found for this email. Please check your
 											email or contact support at{" "}
 											<a
-												href="mailto:info@usehely.com"
+												href={`mailto:${branding.supportEmail}`}
 												className="underline hover:text-red-300"
 											>
-												info@usehely.com
+												{branding.supportEmail}
 											</a>
 										</p>
 									</div>

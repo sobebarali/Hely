@@ -1,4 +1,9 @@
-import { brandColors, emailStyles, wrapEmailContent } from "./base.template.js";
+import {
+	brandColors,
+	type EmailBranding,
+	emailStyles,
+	wrapEmailContent,
+} from "./base.template.js";
 
 export interface WelcomeEmailData {
 	firstName: string;
@@ -6,11 +11,18 @@ export interface WelcomeEmailData {
 	username: string;
 	temporaryPassword: string;
 	loginUrl: string;
+	branding?: EmailBranding;
 }
 
 export function getWelcomeEmailTemplate(data: WelcomeEmailData): string {
-	const { firstName, hospitalName, username, temporaryPassword, loginUrl } =
-		data;
+	const {
+		firstName,
+		hospitalName,
+		username,
+		temporaryPassword,
+		loginUrl,
+		branding,
+	} = data;
 
 	const content = `
 		<h1 style="${emailStyles.heading}">Welcome to ${hospitalName}</h1>
@@ -65,6 +77,7 @@ export function getWelcomeEmailTemplate(data: WelcomeEmailData): string {
 		title: `Welcome to ${hospitalName}`,
 		preheader: `Your account has been created at ${hospitalName}`,
 		content,
+		branding,
 	});
 }
 
@@ -111,10 +124,11 @@ export interface LinkedUserEmailData {
 	firstName: string;
 	hospitalName: string;
 	loginUrl: string;
+	branding?: EmailBranding;
 }
 
 export function getLinkedUserEmailTemplate(data: LinkedUserEmailData): string {
-	const { firstName, hospitalName, loginUrl } = data;
+	const { firstName, hospitalName, loginUrl, branding } = data;
 
 	const content = `
 		<h1 style="${emailStyles.heading}">You've been added to ${hospitalName}</h1>
@@ -155,6 +169,7 @@ export function getLinkedUserEmailTemplate(data: LinkedUserEmailData): string {
 		title: `You've been added to ${hospitalName}`,
 		preheader: `You've been added as a staff member at ${hospitalName}`,
 		content,
+		branding,
 	});
 }
 

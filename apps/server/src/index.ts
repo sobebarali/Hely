@@ -25,6 +25,7 @@ import usersRoutes from "./apis/users/users.routes";
 import vitalsRoutes from "./apis/vitals/vitals.routes";
 import { logger } from "./lib/logger";
 import { closeQueues, startWorkers, stopWorkers } from "./lib/queue";
+import { domainResolver } from "./middlewares/domain-resolver";
 import { errorHandler } from "./middlewares/error-handler";
 import { requestContext } from "./middlewares/request-context";
 import { requestLogger } from "./middlewares/request-logger";
@@ -91,6 +92,9 @@ app.use(express.json());
 
 // Request logger middleware (AFTER body parsing so req.body is available)
 app.use(requestLogger);
+
+// Domain resolver middleware (resolves custom domain → tenantId for public routes)
+app.use(domainResolver);
 
 // API Routes
 app.use("/api/appointments", appointmentsRoutes);

@@ -91,11 +91,24 @@ export async function getCurrentUser({
 	const hospital = await findHospitalById({
 		hospitalId: String(staff.tenantId),
 	});
+	const branding = (hospital as { branding?: Record<string, unknown> })
+		?.branding;
 	const hospitalOutput = hospital
 		? {
 				id: String(hospital._id),
 				name: hospital.name,
 				status: hospital.status,
+				branding: branding
+					? {
+							appName: (branding.appName as string) || null,
+							logoUrl: (branding.logoUrl as string) || null,
+							faviconUrl: (branding.faviconUrl as string) || null,
+							supportEmail: (branding.supportEmail as string) || null,
+							primaryColor: (branding.primaryColor as string) || null,
+							accentColor: (branding.accentColor as string) || null,
+							customDomain: (branding.customDomain as string) || null,
+						}
+					: undefined,
 			}
 		: undefined;
 

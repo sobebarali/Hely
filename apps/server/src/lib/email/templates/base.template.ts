@@ -15,11 +15,28 @@ export const brandColors = {
 // Inline SVG logo (heart + EKG)
 const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="${brandColors.primary}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 13.572l-7.5 7.428l-2.896 -2.868m-6.117 -8.104a5 5 0 0 1 9.013 -3.022a5 5 0 1 1 7.5 6.572" /><path d="M3 13h2l2 3l2 -6l1 3h3" /></svg>`;
 
+function escapeHtml(str: string): string {
+	return str
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/"/g, "&quot;")
+		.replace(/'/g, "&#39;");
+}
+
+export interface EmailBranding {
+	appName?: string;
+	primaryColor?: string;
+	logoUrl?: string;
+	supportEmail?: string;
+}
+
 export interface EmailWrapperOptions {
 	title: string;
 	preheader?: string;
 	content: string;
 	supportEmail?: string;
+	branding?: EmailBranding;
 }
 
 export function wrapEmailContent({
@@ -27,7 +44,17 @@ export function wrapEmailContent({
 	preheader,
 	content,
 	supportEmail = "support@usehely.com",
+	branding,
 }: EmailWrapperOptions): string {
+	const appName = branding?.appName || "useHely";
+	const primaryColor = branding?.primaryColor || brandColors.primary;
+	const resolvedSupportEmail = branding?.supportEmail || supportEmail;
+	const safeLogoUrl = branding?.logoUrl ? escapeHtml(branding.logoUrl) : null;
+	const safeAppName = escapeHtml(appName);
+	const logoHtml = safeLogoUrl
+		? `<img src="${safeLogoUrl}" alt="${safeAppName}" style="height: 28px; width: auto;" />`
+		: logoSvg.replace(brandColors.primary, primaryColor);
+
 	return `
 <!DOCTYPE html>
 <html lang="en">
@@ -52,10 +79,10 @@ export function wrapEmailContent({
 										<table role="presentation" cellpadding="0" cellspacing="0">
 											<tr>
 												<td style="vertical-align: middle; padding-right: 12px;">
-													${logoSvg}
+													${logoHtml}
 												</td>
 												<td style="vertical-align: middle;">
-													<span style="font-size: 24px; font-weight: 700; color: ${brandColors.primary}; letter-spacing: -0.5px;">useHely</span>
+													<span style="font-size: 24px; font-weight: 700; color: ${primaryColor}; letter-spacing: -0.5px;">${appName}</span>
 												</td>
 											</tr>
 										</table>
@@ -77,10 +104,10 @@ export function wrapEmailContent({
 								<tr>
 									<td align="center">
 										<p style="margin: 0 0 8px 0; font-size: 14px; color: ${brandColors.textSecondary}; font-weight: 500;">
-											useHely - Hospital Management System
+											${appName} - Hospital Management System
 										</p>
 										<p style="margin: 0; font-size: 13px; color: ${brandColors.textSecondary};">
-											Questions? Contact <a href="mailto:${supportEmail}" style="color: ${brandColors.primary}; text-decoration: none;">${supportEmail}</a>
+											Questions? Contact <a href="mailto:${resolvedSupportEmail}" style="color: ${primaryColor}; text-decoration: none;">${resolvedSupportEmail}</a>
 										</p>
 									</td>
 								</tr>

@@ -3,6 +3,7 @@
  */
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useBranding } from "../contexts/branding-context";
 import {
 	type AuthUser,
 	authClient,
@@ -102,10 +103,13 @@ export function useSubmitMfaCode() {
  */
 export function useSignOut() {
 	const queryClient = useQueryClient();
+	const { setBrandingFromAuth } = useBranding();
 
 	return useMutation({
 		mutationFn: () => authClient.signOut(),
 		onSuccess: () => {
+			// Clear branding back to defaults
+			setBrandingFromAuth(undefined);
 			// Clear all auth-related queries
 			queryClient.removeQueries({ queryKey: authKeys.all });
 			queryClient.setQueryData(authKeys.session(), null);

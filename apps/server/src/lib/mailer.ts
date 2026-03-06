@@ -15,12 +15,14 @@ export async function sendEmail({
 	text,
 	html,
 	category,
+	fromName,
 }: {
 	to: string | string[];
 	subject: string;
 	text?: string;
 	html?: string;
 	category?: string;
+	fromName?: string;
 }) {
 	// Skip sending emails in test environment
 	if (process.env.NODE_ENV === "test") {
@@ -28,8 +30,10 @@ export async function sendEmail({
 		return { id: "test-message-id" };
 	}
 
+	const senderName = fromName || emailConfig.fromName;
+
 	const { data, error } = await resend.emails.send({
-		from: `${emailConfig.fromName} <${emailConfig.from}>`,
+		from: `${senderName} <${emailConfig.from}>`,
 		to: Array.isArray(to) ? to : [to],
 		subject,
 		html: html || undefined,

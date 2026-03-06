@@ -1,15 +1,20 @@
-import { emailStyles, wrapEmailContent } from "./base.template.js";
+import {
+	type EmailBranding,
+	emailStyles,
+	wrapEmailContent,
+} from "./base.template.js";
 
 export interface PasswordResetEmailData {
 	firstName: string;
 	hospitalName: string;
 	resetUrl: string;
+	branding?: EmailBranding;
 }
 
 export function getPasswordResetEmailTemplate(
 	data: PasswordResetEmailData,
 ): string {
-	const { firstName, hospitalName, resetUrl } = data;
+	const { firstName, hospitalName, resetUrl, branding } = data;
 
 	const content = `
 		<h1 style="${emailStyles.heading}">Reset Your Password</h1>
@@ -44,6 +49,7 @@ export function getPasswordResetEmailTemplate(
 		title: "Reset Your Password",
 		preheader: `Password reset request for your ${hospitalName} account`,
 		content,
+		branding,
 	});
 }
 

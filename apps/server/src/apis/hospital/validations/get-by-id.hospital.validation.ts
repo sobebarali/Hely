@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { BrandingOutput } from "./branding.types";
 
 // Zod schema for runtime validation
 export const getHospitalByIdSchema = z.object({
@@ -30,6 +31,7 @@ export interface GetHospitalByIdOutput {
 	licenseNumber?: string;
 	status: string;
 	pricingTier?: string;
+	branding?: BrandingOutput;
 	createdAt: string;
 	updatedAt: string;
 }

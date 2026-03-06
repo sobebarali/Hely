@@ -10,6 +10,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { useBranding } from "@/contexts/branding-context";
 
 const plans = [
 	{
@@ -79,6 +80,8 @@ const plans = [
 ];
 
 export function Pricing() {
+	const { branding } = useBranding();
+
 	return (
 		<section id="pricing" className="bg-muted/30 px-4 py-20 sm:px-6 lg:px-8">
 			<div className="mx-auto max-w-7xl">
@@ -91,7 +94,7 @@ export function Pricing() {
 					</h2>
 					<p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
 						Start small and upgrade as your practice grows. All plans include
-						core Hely features.
+						core {branding.appName} features.
 					</p>
 					<div className="mx-auto mt-6 max-w-md rounded-full border border-green-500/30 bg-green-500/10 px-6 py-3 text-center">
 						<span className="font-semibold text-green-600 dark:text-green-400">
@@ -145,7 +148,9 @@ export function Pricing() {
 							<CardFooter>
 								{plan.name === "Enterprise" ? (
 									<Button className="w-full" variant="outline" asChild>
-										<a href="mailto:info@usehely.com">Contact Sales</a>
+										<a href={`mailto:${branding.supportEmail}`}>
+											Contact Sales
+										</a>
 									</Button>
 								) : (
 									<Button
