@@ -352,15 +352,63 @@ async function seedUsers({
 		const existingUser = await User.findOne({ email }).session(session ?? null);
 
 		if (existingUser) {
-			logger.debug({ email }, "User already exists, skipping");
-			// Look up existing staff record to populate the map
+			logger.debug({ email }, "User already exists, checking staff record");
 			const existingStaff = await Staff.findOne({
 				tenantId,
 				userId: String(existingUser._id),
 			}).session(session ?? null);
+
 			if (existingStaff) {
 				staffByRole.set(userConfig.role, String(existingStaff._id));
+			} else {
+				// User exists but staff record is missing — create it
+				const staffId = uuidv4();
+				const seq = await (Counter as unknown as CounterModel).getNextSequence(
+					tenantId,
+					"employee",
+				);
+				const employeeId = `EMP-${String(seq).padStart(5, "0")}`;
+				const roleId = roleMap.get(userConfig.role);
+				const departmentId = departmentMap.get(userConfig.departmentCode);
+
+				if (!roleId || !departmentId) {
+					logger.error(
+						{ role: userConfig.role, dept: userConfig.departmentCode },
+						"Role or department not found for existing user",
+					);
+					staffIdx++;
+					continue;
+				}
+
+				await Staff.create(
+					[
+						{
+							_id: staffId,
+							tenantId,
+							userId: String(existingUser._id),
+							employeeId,
+							firstName: userConfig.firstName,
+							lastName: userConfig.lastName,
+							phone: `+1-555-${String(200 + staffIdx).padStart(4, "0")}`,
+							departmentId,
+							roles: [roleId],
+							specialization: userConfig.specialization,
+							shift: userConfig.shift,
+							status: "ACTIVE",
+							forcePasswordChange: false,
+							passwordHistory: [hashedPassword],
+						},
+					],
+					{ session },
+				);
+
+				staffByRole.set(userConfig.role, staffId);
+				logger.info(
+					{ email, staffId },
+					"Created missing staff record for existing user",
+				);
 			}
+			staffIdx++;
 			continue;
 		}
 
