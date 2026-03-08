@@ -1,3 +1,4 @@
+import { Role } from "@hms/db";
 import { createServiceLogger } from "../../../lib/logger";
 import { listUsers } from "../repositories/list.users.repository";
 import type {
@@ -6,6 +7,9 @@ import type {
 } from "../validations/list.users.validation";
 
 const logger = createServiceLogger("listUsers");
+
+const UUID_REGEX =
+	/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /**
  * List users within the hospital tenant
@@ -24,12 +28,27 @@ export async function listUsersService({
 	const sortBy = query.sortBy || "createdAt";
 	const sortOrder = query.sortOrder || "desc";
 
+	// Resolve role name to role ID if needed
+	let resolvedRole = query.role;
+	if (resolvedRole && !UUID_REGEX.test(resolvedRole)) {
+		const role = await Role.findOne({ tenantId, name: resolvedRole }).lean();
+		if (role) {
+			resolvedRole = String(role._id);
+			logger.debug(
+				{ roleName: query.role, roleId: resolvedRole },
+				"Resolved role name to ID",
+			);
+		} else {
+			logger.warn({ roleName: query.role }, "Role name not found");
+		}
+	}
+
 	const result = await listUsers({
 		tenantId,
 		page,
 		limit,
 		department: query.department,
-		role: query.role,
+		role: resolvedRole,
 		status: query.status,
 		search: query.search,
 		sortBy,

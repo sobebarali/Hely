@@ -232,6 +232,46 @@ const USERS_CONFIG: UserSeedConfig[] = [
 		shift: "MORNING",
 	},
 	{
+		role: "DOCTOR",
+		firstName: "Sarah",
+		lastName: "Chen",
+		departmentCode: "CARDIO",
+		specialization: "Cardiology",
+		shift: "MORNING",
+	},
+	{
+		role: "DOCTOR",
+		firstName: "Michael",
+		lastName: "Rivera",
+		departmentCode: "NEURO",
+		specialization: "Neurology",
+		shift: "MORNING",
+	},
+	{
+		role: "DOCTOR",
+		firstName: "Emily",
+		lastName: "Thompson",
+		departmentCode: "ORTHO",
+		specialization: "Orthopedic Surgery",
+		shift: "EVENING",
+	},
+	{
+		role: "DOCTOR",
+		firstName: "David",
+		lastName: "Patel",
+		departmentCode: "PEDIA",
+		specialization: "Pediatrics",
+		shift: "MORNING",
+	},
+	{
+		role: "DOCTOR",
+		firstName: "Lisa",
+		lastName: "Wong",
+		departmentCode: "ONCO",
+		specialization: "Medical Oncology",
+		shift: "MORNING",
+	},
+	{
 		role: "NURSE",
 		firstName: "Jane",
 		lastName: "Nurse",
@@ -346,7 +386,8 @@ async function seedUsers({
 
 	let staffIdx = 0;
 	for (const userConfig of USERS_CONFIG) {
-		const email = `${emailPrefix}-${userConfig.role.toLowerCase().replace("hospital_", "")}@usehely.com`;
+		const emailSlug = `${userConfig.firstName.toLowerCase()}.${userConfig.lastName.toLowerCase()}`;
+		const email = `${emailPrefix}-${emailSlug}@usehely.com`;
 
 		// Check if user already exists globally
 		const existingUser = await User.findOne({ email }).session(session ?? null);

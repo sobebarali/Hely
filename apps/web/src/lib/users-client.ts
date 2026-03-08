@@ -23,6 +23,7 @@ export interface UserListItem {
 	firstName: string;
 	lastName: string;
 	department: string;
+	specialization: string;
 	roles: UserRole[];
 	status: string;
 	createdAt: string;

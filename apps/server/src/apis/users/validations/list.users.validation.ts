@@ -25,6 +25,7 @@ export interface UserListItem {
 	firstName: string;
 	lastName: string;
 	department: string;
+	specialization: string;
 	roles: Array<{
 		id: string;
 		name: string;

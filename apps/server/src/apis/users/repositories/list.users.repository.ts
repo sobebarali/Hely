@@ -122,6 +122,7 @@ export async function listUsers({
 				firstName: staff.firstName || "",
 				lastName: staff.lastName || "",
 				department: department?.name || "",
+				specialization: staff.specialization || "",
 				roles: staffRoles,
 				status: staff.status || "ACTIVE",
 				createdAt: staff.createdAt?.toISOString() || new Date().toISOString(),

@@ -130,14 +130,11 @@ function DoctorsListPage() {
 		{
 			accessorKey: "specialization",
 			header: "Specialization",
-			cell: ({ row }) => {
-				// Note: specialization is not in UserListItem, we'll show department as fallback
-				return (
-					<Badge variant="outline">
-						{row.original.department || "General"}
-					</Badge>
-				);
-			},
+			cell: ({ row }) => (
+				<Badge variant="outline">
+					{row.original.specialization || "General"}
+				</Badge>
+			),
 		},
 		{
 			accessorKey: "status",
