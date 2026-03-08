@@ -1,4 +1,9 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	Link,
+	redirect,
+	useNavigate,
+} from "@tanstack/react-router";
 import {
 	type ColumnDef,
 	type ColumnFiltersState,
@@ -143,6 +148,7 @@ function getPriorityBadgeVariant(
 }
 
 function AppointmentsListPage() {
+	const navigate = useNavigate();
 	const [page, setPage] = useState(1);
 	const [dateFilter, setDateFilter] = useState<Date | undefined>(undefined);
 	const [statusFilter, setStatusFilter] = useState<string>("");
@@ -610,6 +616,13 @@ function AppointmentsListPage() {
 									<TableRow
 										key={row.id}
 										data-state={row.getIsSelected() && "selected"}
+										className="cursor-pointer"
+										onClick={() =>
+											navigate({
+												to: "/dashboard/appointments/$id",
+												params: { id: row.original.id },
+											})
+										}
 									>
 										{row.getVisibleCells().map((cell) => (
 											<TableCell key={cell.id}>

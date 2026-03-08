@@ -1,4 +1,9 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	Link,
+	redirect,
+	useNavigate,
+} from "@tanstack/react-router";
 import {
 	type ColumnDef,
 	flexRender,
@@ -62,6 +67,7 @@ export const Route = createFileRoute("/dashboard/prescriptions/templates/")({
 });
 
 function TemplatesListPage() {
+	const navigate = useNavigate();
 	const [search, setSearch] = useState("");
 	const [categoryFilter, setCategoryFilter] = useState<string>("");
 	const [sorting, setSorting] = useState<SortingState>([]);
@@ -309,7 +315,16 @@ function TemplatesListPage() {
 							</TableRow>
 						) : table.getRowModel().rows?.length ? (
 							table.getRowModel().rows.map((row) => (
-								<TableRow key={row.id}>
+								<TableRow
+									key={row.id}
+									className="cursor-pointer"
+									onClick={() =>
+										navigate({
+											to: "/dashboard/prescriptions/templates/$id",
+											params: { id: row.original.id },
+										})
+									}
+								>
 									{row.getVisibleCells().map((cell) => (
 										<TableCell key={cell.id}>
 											{flexRender(

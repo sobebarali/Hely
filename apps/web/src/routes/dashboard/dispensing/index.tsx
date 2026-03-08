@@ -1,4 +1,9 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	Link,
+	redirect,
+	useNavigate,
+} from "@tanstack/react-router";
 import {
 	type ColumnDef,
 	type ColumnFiltersState,
@@ -99,6 +104,7 @@ function formatWaitingTime(minutes: number): string {
 }
 
 function DispensingPendingPage() {
+	const navigate = useNavigate();
 	const [page, setPage] = useState(1);
 	const [search, setSearch] = useState("");
 	const [priorityFilter, setPriorityFilter] = useState<string>("");
@@ -441,6 +447,13 @@ function DispensingPendingPage() {
 								<TableRow
 									key={row.id}
 									data-state={row.getIsSelected() && "selected"}
+									className="cursor-pointer"
+									onClick={() =>
+										navigate({
+											to: "/dashboard/dispensing/$id",
+											params: { id: row.original.id },
+										})
+									}
 								>
 									{row.getVisibleCells().map((cell) => (
 										<TableCell key={cell.id}>

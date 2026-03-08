@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
 	type ColumnDef,
 	type ColumnFiltersState,
@@ -92,6 +92,7 @@ const categoryLabels: Record<string, string> = {
 };
 
 function InventoryListPage() {
+	const navigate = useNavigate();
 	const [page, setPage] = useState(1);
 	const [search, setSearch] = useState("");
 	const [categoryFilter, setCategoryFilter] = useState<string>("");
@@ -495,6 +496,13 @@ function InventoryListPage() {
 								<TableRow
 									key={row.id}
 									data-state={row.getIsSelected() && "selected"}
+									className="cursor-pointer"
+									onClick={() =>
+										navigate({
+											to: "/dashboard/inventory/$id",
+											params: { id: row.original.id },
+										})
+									}
 								>
 									{row.getVisibleCells().map((cell) => (
 										<TableCell key={cell.id}>

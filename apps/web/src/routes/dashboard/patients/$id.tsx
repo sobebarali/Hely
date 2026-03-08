@@ -354,14 +354,16 @@ function PatientDetailPage() {
 													Department
 												</Label>
 												<Select
-													value={field.state.value}
-													onValueChange={field.handleChange}
+													value={field.state.value || "none"}
+													onValueChange={(v) =>
+														field.handleChange(v === "none" ? "" : v)
+													}
 												>
 													<SelectTrigger id={field.name}>
 														<SelectValue placeholder="Select department" />
 													</SelectTrigger>
 													<SelectContent>
-														<SelectItem value="">No department</SelectItem>
+														<SelectItem value="none">No department</SelectItem>
 														{departmentsData?.data.map((dept) => (
 															<SelectItem key={dept.id} value={dept.id}>
 																{dept.name}
@@ -384,14 +386,18 @@ function PatientDetailPage() {
 													Assigned Doctor
 												</Label>
 												<Select
-													value={field.state.value}
-													onValueChange={field.handleChange}
+													value={field.state.value || "none"}
+													onValueChange={(v) =>
+														field.handleChange(v === "none" ? "" : v)
+													}
 												>
 													<SelectTrigger id={field.name}>
 														<SelectValue placeholder="Select doctor" />
 													</SelectTrigger>
 													<SelectContent>
-														<SelectItem value="">No doctor assigned</SelectItem>
+														<SelectItem value="none">
+															No doctor assigned
+														</SelectItem>
 														{doctorsData?.data.map((doc) => (
 															<SelectItem key={doc.id} value={doc.id}>
 																Dr. {doc.firstName} {doc.lastName}

@@ -1,4 +1,9 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	Link,
+	redirect,
+	useNavigate,
+} from "@tanstack/react-router";
 import {
 	type ColumnDef,
 	type ColumnFiltersState,
@@ -116,6 +121,7 @@ function getCategoryIcon(category: string) {
 }
 
 function ReportsPage() {
+	const navigate = useNavigate();
 	const [page, setPage] = useState(1);
 	const [statusFilter, setStatusFilter] = useState<string>("");
 	const [reportTypeFilter, setReportTypeFilter] = useState<string>("");
@@ -495,6 +501,13 @@ function ReportsPage() {
 										<TableRow
 											key={row.id}
 											data-state={row.getIsSelected() && "selected"}
+											className="cursor-pointer"
+											onClick={() =>
+												navigate({
+													to: "/dashboard/reports/$id",
+													params: { id: row.original.reportId },
+												})
+											}
 										>
 											{row.getVisibleCells().map((cell) => (
 												<TableCell key={cell.id}>

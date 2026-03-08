@@ -1,4 +1,9 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	Link,
+	redirect,
+	useNavigate,
+} from "@tanstack/react-router";
 import {
 	type ColumnDef,
 	type ColumnFiltersState,
@@ -107,6 +112,7 @@ const departmentStatusVariant: Record<
 };
 
 function DepartmentsListPage() {
+	const navigate = useNavigate();
 	const [page, setPage] = useState(1);
 	const [search, setSearch] = useState("");
 	const [typeFilter, setTypeFilter] = useState<string>("");
@@ -423,6 +429,13 @@ function DepartmentsListPage() {
 									<TableRow
 										key={row.id}
 										data-state={row.getIsSelected() && "selected"}
+										className="cursor-pointer"
+										onClick={() =>
+											navigate({
+												to: "/dashboard/departments/$id",
+												params: { id: row.original.id },
+											})
+										}
 									>
 										{row.getVisibleCells().map((cell) => (
 											<TableCell key={cell.id}>

@@ -648,6 +648,13 @@ function VitalsHistoryPage() {
 										<TableRow
 											key={row.id}
 											data-state={row.getIsSelected() && "selected"}
+											className="cursor-pointer"
+											onClick={() =>
+												navigate({
+													to: "/dashboard/vitals/$id",
+													params: { id: row.original.id },
+												})
+											}
 										>
 											{row.getVisibleCells().map((cell) => (
 												<TableCell key={cell.id}>
