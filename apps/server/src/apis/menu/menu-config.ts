@@ -230,13 +230,39 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		],
 	},
 
+	// Telemedicine
+	{
+		id: "telemedicine",
+		label: "Telemedicine",
+		icon: "videocam",
+		permission: "TELEMEDICINE:READ",
+		order: 9,
+		visible: true,
+		children: [
+			{
+				id: "telemedicine-visits",
+				label: "Virtual Visits",
+				path: "/dashboard/telemedicine",
+				permission: "TELEMEDICINE:READ",
+				order: 1,
+			},
+			{
+				id: "telemedicine-schedule",
+				label: "Schedule Visit",
+				path: "/dashboard/telemedicine/schedule",
+				permission: "TELEMEDICINE:CREATE",
+				order: 2,
+			},
+		],
+	},
+
 	// Pharmacy - Pharmacists
 	{
 		id: "pharmacy",
 		label: "Dispensing",
 		icon: "local_pharmacy",
 		permission: "DISPENSING:READ",
-		order: 9,
+		order: 10,
 		visible: true,
 		children: [
 			{
@@ -262,7 +288,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		label: "Lab & Diagnostics",
 		icon: "biotech",
 		permission: "LAB:READ",
-		order: 10,
+		order: 11,
 		visible: true,
 		children: [
 			{
@@ -296,7 +322,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		icon: "inventory",
 		path: "/dashboard/inventory",
 		permission: "INVENTORY:READ",
-		order: 11,
+		order: 12,
 		visible: true,
 		children: [
 			{
@@ -337,7 +363,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		icon: "queue",
 		path: "/dashboard/patients/opd-queue",
 		permission: "QUEUE:MANAGE",
-		order: 12,
+		order: 13,
 		visible: true,
 	},
 
@@ -347,7 +373,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		label: "Departments",
 		icon: "business",
 		permission: "DEPARTMENT:READ",
-		order: 13,
+		order: 14,
 		visible: true,
 		children: [
 			{
@@ -374,7 +400,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		icon: "assignment",
 		path: "/dashboard/reports",
 		permission: "REPORT:READ",
-		order: 14,
+		order: 15,
 		visible: true,
 		children: [
 			{
@@ -408,7 +434,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		icon: "settings",
 		path: "/dashboard/settings",
 		permission: "SETTINGS:MANAGE",
-		order: 15,
+		order: 16,
 		visible: true,
 		children: [
 			{
@@ -477,7 +503,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		icon: "shield_check",
 		path: "/dashboard/admin/compliance",
 		permission: "COMPLIANCE:MANAGE",
-		order: 16,
+		order: 17,
 		visible: true,
 	},
 
@@ -487,7 +513,7 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 		label: "Security Admin",
 		icon: "security",
 		permission: "SECURITY:READ",
-		order: 17,
+		order: 18,
 		visible: true,
 		children: [
 			{
@@ -509,6 +535,39 @@ export const FULL_MENU_STRUCTURE: MenuItem[] = [
 				label: "Encryption Keys",
 				path: "/dashboard/admin/security/keys",
 				permission: "SECURITY:MANAGE",
+				order: 3,
+			},
+		],
+	},
+
+	// Admin Audit Logs - Hospital Admin only
+	{
+		id: "admin-audit",
+		label: "Audit Logs",
+		icon: "history",
+		permission: "AUDIT:READ",
+		order: 19,
+		visible: true,
+		children: [
+			{
+				id: "admin-audit-logs",
+				label: "Audit Logs",
+				path: "/dashboard/admin/audit",
+				permission: "AUDIT:READ",
+				order: 1,
+			},
+			{
+				id: "admin-audit-reports",
+				label: "HIPAA Reports",
+				path: "/dashboard/admin/audit/reports",
+				permission: "AUDIT:REPORT",
+				order: 2,
+			},
+			{
+				id: "admin-audit-export",
+				label: "Export",
+				path: "/dashboard/admin/audit/export",
+				permission: "AUDIT:EXPORT",
 				order: 3,
 			},
 		],

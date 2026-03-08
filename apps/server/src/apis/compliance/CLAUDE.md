@@ -36,8 +36,9 @@ GDPR compliance endpoints for consent management, data export (Right of Access),
 - Most endpoints require only authentication (no permission) since users access their own data
 
 ## Seed Data
-- File: None
-- Dependencies: N/A
+- File: `src/lib/seed/compliance.seed.ts`
+- Dependencies: organizations (tenants), users
+- Creates consent records for admin user per tenant (all 6 purposes, marketing + third-party denied)
 
 ## Menu Items
 - **Compliance** (`admin-compliance`): `/dashboard/admin/compliance` - requires `COMPLIANCE:MANAGE`

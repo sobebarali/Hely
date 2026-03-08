@@ -23,11 +23,20 @@ Virtual visit management for telemedicine sessions, supporting creation, listing
 - No special middleware beyond standard `authenticate` + `authorize`
 
 ## Seed Data
-- File: None
-- Dependencies: N/A
+- File: `src/lib/seed/telemedicine.seed.ts`
+- Dependencies: organizations (tenants), patients, staff
+- Creates 5 visits per tenant (2 SCHEDULED, 1 IN_PROGRESS, 1 COMPLETED, 1 CANCELLED)
 
 ## Menu Items
-- None (no menu entry in `menu-config.ts`)
+```
+id: "telemedicine" (order: 9)
+  label: "Telemedicine"
+  icon: "videocam"
+  permission: "TELEMEDICINE:READ"
+  children:
+    - "Virtual Visits"   -> /dashboard/telemedicine          (TELEMEDICINE:READ)
+    - "Schedule Visit"   -> /dashboard/telemedicine/schedule  (TELEMEDICINE:CREATE)
+```
 
 ## Related
 - Web routes: `apps/web/src/routes/dashboard/telemedicine/` (not yet created)

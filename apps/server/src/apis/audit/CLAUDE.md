@@ -32,10 +32,19 @@ Audit log management for HIPAA compliance, including log querying, user/resource
 - Dependencies: N/A
 
 ## Menu Items
-- None (admin area - accessed via direct navigation or compliance admin tools)
+```
+id: "admin-audit" (order: 19)
+  label: "Audit Logs"
+  icon: "history"
+  permission: "AUDIT:READ"
+  children:
+    - "Audit Logs"    -> /dashboard/admin/audit          (AUDIT:READ)
+    - "HIPAA Reports" -> /dashboard/admin/audit/reports   (AUDIT:REPORT)
+    - "Export"        -> /dashboard/admin/audit/export     (AUDIT:EXPORT)
+```
 
 ## Related
-- Web routes: `apps/web/src/routes/dashboard/audit/` (not yet created)
+- Web routes: `apps/web/src/routes/dashboard/admin/audit/` (not yet created)
 - Client: `apps/web/src/lib/audit-client.ts` (not yet created)
 - Hook: `apps/web/src/hooks/use-audit.ts` (not yet created)
 - Docs: `apps/docs/src/content/docs/api/16-audit.md`

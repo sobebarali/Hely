@@ -161,6 +161,7 @@ export const Permissions = {
 
 	// Doctor permissions
 	DOCTOR_READ: "DOCTOR:READ" as Permission,
+	DOCTOR_MANAGE: "DOCTOR:MANAGE" as Permission,
 
 	// Export permissions
 	PATIENT_EXPORT: "PATIENT:EXPORT" as Permission,
@@ -261,6 +262,7 @@ export const RolePermissions: Record<RoleName, Permission[]> = {
 		Permissions.SETTINGS_MANAGE,
 		Permissions.QUEUE_MANAGE,
 		Permissions.DOCTOR_READ,
+		Permissions.DOCTOR_MANAGE,
 		Permissions.SECURITY_MANAGE,
 		Permissions.MFA_MANAGE,
 		Permissions.AUDIT_MANAGE,
@@ -295,6 +297,7 @@ export const RolePermissions: Record<RoleName, Permission[]> = {
 		Permissions.SETTINGS_MANAGE,
 		Permissions.QUEUE_MANAGE,
 		Permissions.DOCTOR_READ,
+		Permissions.DOCTOR_MANAGE,
 		Permissions.REPORT_EXPORT,
 		Permissions.SECURITY_READ,
 		Permissions.AUDIT_READ,

@@ -11,11 +11,17 @@
  * 7. Vitals (needs patients, staff)
  * 8. Admissions (needs IPD patients, staff)
  * 9. Dispensing (needs prescriptions, inventory)
+ * 10. Test Catalog (master data)
+ * 11. Lab Orders (needs patients, test catalog)
+ * 12. EMR (needs patients, staff)
+ * 13. Telemedicine (needs patients, staff)
+ * 14. Compliance (needs organizations, users)
  */
 
 import { createServiceLogger } from "../logger";
 import { seedAllAdmissions } from "./admissions.seed";
 import { seedAllAppointments } from "./appointments.seed";
+import { seedAllCompliance } from "./compliance.seed";
 import { seedAllDispensing } from "./dispensing.seed";
 import { seedAllEmr } from "./emr.seed";
 import { seedAllInventory } from "./inventory.seed";
@@ -24,6 +30,7 @@ import { seedAllMedicines } from "./medicines.seed";
 import { seedOrganizations } from "./organizations.seed";
 import { seedAllPatients } from "./patients.seed";
 import { seedAllPrescriptions } from "./prescriptions.seed";
+import { seedAllTelemedicine } from "./telemedicine.seed";
 import { seedAllTestCatalog } from "./test-catalog.seed";
 import { seedAllVitals } from "./vitals.seed";
 
@@ -42,6 +49,8 @@ interface SeedResult {
 	testCatalog: number;
 	labOrders: number;
 	emr: number;
+	telemedicine: number;
+	compliance: number;
 }
 
 /**
@@ -63,6 +72,8 @@ export async function seedAll(): Promise<SeedResult> {
 		testCatalog: 0,
 		labOrders: 0,
 		emr: 0,
+		telemedicine: 0,
+		compliance: 0,
 	};
 
 	// 1. Organizations (includes departments, users, roles)
@@ -128,6 +139,16 @@ export async function seedAll(): Promise<SeedResult> {
 	result.emr = await seedAllEmr();
 	console.log(`   ✅ ${result.emr} EMR records`);
 
+	// 13. Telemedicine (needs patients, staff)
+	console.log("\n📹 Seeding telemedicine...");
+	result.telemedicine = await seedAllTelemedicine();
+	console.log(`   ✅ ${result.telemedicine} telemedicine visits`);
+
+	// 14. Compliance (needs organizations, users)
+	console.log("\n🛡️ Seeding compliance...");
+	result.compliance = await seedAllCompliance();
+	console.log(`   ✅ ${result.compliance} consent records`);
+
 	logger.info(result, "Complete seed process finished");
 	return result;
 }
@@ -167,6 +188,8 @@ Summary:
   Test Catalog:  ${result.testCatalog}
   Lab Orders:    ${result.labOrders}
   EMR:           ${result.emr}
+  Telemedicine:  ${result.telemedicine}
+  Compliance:    ${result.compliance}
 
 Duration: ${duration}s
 

@@ -148,3 +148,5 @@ When adding or modifying seed data, respect this execution order:
 10. test-catalog (master data)
 11. lab-orders (needs patients, test-catalog)
 12. emr (needs patients, staff)
+13. telemedicine (needs patients, staff)
+14. compliance (needs organizations, users)
