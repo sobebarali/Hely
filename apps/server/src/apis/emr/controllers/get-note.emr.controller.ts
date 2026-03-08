@@ -1,4 +1,5 @@
 import type { Response } from "express";
+import { BadRequestError } from "../../../errors";
 import {
 	createControllerLogger,
 	logInput,
@@ -22,9 +23,14 @@ export const getNoteController = authenticatedHandler(
 			"Get clinical note request received",
 		);
 
+		const noteId = req.params.noteId;
+		if (!noteId) {
+			throw new BadRequestError("Note ID is required", "MISSING_NOTE_ID");
+		}
+
 		const result = await getNoteService({
 			tenantId: req.user.tenantId,
-			noteId: req.params.noteId,
+			noteId,
 		});
 
 		const duration = Date.now() - startTime;

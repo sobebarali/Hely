@@ -14,7 +14,7 @@ export const updateTelemedicineVisitSchema = z.object({
 		notes: z.string().optional(),
 		diagnosis: z.string().optional(),
 		prescription: z.string().optional(),
-		metadata: z.record(z.unknown()).optional(),
+		metadata: z.record(z.string(), z.unknown()).optional(),
 	}),
 });
 

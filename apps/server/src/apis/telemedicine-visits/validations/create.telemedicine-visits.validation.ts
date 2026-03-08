@@ -10,7 +10,7 @@ export const createTelemedicineVisitSchema = z.object({
 		reason: z.string().min(1, "Reason is required"),
 		meetingLink: z.string().url().optional(),
 		notes: z.string().optional(),
-		metadata: z.record(z.unknown()).optional(),
+		metadata: z.record(z.string(), z.unknown()).optional(),
 	}),
 });
 

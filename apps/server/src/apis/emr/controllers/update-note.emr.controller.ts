@@ -1,5 +1,5 @@
 import type { Response } from "express";
-import { ForbiddenError } from "../../../errors";
+import { BadRequestError, ForbiddenError } from "../../../errors";
 import {
 	createControllerLogger,
 	logInput,
@@ -31,10 +31,15 @@ export const updateNoteController = authenticatedHandler(
 			);
 		}
 
+		const noteId = req.params.noteId;
+		if (!noteId) {
+			throw new BadRequestError("Note ID is required", "MISSING_NOTE_ID");
+		}
+
 		const input = req.body as UpdateNoteInput;
 		const result = await updateNoteService({
 			tenantId: req.user.tenantId,
-			noteId: req.params.noteId,
+			noteId,
 			userId: req.user.staffId,
 			...input,
 		});

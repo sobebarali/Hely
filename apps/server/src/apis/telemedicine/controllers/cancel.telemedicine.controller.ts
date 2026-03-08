@@ -25,7 +25,7 @@ export const cancelTelemedicineController = authenticatedHandler(
 		const result = await cancelTelemedicineService({
 			tenantId: req.user.tenantId,
 			visitId: req.params.visitId as string,
-			cancelledBy: req.user.userId,
+			cancelledBy: req.user.id,
 			...req.body,
 		});
 

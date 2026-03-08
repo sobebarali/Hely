@@ -34,15 +34,13 @@ export async function addTestToCatalogService({
 		turnaroundTime: entry.turnaroundTime as string,
 		price: entry.price as number,
 		status: entry.status as string,
-		referenceRanges: (entry.referenceRanges || []).map(
-			(r: Record<string, unknown>) => ({
-				label: r.label as string,
-				min: r.min as number | undefined,
-				max: r.max as number | undefined,
-				unit: r.unit as string | undefined,
-				gender: r.gender as string | undefined,
-			}),
-		),
+		referenceRanges: (entry.referenceRanges || []).map((r) => ({
+			label: r.label,
+			min: r.min ?? undefined,
+			max: r.max ?? undefined,
+			unit: r.unit ?? undefined,
+			gender: r.gender ?? undefined,
+		})),
 		createdAt: entry.createdAt.toISOString(),
 	};
 }

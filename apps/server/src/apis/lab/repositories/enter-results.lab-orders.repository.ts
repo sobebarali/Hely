@@ -55,7 +55,7 @@ export async function updateLabOrderResults({
 		// Set each test's resultDetails using arrayFilters
 		const arrayFilters: Record<string, string>[] = [];
 		for (let i = 0; i < results.length; i++) {
-			const result = results[i];
+			const result = results[i]!;
 			updateSet[`tests.$[elem${i}].resultDetails`] = result.resultDetails;
 			arrayFilters.push({ [`elem${i}.testId`]: result.testId });
 		}

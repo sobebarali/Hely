@@ -1,5 +1,5 @@
 import type { Response } from "express";
-import { ForbiddenError } from "../../../errors";
+import { BadRequestError, ForbiddenError } from "../../../errors";
 import {
 	createControllerLogger,
 	logInput,
@@ -31,10 +31,15 @@ export const addProblemController = authenticatedHandler(
 			);
 		}
 
+		const patientId = req.params.patientId;
+		if (!patientId) {
+			throw new BadRequestError("Patient ID is required", "MISSING_PATIENT_ID");
+		}
+
 		const input = req.body as AddProblemInput;
 		const result = await addProblemService({
 			tenantId: req.user.tenantId,
-			patientId: req.params.patientId,
+			patientId,
 			addedBy: req.user.staffId,
 			...input,
 		});

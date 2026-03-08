@@ -1,4 +1,5 @@
 import type { Response } from "express";
+import { BadRequestError } from "../../../errors";
 import {
 	createControllerLogger,
 	logInput,
@@ -22,9 +23,14 @@ export const getProblemsController = authenticatedHandler(
 			"Get problem list request received",
 		);
 
+		const patientId = req.params.patientId;
+		if (!patientId) {
+			throw new BadRequestError("Patient ID is required", "MISSING_PATIENT_ID");
+		}
+
 		const result = await getProblemsService({
 			tenantId: req.user.tenantId,
-			patientId: req.params.patientId,
+			patientId,
 			status: req.query.status as string | undefined,
 		});
 

@@ -1,4 +1,5 @@
 import type { Response } from "express";
+import { BadRequestError } from "../../../errors";
 import {
 	createControllerLogger,
 	logInput,
@@ -18,9 +19,14 @@ export const reportLabOrderController = authenticatedHandler(
 
 		logInput(logger, req.params, "Lab report request received");
 
+		const orderId = req.params.orderId;
+		if (!orderId) {
+			throw new BadRequestError("Order ID is required", "MISSING_ORDER_ID");
+		}
+
 		const result = await reportLabOrderService({
 			tenantId: req.user.tenantId,
-			orderId: req.params.orderId,
+			orderId,
 		});
 
 		const duration = Date.now() - startTime;

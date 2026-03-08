@@ -1,5 +1,5 @@
 import type { Response } from "express";
-import { ForbiddenError } from "../../../errors";
+import { BadRequestError, ForbiddenError } from "../../../errors";
 import {
 	createControllerLogger,
 	logInput,
@@ -30,9 +30,14 @@ export const signNoteController = authenticatedHandler(
 			);
 		}
 
+		const noteId = req.params.noteId;
+		if (!noteId) {
+			throw new BadRequestError("Note ID is required", "MISSING_NOTE_ID");
+		}
+
 		const result = await signNoteService({
 			tenantId: req.user.tenantId,
-			noteId: req.params.noteId,
+			noteId,
 			signedBy: req.user.staffId,
 		});
 

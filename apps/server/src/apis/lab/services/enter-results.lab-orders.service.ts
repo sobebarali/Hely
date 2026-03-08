@@ -110,25 +110,18 @@ export async function enterLabResultsService({
 		id: String(updatedOrder._id),
 		orderId: updatedOrder.orderId,
 		status: updatedOrder.status as string,
-		tests: updatedOrder.tests.map(
-			(t: {
-				testId: string;
-				testName: string;
-				testCode: string;
-				resultDetails?: {
-					value: string;
-					unit?: string;
-					normalRange?: string;
-					flag?: string;
-					interpretation?: string;
-				};
-			}) => ({
-				testId: t.testId,
-				testName: t.testName,
-				testCode: t.testCode,
-				resultDetails: t.resultDetails as NonNullable<typeof t.resultDetails>,
-			}),
-		),
+		tests: updatedOrder.tests.map((t) => ({
+			testId: t.testId,
+			testName: t.testName,
+			testCode: t.testCode,
+			resultDetails: {
+				value: t.resultDetails?.value ?? "",
+				unit: t.resultDetails?.unit ?? undefined,
+				normalRange: t.resultDetails?.normalRange ?? undefined,
+				flag: (t.resultDetails?.flag as string) ?? undefined,
+				interpretation: t.resultDetails?.interpretation ?? undefined,
+			},
+		})),
 		enteredBy: {
 			id: String(staff._id),
 			employeeId: staff.employeeId,

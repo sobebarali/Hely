@@ -40,15 +40,13 @@ export async function listTestCatalogService({
 		turnaroundTime: test.turnaroundTime ?? undefined,
 		price: test.price ?? undefined,
 		status: test.status,
-		referenceRanges: (test.referenceRanges || []).map(
-			(r: Record<string, unknown>) => ({
-				label: r.label as string,
-				min: r.min as number | undefined,
-				max: r.max as number | undefined,
-				unit: r.unit as string | undefined,
-				gender: r.gender as string,
-			}),
-		),
+		referenceRanges: (test.referenceRanges || []).map((r) => ({
+			label: r.label,
+			min: r.min ?? undefined,
+			max: r.max ?? undefined,
+			unit: r.unit ?? undefined,
+			gender: r.gender,
+		})),
 	}));
 
 	logger.info(

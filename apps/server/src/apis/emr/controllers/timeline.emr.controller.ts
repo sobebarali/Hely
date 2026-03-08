@@ -1,4 +1,5 @@
 import type { Response } from "express";
+import { BadRequestError } from "../../../errors";
 import {
 	createControllerLogger,
 	logInput,
@@ -27,10 +28,15 @@ export const timelineController = authenticatedHandler(
 			"Patient timeline request received",
 		);
 
+		const patientId = req.params.patientId;
+		if (!patientId) {
+			throw new BadRequestError("Patient ID is required", "MISSING_PATIENT_ID");
+		}
+
 		const query = req.query as unknown as TimelineQuery;
 		const result = await timelineService({
 			tenantId: req.user.tenantId,
-			patientId: req.params.patientId,
+			patientId,
 			...query,
 		});
 

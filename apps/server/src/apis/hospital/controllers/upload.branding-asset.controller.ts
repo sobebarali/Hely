@@ -1,14 +1,17 @@
-import type { Request, Response } from "express";
+import type { Response } from "express";
 import { createControllerLogger, logSuccess } from "../../../lib/logger";
-import { asyncHandler } from "../../../utils/async-handler";
+import {
+	type AuthenticatedRequest,
+	authenticatedHandler,
+} from "../../../utils/async-handler";
 import { uploadBrandingAssetService } from "../services/upload.branding-asset.service";
 
 const logger = createControllerLogger("uploadBrandingAsset");
 
-export const uploadBrandingAssetController = asyncHandler(
-	async (req: Request, res: Response) => {
+export const uploadBrandingAssetController = authenticatedHandler(
+	async (req: AuthenticatedRequest, res: Response) => {
 		const startTime = Date.now();
-		const hospitalId = req.user?.tenantId;
+		const hospitalId = req.user.tenantId;
 		const type = req.params.type as "logo" | "favicon";
 		const { image } = req.body;
 
