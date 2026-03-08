@@ -90,7 +90,7 @@ export async function seedTelemedicine({
 			tenantId,
 			"telemedicine",
 		);
-		const visitId = `TM-${String(seq).padStart(6, "0")}`;
+		const visitId = `${tenantId}-TM-${String(seq).padStart(6, "0")}`;
 		const id = uuidv4();
 
 		// Schedule future visits, past for completed/cancelled

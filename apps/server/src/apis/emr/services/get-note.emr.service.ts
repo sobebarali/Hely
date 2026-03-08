@@ -1,3 +1,4 @@
+import { Patient, Staff } from "@hms/db";
 import { NotFoundError } from "../../../errors";
 import { createServiceLogger } from "../../../lib/logger";
 import { findClinicalNoteById } from "../repositories/shared.emr.repository";
@@ -18,10 +19,28 @@ export async function getNoteService({
 		throw new NotFoundError("Clinical note not found", "NOT_FOUND");
 	}
 
+	// Fetch author, signer, and patient names in parallel
+	const staffIds = [note.authorId, note.signedBy].filter(Boolean) as string[];
+	const [staffMembers, patient] = await Promise.all([
+		Staff.find({ _id: { $in: staffIds }, tenantId })
+			.select("_id firstName lastName")
+			.lean(),
+		Patient.findOne({ _id: note.patientId, tenantId })
+			.select("_id firstName lastName")
+			.lean(),
+	]);
+
+	const staffMap = new Map(
+		staffMembers.map((s) => [s._id, `${s.firstName} ${s.lastName}`]),
+	);
+
 	return {
 		id: note._id,
 		noteId: note.noteId,
 		patientId: note.patientId,
+		patientName: patient
+			? `${patient.firstName} ${patient.lastName}`
+			: undefined,
 		encounterId: note.encounterId,
 		admissionId: note.admissionId,
 		type: note.type,
@@ -35,7 +54,9 @@ export async function getNoteService({
 		procedures: note.procedures,
 		status: note.status,
 		authorId: note.authorId,
+		authorName: staffMap.get(note.authorId),
 		signedBy: note.signedBy,
+		signedByName: note.signedBy ? staffMap.get(note.signedBy) : undefined,
 		signedAt: note.signedAt?.toISOString(),
 		amendments: note.amendments.map((a) => ({
 			reason: a.reason,

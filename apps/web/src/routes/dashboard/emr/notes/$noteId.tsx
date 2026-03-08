@@ -769,10 +769,10 @@ function NoteDetailPage() {
 						</CardHeader>
 						<CardContent className="space-y-4">
 							<div>
-								<Label className="text-muted-foreground text-xs">
-									Author ID
-								</Label>
-								<p className="font-mono text-sm">{note.authorId}</p>
+								<Label className="text-muted-foreground text-xs">Author</Label>
+								<p className="font-medium text-sm">
+									{note.authorName ?? note.authorId}
+								</p>
 							</div>
 							{note.signedBy && (
 								<>
@@ -781,7 +781,9 @@ function NoteDetailPage() {
 										<Label className="text-muted-foreground text-xs">
 											Signed By
 										</Label>
-										<p className="font-mono text-sm">{note.signedBy}</p>
+										<p className="font-medium text-sm">
+											{note.signedByName ?? note.signedBy}
+										</p>
 									</div>
 								</>
 							)}
@@ -810,7 +812,9 @@ function NoteDetailPage() {
 							</CardTitle>
 						</CardHeader>
 						<CardContent className="space-y-2">
-							<p className="font-mono text-sm">ID: {note.patientId}</p>
+							<p className="font-medium text-sm">
+								{note.patientName ?? note.patientId}
+							</p>
 							<Button variant="outline" size="sm" asChild className="mt-2">
 								<Link
 									to="/dashboard/emr/patients/$patientId"

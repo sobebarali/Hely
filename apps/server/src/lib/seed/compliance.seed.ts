@@ -3,7 +3,7 @@ import {
 	ConsentPurpose,
 	ConsentSource,
 	Organization,
-	User,
+	Staff,
 } from "@hms/db";
 import { v4 as uuidv4 } from "uuid";
 import { createServiceLogger } from "../logger";
@@ -20,14 +20,14 @@ export async function seedCompliance({
 }): Promise<number> {
 	logger.info({ tenantId }, "Seeding compliance consent data");
 
-	// Get the admin user for this tenant
-	const adminUser = await User.findOne({ tenantId }).lean();
-	if (!adminUser) {
-		logger.warn({ tenantId }, "No user found, skipping compliance seed");
+	// Get the first staff member for this tenant (use their userId for consent)
+	const staff = await Staff.findOne({ tenantId }).lean();
+	if (!staff) {
+		logger.warn({ tenantId }, "No staff found, skipping compliance seed");
 		return 0;
 	}
 
-	const userId = String(adminUser._id);
+	const userId = String(staff.userId);
 	let count = 0;
 
 	const purposes = Object.values(ConsentPurpose);

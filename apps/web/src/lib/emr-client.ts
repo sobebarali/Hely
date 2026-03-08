@@ -228,6 +228,7 @@ export interface ClinicalNoteDetail {
 	id: string;
 	noteId: string;
 	patientId: string;
+	patientName?: string;
 	encounterId?: string;
 	type: ClinicalNoteType;
 	chiefComplaint?: string;
@@ -240,7 +241,9 @@ export interface ClinicalNoteDetail {
 	procedures?: Procedure[];
 	status: ClinicalNoteStatus;
 	authorId: string;
+	authorName?: string;
 	signedBy?: string;
+	signedByName?: string;
 	signedAt?: string;
 	amendments?: Amendment[];
 	createdAt: string;
