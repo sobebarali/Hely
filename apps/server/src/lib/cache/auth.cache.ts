@@ -48,32 +48,39 @@ export async function cacheSession({
 	permissions: string[];
 	expiresIn?: number;
 }): Promise<void> {
-	// Store session-to-tenant mapping for tenant discovery
-	const mappingKey = `${AUTH_CACHE_KEYS.SESSION_TENANT_MAP}${sessionId}`;
-	await redis.setex(mappingKey, expiresIn, tenantId);
+	try {
+		// Store session-to-tenant mapping for tenant discovery
+		const mappingKey = `${AUTH_CACHE_KEYS.SESSION_TENANT_MAP}${sessionId}`;
+		await redis.setex(mappingKey, expiresIn, tenantId);
 
-	// Store full session data with tenant-scoped key
-	const key = tenantCacheKey({
-		tenantId,
-		prefix: AUTH_CACHE_KEYS.SESSION,
-		identifier: sessionId,
-	});
-	const data = JSON.stringify({
-		userId,
-		email,
-		name,
-		tenantId,
-		staffId,
-		roles,
-		permissions,
-		cachedAt: Date.now(),
-	});
+		// Store full session data with tenant-scoped key
+		const key = tenantCacheKey({
+			tenantId,
+			prefix: AUTH_CACHE_KEYS.SESSION,
+			identifier: sessionId,
+		});
+		const data = JSON.stringify({
+			userId,
+			email,
+			name,
+			tenantId,
+			staffId,
+			roles,
+			permissions,
+			cachedAt: Date.now(),
+		});
 
-	await redis.setex(key, expiresIn, data);
-	logger.debug(
-		{ sessionId, userId, tenantId },
-		"Session cached with tenant scoping",
-	);
+		await redis.setex(key, expiresIn, data);
+		logger.debug(
+			{ sessionId, userId, tenantId },
+			"Session cached with tenant scoping",
+		);
+	} catch (error) {
+		logger.error(
+			{ redisOperation: "cacheSession", err: error },
+			"Redis unavailable - session will not be cached",
+		);
+	}
 }
 
 /**
@@ -266,23 +273,31 @@ export async function recordFailedLogin({
 }: {
 	identifier: string;
 }): Promise<{ attempts: number; isLocked: boolean }> {
-	const key = `${AUTH_CACHE_KEYS.FAILED_LOGINS}${identifier}`;
+	try {
+		const key = `${AUTH_CACHE_KEYS.FAILED_LOGINS}${identifier}`;
 
-	// Increment and set TTL
-	const attempts = await redis.incr(key);
+		// Increment and set TTL
+		const attempts = await redis.incr(key);
 
-	// Set expiry only on first attempt
-	if (attempts === 1) {
-		await redis.expire(key, AUTH_CACHE_TTL.FAILED_LOGIN_WINDOW);
+		// Set expiry only on first attempt
+		if (attempts === 1) {
+			await redis.expire(key, AUTH_CACHE_TTL.FAILED_LOGIN_WINDOW);
+		}
+
+		// Check if account should be locked
+		if (attempts >= SECURITY_THRESHOLDS.MAX_FAILED_ATTEMPTS) {
+			await lockAccount({ identifier });
+			return { attempts, isLocked: true };
+		}
+
+		return { attempts, isLocked: false };
+	} catch (error) {
+		logger.error(
+			{ redisOperation: "recordFailedLogin", err: error },
+			"Redis unavailable - skipping failed login tracking",
+		);
+		return { attempts: 0, isLocked: false };
 	}
-
-	// Check if account should be locked
-	if (attempts >= SECURITY_THRESHOLDS.MAX_FAILED_ATTEMPTS) {
-		await lockAccount({ identifier });
-		return { attempts, isLocked: true };
-	}
-
-	return { attempts, isLocked: false };
 }
 
 /**
@@ -293,12 +308,19 @@ export async function clearFailedLogins({
 }: {
 	identifier: string;
 }): Promise<void> {
-	const key = `${AUTH_CACHE_KEYS.FAILED_LOGINS}${identifier}`;
-	await redis.del(key);
-	logger.debug(
-		{ identifier: `****${identifier.slice(-4)}` },
-		"Failed logins cleared",
-	);
+	try {
+		const key = `${AUTH_CACHE_KEYS.FAILED_LOGINS}${identifier}`;
+		await redis.del(key);
+		logger.debug(
+			{ identifier: `****${identifier.slice(-4)}` },
+			"Failed logins cleared",
+		);
+	} catch (error) {
+		logger.error(
+			{ redisOperation: "clearFailedLogins", err: error },
+			"Redis unavailable - skipping failed login clear",
+		);
+	}
 }
 
 /**
@@ -341,9 +363,17 @@ export async function isAccountLocked({
 }: {
 	identifier: string;
 }): Promise<boolean> {
-	const key = `${AUTH_CACHE_KEYS.ACCOUNT_LOCKED}${identifier}`;
-	const result = await redis.get(key);
-	return result !== null;
+	try {
+		const key = `${AUTH_CACHE_KEYS.ACCOUNT_LOCKED}${identifier}`;
+		const result = await redis.get(key);
+		return result !== null;
+	} catch (error) {
+		logger.error(
+			{ redisOperation: "isAccountLocked", err: error },
+			"Redis unavailable - skipping account lock check",
+		);
+		return false;
+	}
 }
 
 /**

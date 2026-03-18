@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+import { getTraceId } from "../../../lib/async-context";
 import {
 	createControllerLogger,
 	logError,
@@ -86,11 +87,13 @@ export async function tokenController(req: Request, res: Response) {
 		// Log unexpected errors
 		logError(logger, error, "Unexpected error during token generation", {
 			duration,
+			errorName: error instanceof Error ? error.constructor.name : typeof error,
 		});
 
 		res.status(500).json({
 			code: "INTERNAL_ERROR",
 			message: "An unexpected error occurred",
+			trace_id: getTraceId(),
 		});
 	}
 }
