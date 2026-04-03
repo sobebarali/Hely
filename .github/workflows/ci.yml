@@ -60,8 +60,12 @@ jobs:
       - run: npm run build
 
   test:
-    name: Test
+    name: Test (${{ matrix.shard }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1/4, 2/4, 3/4, 4/4]
     services:
       mongodb:
         image: mongo:7
@@ -79,8 +83,9 @@ jobs:
 
       - name: Run server tests
         working-directory: apps/server
-        run: npx vitest run
+        run: npx vitest run --shard=${{ matrix.shard }}
         env:
+          DOTENV_CONFIG_QUIET: "true"
           DATABASE_URL: mongodb://localhost:27017/hms_test
           ENCRYPTION_MASTER_KEY: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
           BACKEND_URL: http://localhost:3000
