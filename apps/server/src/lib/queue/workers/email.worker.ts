@@ -34,8 +34,15 @@ import { QUEUE_NAMES } from "../queues";
 
 const logger = createUtilLogger("emailWorker");
 
-// Email configuration
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Email configuration — lazy-initialized to avoid crashing at import
+// time when RESEND_API_KEY is not set (e.g. in test/CI environments)
+let resend: Resend;
+function getResend(): Resend {
+	if (!resend) {
+		resend = new Resend(process.env.RESEND_API_KEY);
+	}
+	return resend;
+}
 const emailConfig = {
 	from: process.env.EMAIL_FROM || "hello@example.com",
 	fromName: process.env.EMAIL_FROM_NAME || "useHely",
@@ -53,7 +60,7 @@ async function sendGenericEmail(data: SendEmailJobData): Promise<void> {
 		return;
 	}
 
-	const { error } = await resend.emails.send({
+	const { error } = await getResend().emails.send({
 		from: `${emailConfig.fromName} <${emailConfig.from}>`,
 		to: Array.isArray(to) ? to : [to],
 		subject,
@@ -90,7 +97,7 @@ async function sendWelcomeEmail(data: SendWelcomeEmailJobData): Promise<void> {
 	const html = getWelcomeEmailTemplate(templateData);
 	const text = getWelcomeEmailText(templateData);
 
-	const { error } = await resend.emails.send({
+	const { error } = await getResend().emails.send({
 		from: `${emailConfig.fromName} <${emailConfig.from}>`,
 		to: [to],
 		subject: `Welcome to ${hospitalName}`,
@@ -126,7 +133,7 @@ async function sendPasswordResetEmail(
 	const html = getPasswordResetEmailTemplate(templateData);
 	const text = getPasswordResetEmailText(templateData);
 
-	const { error } = await resend.emails.send({
+	const { error } = await getResend().emails.send({
 		from: `${emailConfig.fromName} <${emailConfig.from}>`,
 		to: [to],
 		subject: "Reset Your Password",
@@ -175,7 +182,7 @@ async function sendHospitalVerificationEmail(
 	const html = getHospitalVerificationEmailHtml(templateData);
 	const text = getHospitalVerificationEmailText(templateData);
 
-	const { error } = await resend.emails.send({
+	const { error } = await getResend().emails.send({
 		from: `${emailConfig.fromName} <${emailConfig.from}>`,
 		to: [to],
 		subject: "Verify Your Hospital Registration - useHely",
@@ -211,7 +218,7 @@ async function sendLinkedUserEmail(
 	const html = getLinkedUserEmailTemplate(templateData);
 	const text = getLinkedUserEmailText(templateData);
 
-	const { error } = await resend.emails.send({
+	const { error } = await getResend().emails.send({
 		from: `${emailConfig.fromName} <${emailConfig.from}>`,
 		to: [to],
 		subject: `You've been added to ${hospitalName}`,

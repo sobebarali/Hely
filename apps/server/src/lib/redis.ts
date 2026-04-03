@@ -29,6 +29,7 @@ const isRedisConfigured = Boolean(REDIS_HOST && REDIS_PASSWORD);
 const createMockRedis = () => {
 	const store = new Map<string, string>();
 	const sets = new Map<string, Set<string>>();
+	const expiresAt = new Map<string, number>();
 
 	return {
 		get: async (key: string) => store.get(key) ?? null,
@@ -38,8 +39,11 @@ const createMockRedis = () => {
 		},
 		setex: async (key: string, seconds: number, value: string) => {
 			store.set(key, value);
-			// Auto-delete after TTL (simplified for mock)
-			setTimeout(() => store.delete(key), seconds * 1000);
+			expiresAt.set(key, Date.now() + seconds * 1000);
+			setTimeout(() => {
+				store.delete(key);
+				expiresAt.delete(key);
+			}, seconds * 1000);
 			return "OK";
 		},
 		del: async (...keys: string[]) => {
@@ -47,6 +51,7 @@ const createMockRedis = () => {
 			for (const key of keys) {
 				if (store.delete(key)) count++;
 				if (sets.delete(key)) count++;
+				expiresAt.delete(key);
 			}
 			return count;
 		},
@@ -56,7 +61,22 @@ const createMockRedis = () => {
 			store.set(key, String(next));
 			return next;
 		},
-		expire: async (_key: string, _seconds: number) => 1,
+		expire: async (key: string, seconds: number) => {
+			if (!store.has(key) && !sets.has(key)) return 0;
+			expiresAt.set(key, Date.now() + seconds * 1000);
+			setTimeout(() => {
+				store.delete(key);
+				sets.delete(key);
+				expiresAt.delete(key);
+			}, seconds * 1000);
+			return 1;
+		},
+		ttl: async (key: string) => {
+			const exp = expiresAt.get(key);
+			if (!store.has(key) && !sets.has(key)) return -2;
+			if (!exp) return -1;
+			return Math.max(0, Math.ceil((exp - Date.now()) / 1000));
+		},
 		sadd: async (key: string, ...members: string[]) => {
 			if (!sets.has(key)) sets.set(key, new Set());
 			const set = sets.get(key) as Set<string>;
