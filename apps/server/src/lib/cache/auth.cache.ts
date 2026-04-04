@@ -36,6 +36,7 @@ export async function cacheSession({
 	staffId,
 	roles,
 	permissions,
+	attributes,
 	expiresIn = AUTH_CACHE_TTL.SESSION,
 }: {
 	sessionId: string;
@@ -46,6 +47,11 @@ export async function cacheSession({
 	staffId?: string;
 	roles: string[];
 	permissions: string[];
+	attributes?: {
+		department?: string;
+		specialization?: string;
+		shift?: string;
+	};
 	expiresIn?: number;
 }): Promise<void> {
 	try {
@@ -67,6 +73,7 @@ export async function cacheSession({
 			staffId,
 			roles,
 			permissions,
+			attributes,
 			cachedAt: Date.now(),
 		});
 
@@ -101,6 +108,11 @@ export async function getCachedSession({
 	staffId?: string;
 	roles: string[];
 	permissions: string[];
+	attributes?: {
+		department?: string;
+		specialization?: string;
+		shift?: string;
+	};
 } | null> {
 	// First, get the tenant ID for this session
 	const mappingKey = `${AUTH_CACHE_KEYS.SESSION_TENANT_MAP}${sessionId}`;

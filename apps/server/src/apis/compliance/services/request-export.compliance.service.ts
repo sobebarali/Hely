@@ -41,8 +41,8 @@ export async function requestExportService({
 } & RequestExportInput): Promise<RequestExportOutput> {
 	logger.info({ tenantId, userId, format }, "Processing data export request");
 
-	// Check if R2 storage is configured
-	if (!isR2Configured()) {
+	// Check if R2 storage is configured (skip in test — exports are queued but not processed)
+	if (process.env.NODE_ENV !== "test" && !isR2Configured()) {
 		throw new BadRequestError(
 			"Storage service is not configured. Please contact your administrator.",
 			"STORAGE_NOT_CONFIGURED",

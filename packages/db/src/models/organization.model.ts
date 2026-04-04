@@ -52,7 +52,7 @@ const brandingSchema = new Schema(
 		supportEmail: { type: String },
 		primaryColor: { type: String },
 		accentColor: { type: String },
-		customDomain: { type: String, sparse: true, unique: true },
+		customDomain: { type: String },
 	},
 	{ _id: false },
 );

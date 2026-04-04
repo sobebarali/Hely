@@ -177,6 +177,11 @@ export async function switchTenant({
 		staffId: String(staff._id),
 		roles: roleNames,
 		permissions: uniquePermissions,
+		attributes: {
+			department: staff.departmentId ? String(staff.departmentId) : undefined,
+			specialization: staff.specialization || undefined,
+			shift: staff.shift || undefined,
+		},
 		expiresIn: TOKEN_CONFIG.ACCESS_TOKEN_EXPIRY,
 	});
 

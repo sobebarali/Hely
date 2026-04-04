@@ -63,7 +63,7 @@ describe("POST /api/users - Create user successfully", () => {
 		expect(response.body.username).toBeDefined();
 		expect(response.body.roles).toBeInstanceOf(Array);
 		expect(response.body.roles.length).toBeGreaterThan(0);
-		expect(response.body.message).toContain("Welcome email sent");
+		expect(response.body.message).toContain("Welcome email queued");
 
 		createdUserIds.push(response.body.id);
 

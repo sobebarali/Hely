@@ -124,6 +124,7 @@ async function authenticateAsync(
 				staffId: cachedSession.staffId,
 				roles: cachedSession.roles,
 				permissions: cachedSession.permissions,
+				attributes: cachedSession.attributes,
 			};
 
 			// Update request context
