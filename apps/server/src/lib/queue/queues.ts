@@ -99,7 +99,7 @@ function createMockQueue(name: string): Queue {
 }
 
 function createQueue(name: string, opts: object): Queue {
-	if (!isRedisConfigured) {
+	if (!isRedisConfigured || !queueConnection) {
 		return createMockQueue(name);
 	}
 	return new Queue(name, {
