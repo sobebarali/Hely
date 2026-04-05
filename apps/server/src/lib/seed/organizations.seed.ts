@@ -31,6 +31,13 @@ const ORGANIZATIONS_CONFIG = [
 		emailPrefix: "hospital",
 		type: OrganizationType.HOSPITAL,
 		licenseNumber: "HOSP-2024-001",
+		branding: {
+			appName: "City General Hospital",
+			supportEmail: "support@usehely.com",
+			primaryColor: "#2563eb",
+			accentColor: "#f59e0b",
+			customDomain: "usehely.com",
+		},
 	},
 	{
 		name: "Downtown Medical Clinic",
@@ -38,6 +45,12 @@ const ORGANIZATIONS_CONFIG = [
 		emailPrefix: "clinic",
 		type: OrganizationType.CLINIC,
 		licenseNumber: "CLIN-2024-001",
+		branding: {
+			appName: "Downtown Medical Clinic",
+			supportEmail: "clinic-support@usehely.com",
+			primaryColor: "#059669",
+			accentColor: "#8b5cf6",
+		},
 	},
 	{
 		name: "Dr. Smith Solo Practice",
@@ -45,6 +58,12 @@ const ORGANIZATIONS_CONFIG = [
 		emailPrefix: "solo",
 		type: OrganizationType.SOLO_PRACTICE,
 		licenseNumber: undefined,
+		branding: {
+			appName: "Dr. Smith Solo Practice",
+			supportEmail: "solo-support@usehely.com",
+			primaryColor: "#7c3aed",
+			accentColor: "#ec4899",
+		},
 	},
 ] as const;
 
@@ -67,6 +86,7 @@ interface UserSeedConfig {
 	departmentCode: string;
 	specialization?: string;
 	shift: "MORNING" | "EVENING" | "NIGHT";
+	emailSlug: string;
 }
 
 // Operating hours helpers
@@ -222,6 +242,7 @@ const USERS_CONFIG: UserSeedConfig[] = [
 		lastName: "User",
 		departmentCode: "ADMIN",
 		shift: "MORNING",
+		emailSlug: "admin",
 	},
 	{
 		role: "DOCTOR",
@@ -230,6 +251,7 @@ const USERS_CONFIG: UserSeedConfig[] = [
 		departmentCode: "GEN",
 		specialization: "Internal Medicine",
 		shift: "MORNING",
+		emailSlug: "doctor",
 	},
 	{
 		role: "DOCTOR",
@@ -238,6 +260,7 @@ const USERS_CONFIG: UserSeedConfig[] = [
 		departmentCode: "CARDIO",
 		specialization: "Cardiology",
 		shift: "MORNING",
+		emailSlug: "doctor-cardio",
 	},
 	{
 		role: "DOCTOR",
@@ -246,6 +269,7 @@ const USERS_CONFIG: UserSeedConfig[] = [
 		departmentCode: "NEURO",
 		specialization: "Neurology",
 		shift: "MORNING",
+		emailSlug: "doctor-neuro",
 	},
 	{
 		role: "DOCTOR",
@@ -254,6 +278,7 @@ const USERS_CONFIG: UserSeedConfig[] = [
 		departmentCode: "ORTHO",
 		specialization: "Orthopedic Surgery",
 		shift: "EVENING",
+		emailSlug: "doctor-ortho",
 	},
 	{
 		role: "DOCTOR",
@@ -262,6 +287,7 @@ const USERS_CONFIG: UserSeedConfig[] = [
 		departmentCode: "PEDIA",
 		specialization: "Pediatrics",
 		shift: "MORNING",
+		emailSlug: "doctor-pedia",
 	},
 	{
 		role: "DOCTOR",
@@ -270,6 +296,7 @@ const USERS_CONFIG: UserSeedConfig[] = [
 		departmentCode: "ONCO",
 		specialization: "Medical Oncology",
 		shift: "MORNING",
+		emailSlug: "doctor-onco",
 	},
 	{
 		role: "NURSE",
@@ -278,6 +305,7 @@ const USERS_CONFIG: UserSeedConfig[] = [
 		departmentCode: "GEN",
 		specialization: "Critical Care Nursing",
 		shift: "MORNING",
+		emailSlug: "nurse",
 	},
 	{
 		role: "PHARMACIST",
@@ -286,6 +314,7 @@ const USERS_CONFIG: UserSeedConfig[] = [
 		departmentCode: "PHARM",
 		specialization: "Clinical Pharmacy",
 		shift: "MORNING",
+		emailSlug: "pharmacist",
 	},
 	{
 		role: "RECEPTIONIST",
@@ -293,6 +322,7 @@ const USERS_CONFIG: UserSeedConfig[] = [
 		lastName: "Receptionist",
 		departmentCode: "ADMIN",
 		shift: "MORNING",
+		emailSlug: "receptionist",
 	},
 ];
 
@@ -386,8 +416,7 @@ async function seedUsers({
 
 	let staffIdx = 0;
 	for (const userConfig of USERS_CONFIG) {
-		const emailSlug = `${userConfig.firstName.toLowerCase()}.${userConfig.lastName.toLowerCase()}`;
-		const email = `${emailPrefix}-${emailSlug}@usehely.com`;
+		const email = `${emailPrefix}-${userConfig.emailSlug}@usehely.com`;
 
 		// Check if user already exists globally
 		const existingUser = await User.findOne({ email }).session(session ?? null);
@@ -611,6 +640,14 @@ async function seedOrganization(
 
 			const tenantId = String(existing._id);
 
+			// Update branding if configured
+			if (config.branding) {
+				await Organization.updateOne(
+					{ _id: tenantId },
+					{ $set: { branding: config.branding } },
+				).session(session);
+			}
+
 			// Re-seed system roles to update permissions if they changed
 			await seedSystemRoles({ tenantId, session });
 
@@ -679,6 +716,7 @@ async function seedOrganization(
 					adminPhone: "+1234567890",
 					status: OrganizationStatus.ACTIVE,
 					pricingTier: PricingTier.ENTERPRISE,
+					branding: config.branding,
 					createdAt: new Date(),
 					updatedAt: new Date(),
 				},

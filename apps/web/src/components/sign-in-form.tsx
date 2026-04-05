@@ -34,6 +34,7 @@ export default function SignInForm({
 	});
 
 	const [email, setEmail] = useState("");
+	const [emailDirty, setEmailDirty] = useState(false);
 	const [selectedHospital, setSelectedHospital] = useState("");
 	const [mfaChallenge, setMfaChallenge] = useState<MfaChallengeResponse | null>(
 		null,
@@ -133,9 +134,12 @@ export default function SignInForm({
 	}
 
 	const showHospitalSelector =
-		email.includes("@") && hospitals && hospitals.length > 0;
+		email.includes("@") && !emailDirty && hospitals && hospitals.length > 0;
 	const noHospitalsFound =
-		email.includes("@") && !hospitalsLoading && hospitals?.length === 0;
+		email.includes("@") &&
+		!emailDirty &&
+		!hospitalsLoading &&
+		hospitals?.length === 0;
 
 	return (
 		<div className="w-full">
@@ -168,8 +172,14 @@ export default function SignInForm({
 										onBlur={(e) => {
 											field.handleBlur();
 											setEmail(e.target.value);
+											setEmailDirty(false);
 										}}
-										onChange={(e) => field.handleChange(e.target.value)}
+										onChange={(e) => {
+											field.handleChange(e.target.value);
+											if (e.target.value !== email) {
+												setEmailDirty(true);
+											}
+										}}
 										placeholder="you@example.com"
 										className="bg-background/50"
 									/>
