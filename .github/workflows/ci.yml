@@ -66,19 +66,14 @@ jobs:
       fail-fast: false
       matrix:
         shard: [1/4, 2/4, 3/4, 4/4]
-    services:
-      mongodb:
-        image: mongo:7
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd "echo 'try { rs.status() } catch(e) { rs.initiate() }' | mongosh --quiet"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-          --health-start-period 10s
-        command: ["mongod", "--replSet", "rs0"]
     steps:
+      - name: Start MongoDB replica set
+        run: |
+          docker run -d --name mongodb -p 27017:27017 mongo:7 mongod --replSet rs0
+          until docker exec mongodb mongosh --eval "rs.initiate()" --quiet 2>/dev/null; do
+            sleep 1
+          done
+
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
