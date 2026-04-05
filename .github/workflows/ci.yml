@@ -71,6 +71,13 @@ jobs:
         image: mongo:7
         ports:
           - 27017:27017
+        options: >-
+          --health-cmd "echo 'try { rs.status() } catch(e) { rs.initiate() }' | mongosh --quiet"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          --health-start-period 10s
+        command: ["mongod", "--replSet", "rs0"]
     steps:
       - uses: actions/checkout@v4
 
@@ -86,7 +93,7 @@ jobs:
         run: npx vitest run --shard=${{ matrix.shard }}
         env:
           DOTENV_CONFIG_QUIET: "true"
-          DATABASE_URL: mongodb://localhost:27017/hms_test
+          DATABASE_URL: mongodb://localhost:27017/hms_test?replicaSet=rs0&directConnection=true
           ENCRYPTION_MASTER_KEY: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
           BACKEND_URL: http://localhost:3000
           NODE_ENV: test
